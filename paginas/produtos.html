@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos - QUEISE | Use Exclusividade</title>
+    <meta name="description" content="Descubra nossa linha completa de produtos personalizáveis premium. Garrafas térmicas, copos, bolsas térmicas e muito mais.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- CSS Global -->
+    <link rel="stylesheet" href="../styles.css">
+    
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/produtos.css">
+</head>
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="../imagens/logoQbonito2.png" alt="QUEISE Logo">
+                </div>
+                <div class="logo-write">
+                    <img src="../imagens/logoescrita2.png" alt="QUEISE Logo Escrito">
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="produtos.html" class="active">Produtos</a></li>
+                <li><a href="colecoes.html">Coleções</a></li>
+                <li><a href="para-empresas.html">Para Empresas</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+            <a href="personalizar.html" class="cta-button">Personalize Já</a>
+        </nav>
+    </header>
+
+    <!-- Products Hero -->
+    <section class="products-hero">
+        <div class="products-hero-content">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a>
+                <span>/</span>
+                <strong>Produtos</strong>
+            </div>
+            <div class="tagline">Nossa Linha Completa</div>
+            <h1>Produtos Premium</h1>
+            <p>Descubra nossa coleção exclusiva de produtos personalizáveis com qualidade excepcional</p>
+        </div>
+    </section>
+
+    <!-- Products Main -->
+    <main class="products-main">
+        <div class="products-controls">
+            <!-- Filters Sidebar -->
+            <aside class="filters-sidebar">
+                <div class="filters-header">
+                    <h3>Filtros</h3>
+                    <button class="clear-filters" onclick="clearAllFilters()">Limpar</button>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Categoria</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="garrafas" name="category" value="garrafas">
+                            <label for="garrafas">Garrafas Térmicas</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="copos" name="category" value="copos">
+                            <label for="copos">Copos Térmicos</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="bolsas" name="category" value="bolsas">
+                            <label for="bolsas">Bolsas Térmicas</label>
+                            <span class="filter-count">6</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="malas" name="category" value="malas">
+                            <label for="malas">Malas & Mochilas</label>
+                            <span class="filter-count">10</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="imas" name="category" value="imas">
+                            <label for="imas">Imãs de Geladeira</label>
+                            <span class="filter-count">15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Faixa de Preço</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="price1" name="price" value="0-50">
+                            <label for="price1">Até R$ 50</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price2" name="price" value="50-100">
+                            <label for="price2">R$ 50 - R$ 100</label>
+                            <span class="filter-count">15</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price3" name="price" value="100-200">
+                            <label for="price3">R$ 100 - R$ 200</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price4" name="price" value="200+">
+                            <label for="price4">Acima de R$ 200</label>
+                            <span class="filter-count">6</span>
+                        </div>
+                    </div>
+                    <div class="price-range">
+                        <div class="price-inputs">
+                            <input type="number" class="price-input" placeholder="Min" id="priceMin">
+                            <span class="price-separator">-</span>
+                            <input type="number" class="price-input" placeholder="Max" id="priceMax">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Filter -->
+                <div class="filter-group">
+                    <div class="filter-title">Características</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="termico" name="features" value="termico">
+                            <label for="termico">Térmico</label>
+                            <span class="filter-count">26</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="personalizavel" name="features" value="personalizavel">
+                            <label for="personalizavel">Personalizável</label>
+                            <span class="filter-count">41</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="premium" name="features" value="premium">
+                            <label for="premium">Premium</label>
+                            <span class="filter-count">18</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="eco" name="features" value="eco">
+                            <label for="eco">Ecológico</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Search and Sort Area -->
+            <div class="search-sort-area">
+                <!-- Search -->
+                <div class="search-container">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" class="search-input" placeholder="Buscar produtos..." id="searchInput">
+                </div>
+
+                <!-- Sort Controls -->
+                <div class="sort-controls">
+                    <div class="results-count">
+                        Mostrando <strong id="resultsCount">51</strong> produtos
+                    </div>
+                    <div class="sort-dropdown">
+                        <label for="sortSelect">Ordenar por:</label>
+                        <select class="sort-select" id="sortSelect">
+                            <option value="relevance">Relevância</option>
+                            <option value="name-asc">Nome A-Z</option>
+                            <option value="name-desc">Nome Z-A</option>
+                            <option value="price-asc">Menor Preço</option>
+                            <option value="price-desc">Maior Preço</option>
+                            <option value="newest">Mais Recentes</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" onclick="setGridView()">⊞</button>
+                        <button class="view-btn" onclick="setListView()">☰</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsGrid">
+            <!-- Product Item 1 -->
+            <article class="product-item" data-category="garrafas" data-price="165" data-features="termico,personalizavel,premium">
+                <div class="product-image-container">
+                    <div class="product-badge">Premium</div>
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Garrafa Térmica Stanley" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Garrafas Térmicas</div>
+                    <h3 class="product-name">Garrafa Stanley 1L Personalizada</h3>
+                    <p class="product-description">Garrafa térmica premium com isolamento duplo, mantém bebidas quentes por 12h e frias por 24h.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">Térmico</span>
+                        <span class="feature-tag">1L</span>
+                        <span class="feature-tag">Aço Inox</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 165,00</div>
+                            <div class="price-personalization">+ R$ 20,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=garrafa-stanley-1l" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=garrafa-stanley-1l" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 2 -->
+            <article class="product-item" data-category="copos" data-price="80" data-features="termico,personalizavel">
+                <div class="product-image-container">
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Copo Térmico" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Copos Térmicos</div>
+                    <h3 class="product-name">Copo Térmico 500ml</h3>
+                    <p class="product-description">Copo ergonômico com tampa antivazamento, ideal para café, chá e bebidas quentes.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">Térmico</span>
+                        <span class="feature-tag">500ml</span>
+                        <span class="feature-tag">Tampa</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 80,00</div>
+                            <div class="price-personalization">+ R$ 20,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=copo-termico-500ml" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=copo-termico-500ml" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 3 -->
+            <article class="product-item" data-category="bolsas" data-price="999" data-features="personalizavel,premium">
+                <div class="product-image-container">
+                    <div class="product-badge">Novo</div>
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Bolsa Térmica" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Bolsas Térmicas</div>
+                    <h3 class="product-name">Bolsa Térmica Premium 20L</h3>
+                    <p class="product-description">Bolsa térmica de alta capacidade com isolamento superior para manter alimentos frescos.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">20L</span>
+                        <span class="feature-tag">Isolamento</span>
+                        <span class="feature-tag">Resistente</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">Sob consulta</div>
+                            <div class="price-personalization">Personalização incluída</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=bolsa-termica-20l" class="btn-product btn-primary-small">
+                            Orçamento
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=bolsa-termica-20l" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 4 -->
+            <article class="product-item" data-category="malas" data-price="220" data-features="personalizavel">
+                <div class="product-image-container">
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Mochila" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Malas & Mochilas</div>
+                    <h3 class="product-name">Mochila Executiva 30L</h3>
+                    <p class="product-description">Mochila profissional com compartimentos organizadores e design sofisticado.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">30L</span>
+                        <span class="feature-tag">Executiva</span>
+                        <span class="feature-tag">Organizadores</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 220,00</div>
+                            <div class="price-personalization">+ R$ 25,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=mochila-executiva-30l" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=mochila-executiva-30l" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 5 -->
+            <article class="product-item" data-category="imas" data-price="25" data-features="personalizavel">
+                <div class="product-image-container">
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Imã Personalizado" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Imãs de Geladeira</div>
+                    <h3 class="product-name">Imã Personalizado Premium</h3>
+                    <p class="product-description">Imã de geladeira personalizado com alta qualidade de impressão e acabamento premium.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">Alta Qualidade</span>
+                        <span class="feature-tag">Durável</span>
+                        <span class="feature-tag">Colorido</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 25,00</div>
+                            <div class="price-personalization">Personalização incluída</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=ima-personalizado" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=ima-personalizado" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 6 -->
+            <article class="product-item" data-category="garrafas" data-price="125" data-features="termico,personalizavel,premium">
+                <div class="product-image-container">
+                    <div class="product-badge">Premium</div>
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Garrafa 600ml" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Garrafas Térmicas</div>
+                    <h3 class="product-name">Garrafa Térmica 600ml Sport</h3>
+                    <p class="product-description">Garrafa compacta ideal para esportes e atividades físicas com bico esportivo.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">Sport</span>
+                        <span class="feature-tag">600ml</span>
+                        <span class="feature-tag">Bico</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 125,00</div>
+                            <div class="price-personalization">+ R$ 20,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=garrafa-sport-600ml" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=garrafa-sport-600ml" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 7 -->
+            <article class="product-item" data-category="bolsas" data-price="85" data-features="personalizavel">
+                <div class="product-image-container">
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Bolsa Pequena" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Bolsas Térmicas</div>
+                    <h3 class="product-name">Bolsa Térmica Compacta 8L</h3>
+                    <p class="product-description">Bolsa térmica pequena e prática para lanches e bebidas do dia a dia.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">8L</span>
+                        <span class="feature-tag">Compacta</span>
+                        <span class="feature-tag">Prática</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 85,00</div>
+                            <div class="price-personalization">+ R$ 15,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=bolsa-compacta-8l" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=bolsa-compacta-8l" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 8 -->
+            <article class="product-item" data-category="malas" data-price="350" data-features="personalizavel,premium">
+                <div class="product-image-container">
+                    <div class="product-badge">Novo</div>
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Mala de Viagem" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Malas & Mochilas</div>
+                    <h3 class="product-name">Mala de Viagem Premium 60L</h3>
+                    <p class="product-description">Mala de viagem resistente com rodas e design moderno para suas aventuras.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">60L</span>
+                        <span class="feature-tag">Rodas</span>
+                        <span class="feature-tag">Resistente</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 350,00</div>
+                            <div class="price-personalization">+ R$ 30,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=mala-viagem-60l" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=mala-viagem-60l" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Product Item 9 -->
+            <article class="product-item" data-category="copos" data-price="65" data-features="termico,personalizavel">
+                <div class="product-image-container">
+                    <div class="product-image">
+                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Copo Café" style="width: 80%; height: 80%; object-fit: contain;">
+                    </div>
+                </div>
+                <div class="product-info">
+                    <div class="product-category">Copos Térmicos</div>
+                    <h3 class="product-name">Copo Para Café 350ml</h3>
+                    <p class="product-description">Copo térmico especial para café com design elegante e isolamento perfeito.</p>
+                    <div class="product-features">
+                        <span class="feature-tag">Café</span>
+                        <span class="feature-tag">350ml</span>
+                        <span class="feature-tag">Elegante</span>
+                    </div>
+                    <div class="product-pricing">
+                        <div>
+                            <div class="price-main">R$ 65,00</div>
+                            <div class="price-personalization">+ R$ 15,00 personalização</div>
+                        </div>
+                    </div>
+                    <div class="product-actions">
+                        <a href="produto-individual.html?id=copo-cafe-350ml" class="btn-product btn-primary-small">
+                            Personalizar
+                            <span>→</span>
+                        </a>
+                        <a href="produto-individual.html?id=copo-cafe-350ml" class="btn-product btn-secondary-small">
+                            Detalhes
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more">
+            <button class="load-more-btn" onclick="loadMoreProducts()">
+                Carregar Mais Produtos
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="pagination">
+            <button class="pagination-btn" onclick="changePage('prev')" disabled>← Anterior</button>
+            <a href="#" class="pagination-btn active">1</a>
+            <a href="#" class="pagination-btn">2</a>
+            <a href="#" class="pagination-btn">3</a>
+            <a href="#" class="pagination-btn">4</a>
+            <span>...</span>
+            <a href="#" class="pagination-btn">12</a>
+            <button class="pagination-btn" onclick="changePage('next')">Próximo →</button>
+        </nav>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>QUEISE</h3>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua
+                    história. Nosso compromisso é com a excelência e a sofisticação em cada detalhe.</p>
+                <div class="tagline">Use Queise, Use Exclusividade!</div>
+            </div>
+            <div class="footer-section">
+                <h4>Produtos</h4>
+                <a href="#">Garrafas & Copos</a>
+                <a href="#">Bolsas Térmicas</a>
+                <a href="#">Malas & Mochilas</a>
+                <a href="#">Para Empresas</a>
+                <a href="#">Imãs de Geladeira</a>
+            </div>
+            <div class="footer-section">
+                <h4>Suporte</h4>
+                <a href="#">Central de Ajuda</a>
+                <a href="#">Como Personalizar</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Prazo de Entrega</a>
+                <a href="#">Contato</a>
+            </div>
+            <div class="footer-section">
+                <h4>Conecte-se</h4>
+                <a href="#">Instagram @usequeise</a>
+                <a href="#">Facebook</a>
+                <a href="#">WhatsApp</a>
+                <a href="#">E-mail</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
+            <div class="social-links">
+                <a href="#" class="social-link">IG</a>
+                <a href="#" class="social-link">FB</a>
+                <a href="#" class="social-link">WA</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../script.js"></script>
+    <script src="../js/produtos.js"></script>
+</body>
+
+</html>
