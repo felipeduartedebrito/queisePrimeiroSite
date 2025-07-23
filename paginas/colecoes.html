@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coleções - QUEISE | Use Exclusividade</title>
+    <meta name="description" content="Explore nossas coleções premium de produtos personalizáveis. Azulejos, garrafas, canecas, copos, camisetas e bolsas com design exclusivo.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/colecoes.css">
+</head>
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="../imagens/logoQbonito2.png" alt="QUEISE Logo">
+                </div>
+                <div class="logo-write">
+                    <img src="../imagens/logoescrita2.png" alt="QUEISE Logo Escrito">
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../paginas/produtos.html">Produtos</a></li>
+                <li><a href="../paginas/colecoes.html" class="active">Coleções</a></li>
+                <li><a href="#para-empresas">Para Empresas</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="#personalizar" class="cta-button">Personalize Já</a>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="../index.html">Home</a>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-current">Coleções</span>
+        </div>
+    </section>
+
+    <!-- Hero Section -->
+    <section class="hero-colecoes">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="tagline">Explore por Categoria</div>
+                <h1>Nossas Coleções</h1>
+                <p>Encontre o produto perfeito para personalizar. Cada coleção foi cuidadosamente curada para oferecer qualidade premium e design exclusivo.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Superior -->
+    <section class="banner-section banner-top">
+        <div class="banner-placeholder">
+            <div class="banner-content">
+                <p>Espaço para Banner Superior</p>
+                <span>1200x200px recomendado</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Collections Grid -->
+    <section class="collections-section">
+        <div class="collections-container">
+            <div class="collections-grid">
+                
+                <!-- Garrafas Collection (with subcollections) -->
+                <div class="collection-card has-subcollections" data-category="garrafas">
+                    <div class="collection-image">
+                        <div class="collection-icon">G</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Garrafas</h3>
+                        <p>Linha premium de garrafas térmicas personalizáveis com diversos temas e ocasiões especiais</p>
+                        <a href="../paginas/produtos.html?categoria=garrafas" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                    
+                    <!-- Subcollections Dropdown -->
+                    <div class="subcollections-dropdown">
+                        <div class="subcollections-grid">
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=times-esportes" class="subcollection-item">
+                                <div class="subcollection-icon">T</div>
+                                <span>Times e Esportes</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=personagens" class="subcollection-item">
+                                <div class="subcollection-icon">P</div>
+                                <span>Personagens</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=religiao" class="subcollection-item">
+                                <div class="subcollection-icon">R</div>
+                                <span>Religião</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=profissoes" class="subcollection-item">
+                                <div class="subcollection-icon">F</div>
+                                <span>Profissões</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=pets" class="subcollection-item">
+                                <div class="subcollection-icon">E</div>
+                                <span>Pets</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=infantil-escolar" class="subcollection-item">
+                                <div class="subcollection-icon">I</div>
+                                <span>Infantil e Escolar</span>
+                            </a>
+                            <a href="../paginas/produtos.html?categoria=garrafas&subcategoria=viagem-aventura" class="subcollection-item">
+                                <div class="subcollection-icon">V</div>
+                                <span>Viagem e Aventura</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copos Collection -->
+                <div class="collection-card" data-category="copos">
+                    <div class="collection-image">
+                        <div class="collection-icon">C</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Copos</h3>
+                        <p>Copos térmicos premium para seu café, chá ou bebida favorita com personalização exclusiva</p>
+                        <a href="../paginas/produtos.html?categoria=copos" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Canecas Collection -->
+                <div class="collection-card" data-category="canecas">
+                    <div class="collection-image">
+                        <div class="collection-icon">M</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Canecas</h3>
+                        <p>Canecas especiais e personalizadas para momentos únicos e presentes memoráveis</p>
+                        <a href="../paginas/produtos.html?categoria=canecas" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Camisetas Collection -->
+                <div class="collection-card" data-category="camisetas">
+                    <div class="collection-image">
+                        <div class="collection-icon">S</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Camisetas</h3>
+                        <p>Camisetas de alta qualidade com estampas personalizadas e designs exclusivos</p>
+                        <a href="../paginas/produtos.html?categoria=camisetas" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Bolsas e Malas Collection -->
+                <div class="collection-card" data-category="bolsas-malas">
+                    <div class="collection-image">
+                        <div class="collection-icon">B</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Bolsas e Malas</h3>
+                        <p>Bolsas térmicas, mochilas e malas funcionais com estilo e personalização completa</p>
+                        <a href="../paginas/produtos.html?categoria=bolsas-malas" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Azulejos Collection -->
+                <div class="collection-card" data-category="azulejos">
+                    <div class="collection-image">
+                        <div class="collection-icon">A</div>
+                    </div>
+                    <div class="collection-content">
+                        <h3>Azulejos</h3>
+                        <p>Azulejos decorativos personalizados para transformar qualquer ambiente em algo especial</p>
+                        <a href="../paginas/produtos.html?categoria=azulejos" class="collection-link">
+                            Explorar Coleção →
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Intermediário -->
+    <section class="banner-section banner-middle">
+        <div class="banner-placeholder">
+            <div class="banner-content">
+                <p>Espaço para Banner Intermediário</p>
+                <span>1200x300px recomendado</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Inferior -->
+    <section class="banner-section banner-bottom">
+        <div class="banner-placeholder">
+            <div class="banner-content">
+                <p>Espaço para Banner Inferior</p>
+                <span>1200x200px recomendado</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>QUEISE</h3>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua história.</p>
+                <div class="tagline">Use Queise, Use Exclusividade!</div>
+            </div>
+            <div class="footer-section">
+                <h4>Coleções</h4>
+                <a href="../paginas/produtos.html?categoria=garrafas">Garrafas</a>
+                <a href="../paginas/produtos.html?categoria=copos">Copos</a>
+                <a href="../paginas/produtos.html?categoria=canecas">Canecas</a>
+                <a href="../paginas/produtos.html?categoria=camisetas">Camisetas</a>
+                <a href="../paginas/produtos.html?categoria=bolsas-malas">Bolsas e Malas</a>
+                <a href="../paginas/produtos.html?categoria=azulejos">Azulejos</a>
+            </div>
+            <div class="footer-section">
+                <h4>Suporte</h4>
+                <a href="#">Central de Ajuda</a>
+                <a href="#">Como Personalizar</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Prazo de Entrega</a>
+                <a href="#contato">Contato</a>
+            </div>
+            <div class="footer-section">
+                <h4>Conecte-se</h4>
+                <a href="#">Instagram @usequeise</a>
+                <a href="#">Facebook</a>
+                <a href="#">WhatsApp</a>
+                <a href="#">E-mail</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
+            <div class="social-links">
+                <a href="#" class="social-link">IG</a>
+                <a href="#" class="social-link">FB</a>
+                <a href="#" class="social-link">WA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="../js/colecoes.js"></script>
+</body>
+
+</html>

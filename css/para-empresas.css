@@ -1,0 +1,999 @@
+/* PÁGINA PARA EMPRESAS - QUEISE */
+
+/* Breadcrumb */
+.breadcrumb {
+    background: var(--bg);
+    padding: 8rem 5% 2rem;
+    border-bottom: 1px solid rgba(70, 130, 180, 0.08);
+}
+
+.breadcrumb-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.breadcrumb-content a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-content a:hover {
+    color: var(--secondary);
+}
+
+.breadcrumb-separator {
+    color: var(--text-light);
+    font-weight: 300;
+}
+
+.breadcrumb-current {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Hero Section B2B */
+.hero-empresas {
+    padding: 4rem 5% 8rem;
+    background: 
+        radial-gradient(ellipse at top left, rgba(176, 196, 222, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom right, rgba(95, 158, 160, 0.05) 0%, transparent 50%),
+        var(--bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-empresas::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 120px,
+        rgba(70, 130, 180, 0.02) 120px,
+        rgba(70, 130, 180, 0.02) 122px);
+    pointer-events: none;
+}
+
+.hero-empresas .hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-empresas .hero-text {
+    animation: slideInLeft 1s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hero-empresas .tagline {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.hero-empresas .tagline::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.hero-empresas h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.1;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-empresas p {
+    font-size: 1.3rem;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+}
+
+/* Hero Stats */
+.hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+    border-top: 1px solid rgba(70, 130, 180, 0.1);
+    border-bottom: 1px solid rgba(70, 130, 180, 0.1);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.5rem;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Hero Buttons */
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+/* Hero Visual - Empresas Showcase */
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slideInRight 1s 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
+}
+
+.empresas-showcase {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 400px;
+}
+
+.showcase-card {
+    background: white;
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.showcase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.showcase-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+
+.showcase-card:hover::before {
+    transform: scaleX(1);
+}
+
+.card-icon {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    transition: all 0.4s ease;
+}
+
+.showcase-card:hover .card-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.showcase-card h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+}
+
+.showcase-card p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    line-height: 1.5;
+}
+
+/* Benefícios B2B Section */
+.beneficios-b2b {
+    padding: 8rem 5%;
+    background: linear-gradient(135deg, rgba(176, 196, 222, 0.03) 0%, rgba(95, 158, 160, 0.02) 100%);
+    position: relative;
+}
+
+.beneficios-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 5rem;
+}
+
+.section-header .tagline {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.section-header .tagline::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.section-header p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+.beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.beneficio-item {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.beneficio-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.beneficio-item:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+
+.beneficio-item:hover::before {
+    transform: scaleX(1);
+}
+
+.beneficio-icon {
+    width: 80px;
+    height: 80px;
+    background: var(--gradient-primary);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 2rem;
+    font-weight: 700;
+    color: white;
+    font-family: 'Playfair Display', serif;
+    transition: all 0.4s ease;
+}
+
+.beneficio-item:hover .beneficio-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.beneficio-item h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+}
+
+.beneficio-item p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Linha B2B Section */
+.linha-b2b {
+    padding: 8rem 5%;
+    background: var(--bg);
+}
+
+.linha-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.produtos-b2b-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+}
+
+.produto-b2b {
+    background: white;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.produto-b2b:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-medium);
+}
+
+.produto-image {
+    height: 200px;
+    background: var(--gradient-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: background 0.4s ease;
+}
+
+.produto-b2b:hover .produto-image {
+    background: var(--gradient-sophisticated);
+}
+
+.produto-icon {
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--primary);
+    font-family: 'Playfair Display', serif;
+    transition: all 0.4s ease;
+}
+
+.produto-b2b:hover .produto-icon {
+    color: white;
+    transform: scale(1.1);
+}
+
+.produto-content {
+    padding: 2.5rem;
+}
+
+.produto-content h4 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.produto-content p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.produto-features {
+    list-style: none;
+    margin-bottom: 1.5rem;
+}
+
+.produto-features li {
+    color: var(--text-light);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.produto-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+    font-weight: 600;
+}
+
+.produto-price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    text-align: center;
+    padding: 1rem;
+    background: rgba(70, 130, 180, 0.05);
+    border-radius: 12px;
+}
+
+/* Processo B2B Section */
+.processo-b2b {
+    padding: 8rem 5%;
+    background: var(--gradient-sophisticated);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.processo-b2b::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 100px,
+        rgba(255, 255, 255, 0.03) 100px,
+        rgba(255, 255, 255, 0.03) 102px);
+    pointer-events: none;
+}
+
+.processo-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.processo-b2b .section-header {
+    margin-bottom: 4rem;
+}
+
+.processo-b2b .section-header .tagline {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.processo-b2b .section-header .tagline::after {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.processo-b2b .section-header h2 {
+    color: white;
+}
+
+.processo-b2b .section-header p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.processo-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3rem;
+}
+
+.step-item {
+    text-align: center;
+    position: relative;
+}
+
+.step-item::after {
+    content: '';
+    position: absolute;
+    top: 35px;
+    right: -1.5rem;
+    width: 3rem;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.step-item:last-child::after {
+    display: none;
+}
+
+.step-number {
+    width: 70px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    backdrop-filter: blur(10px);
+    transition: all 0.4s ease;
+}
+
+.step-item:hover .step-number {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.6);
+    transform: scale(1.1);
+}
+
+.step-content h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+}
+
+.step-content p {
+    font-size: 0.9rem;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+/* Orçamento Section */
+.orcamento-section {
+    padding: 8rem 5%;
+    background: linear-gradient(135deg, rgba(176, 196, 222, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
+}
+
+.orcamento-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.orcamento-content {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 6rem;
+    align-items: start;
+}
+
+/* Orçamento Text */
+.orcamento-text .tagline {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.orcamento-text .tagline::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.orcamento-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.orcamento-text p {
+    font-size: 1.1rem;
+    color: var(--text-light);
+    margin-bottom: 3rem;
+    line-height: 1.7;
+}
+
+.contato-direto {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 20px;
+    box-shadow: var(--shadow-soft);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+}
+
+.contato-direto h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+}
+
+.contato-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contato-btn {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem;
+    background: rgba(70, 130, 180, 0.05);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-dark);
+    transition: all 0.3s ease;
+    border: 1px solid rgba(70, 130, 180, 0.1);
+}
+
+.contato-btn:hover {
+    background: var(--gradient-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.contato-icon {
+    width: 40px;
+    height: 40px;
+    background: var(--primary);
+    color: white;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.contato-btn:hover .contato-icon {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.contato-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.contato-subtitle {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Formulário */
+.orcamento-form {
+    background: white;
+    border-radius: 24px;
+    padding: 3rem;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+}
+
+.form-header {
+    margin-bottom: 2.5rem;
+    text-align: center;
+}
+
+.form-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text-dark);
+    margin-bottom: 0.8rem;
+    font-weight: 600;
+}
+
+.form-header p {
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group-full {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 500;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(70, 130, 180, 0.2);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: white;
+    color: var(--text-dark);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.1);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.form-actions {
+    text-align: center;
+}
+
+.btn-submit {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 1.2rem 3rem;
+    border: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.btn-submit::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-submit:hover::before {
+    left: 100%;
+}
+
+.btn-loading {
+    display: none;
+}
+
+.btn-submit.loading .btn-text {
+    display: none;
+}
+
+.btn-submit.loading .btn-loading {
+    display: inline;
+}
+
+.form-disclaimer {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    line-height: 1.4;
+}
+
+/* Active state for navigation */
+.nav-links a.active {
+    color: var(--primary);
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* Animations */
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-empresas .hero-content {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        text-align: center;
+    }
+
+    .orcamento-content {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+    }
+
+    .beneficios-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .produtos-b2b-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .processo-steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .step-item::after {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 6rem 4% 1.5rem;
+    }
+
+    .hero-empresas {
+        padding: 3rem 4% 6rem;
+    }
+
+    .hero-empresas h1 {
+        font-size: 3rem;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .empresas-showcase {
+        grid-template-columns: 1fr;
+        max-width: 280px;
+    }
+
+    .beneficios-b2b {
+        padding: 6rem 4%;
+    }
+
+    .beneficios-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .section-header h2 {
+        font-size: 2.2rem;
+    }
+
+    .orcamento-section {
+        padding: 6rem 4%;
+    }
+
+    .orcamento-form {
+        padding: 2rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .processo-steps {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .contato-options {
+        gap: 0.8rem;
+    }
+
+    .contato-btn {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-empresas h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        width: 100%;
+        max-width: 300px;
+        justify-content: center;
+    }
+
+    .orcamento-text h2 {
+        font-size: 2rem;
+    }
+
+    .form-header h3 {
+        font-size: 1.5rem;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+}

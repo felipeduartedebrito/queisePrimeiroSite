@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personalize seu Produto - QUEISE | Use Exclusividade</title>
+    <meta name="description" content="Crie seu produto único com o sistema de personalização QUEISE. Escolha produtos, adicione textos e veja o resultado em tempo real.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/personalizar.css">
+</head>
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="../imagens/logoQbonito2.png" alt="QUEISE Logo">
+                </div>
+                <div class="logo-write">
+                    <img src="../imagens/logoescrita2.png" alt="QUEISE Logo Escrito">
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../paginas/produtos.html">Produtos</a></li>
+                <li><a href="../paginas/colecoes.html">Coleções</a></li>
+                <li><a href="../paginas/para-empresas.html">Para Empresas</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="../paginas/carrinho.html" class="cta-button">Ver Carrinho</a>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="../index.html">Home</a>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-current">Personalizar Produto</span>
+        </div>
+    </section>
+
+    <!-- Wizard Container -->
+    <section class="personalizar-container">
+        
+        <!-- Progress Bar -->
+        <div class="wizard-progress">
+            <div class="progress-steps">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Escolha o Produto</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Variações</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Personalização</div>
+                </div>
+                <div class="progress-step" data-step="4">
+                    <div class="step-number">4</div>
+                    <div class="step-label">Finalizar</div>
+                </div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 25%"></div>
+            </div>
+        </div>
+
+        <!-- Wizard Content -->
+        <div class="wizard-content">
+            
+            <!-- Step 1: Escolha do Produto -->
+            <div class="wizard-step active" data-step="1">
+                <div class="step-header">
+                    <h2>Escolha seu produto para personalizar</h2>
+                    <p>Selecione um dos nossos produtos personalizáveis e comece a criar algo único</p>
+                </div>
+                
+                <div class="produtos-grid">
+                    <div class="produto-card" data-product="garrafa-stanley-1l">
+                        <div class="produto-badge">Mais Popular</div>
+                        <div class="produto-image">
+                            <div class="produto-placeholder">G</div>
+                        </div>
+                        <div class="produto-info">
+                            <h4>Garrafa Stanley 1L</h4>
+                            <p>Garrafa térmica premium com isolamento superior</p>
+                            <div class="produto-price">R$ 165,00</div>
+                            <div class="personalizacao-info">+ R$ 20,00 personalização</div>
+                        </div>
+                    </div>
+                    
+                    <div class="produto-card" data-product="copo-termico-500ml">
+                        <div class="produto-image">
+                            <div class="produto-placeholder">C</div>
+                        </div>
+                        <div class="produto-info">
+                            <h4>Copo Térmico 500ml</h4>
+                            <p>Perfeito para seu café ou chá favorito</p>
+                            <div class="produto-price">R$ 80,00</div>
+                            <div class="personalizacao-info">+ R$ 20,00 personalização</div>
+                        </div>
+                    </div>
+                    
+                    <div class="produto-card" data-product="caneca-ceramica">
+                        <div class="produto-image">
+                            <div class="produto-placeholder">M</div>
+                        </div>
+                        <div class="produto-info">
+                            <h4>Caneca de Cerâmica</h4>
+                            <p>Caneca clássica para momentos especiais</p>
+                            <div class="produto-price">R$ 45,00</div>
+                            <div class="personalizacao-info">+ R$ 15,00 personalização</div>
+                        </div>
+                    </div>
+                    
+                    <div class="produto-card" data-product="azulejo-decorativo">
+                        <div class="produto-image">
+                            <div class="produto-placeholder">A</div>
+                        </div>
+                        <div class="produto-info">
+                            <h4>Azulejo Decorativo</h4>
+                            <p>Transforme qualquer ambiente</p>
+                            <div class="produto-price">R$ 35,00</div>
+                            <div class="personalizacao-info">+ R$ 10,00 personalização</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-next" disabled>Continuar</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Variações do Produto -->
+            <div class="wizard-step" data-step="2">
+                <div class="step-header">
+                    <h2>Selecione as variações</h2>
+                    <p>Escolha o tamanho, cor e outras opções do seu produto</p>
+                </div>
+                
+                <div class="variacoes-container">
+                    <div class="variacao-group">
+                        <label class="variacao-label">Tamanho/Capacidade</label>
+                        <div class="variacao-options">
+                            <div class="variacao-option" data-variant="tamanho" data-value="500ml">
+                                <span>500ml</span>
+                            </div>
+                            <div class="variacao-option active" data-variant="tamanho" data-value="1L">
+                                <span>1L</span>
+                            </div>
+                            <div class="variacao-option" data-variant="tamanho" data-value="1.2L">
+                                <span>1.2L</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="variacao-group">
+                        <label class="variacao-label">Cor do Produto</label>
+                        <div class="variacao-options">
+                            <div class="variacao-color active" data-variant="cor" data-value="azul" style="background: #4682B4;">
+                                <span>Azul</span>
+                            </div>
+                            <div class="variacao-color" data-variant="cor" data-value="preto" style="background: #2C3E50;">
+                                <span>Preto</span>
+                            </div>
+                            <div class="variacao-color" data-variant="cor" data-value="branco" style="background: #FFFFFF; border: 1px solid #ddd;">
+                                <span>Branco</span>
+                            </div>
+                            <div class="variacao-color" data-variant="cor" data-value="verde" style="background: #27AE60;">
+                                <span>Verde</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-back">Voltar</button>
+                    <button class="btn-next">Continuar</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Personalização -->
+            <div class="wizard-step" data-step="3">
+                <div class="step-header">
+                    <h2>Personalize seu produto</h2>
+                    <p>Adicione textos, escolha fontes e veja o resultado em tempo real</p>
+                </div>
+                
+                <div class="personalizacao-layout">
+                    <!-- Preview em Destaque -->
+                    <div class="preview-section">
+                        <div class="preview-container">
+                            <div class="preview-product" id="productPreview">
+                                <div class="product-base">
+                                    <div class="product-shape"></div>
+                                    <div class="personalization-text" id="previewText">SEU TEXTO</div>
+                                </div>
+                            </div>
+                            <div class="preview-controls">
+                                <button class="preview-btn" data-view="front">Frente</button>
+                                <button class="preview-btn active" data-view="side">Lateral</button>
+                                <button class="preview-btn" data-view="back">Verso</button>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-info">
+                            <h4>Preview em Tempo Real</h4>
+                            <p>Veja como ficará seu produto personalizado. As mudanças aparecem instantaneamente conforme você configura.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Controles de Personalização -->
+                    <div class="personalizacao-controls">
+                        
+                        <div class="control-group">
+                            <label>Tipo de Personalização</label>
+                            <div class="control-tabs">
+                                <button class="control-tab active" data-type="texto">Texto Livre</button>
+                                <button class="control-tab" data-type="nome">Nome/Inicial</button>
+                                <button class="control-tab" data-type="frase">Frase Motivacional</button>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="customText">Seu Texto</label>
+                            <input type="text" id="customText" placeholder="Digite seu texto..." maxlength="20" value="SEU TEXTO">
+                            <div class="char-counter">
+                                <span id="charCount">8</span>/20 caracteres
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Fonte</label>
+                            <div class="font-options">
+                                <div class="font-option active" data-font="Arial" style="font-family: Arial;">
+                                    <span>Arial</span>
+                                </div>
+                                <div class="font-option" data-font="Times" style="font-family: 'Times New Roman';">
+                                    <span>Times</span>
+                                </div>
+                                <div class="font-option" data-font="Script" style="font-family: 'Brush Script MT';">
+                                    <span>Script</span>
+                                </div>
+                                <div class="font-option" data-font="Bold" style="font-family: Arial; font-weight: bold;">
+                                    <span>Bold</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Cor do Texto</label>
+                            <div class="color-options">
+                                <div class="color-option active" data-color="#FFFFFF" style="background: #FFFFFF;">
+                                    <span>Branco</span>
+                                </div>
+                                <div class="color-option" data-color="#000000" style="background: #000000;">
+                                    <span>Preto</span>
+                                </div>
+                                <div class="color-option" data-color="#FFD700" style="background: #FFD700;">
+                                    <span>Dourado</span>
+                                </div>
+                                <div class="color-option" data-color="#C0C0C0" style="background: #C0C0C0;">
+                                    <span>Prata</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Posição</label>
+                            <div class="position-options">
+                                <div class="position-option active" data-position="center">
+                                    <div class="position-preview">
+                                        <div class="pos-text center">T</div>
+                                    </div>
+                                    <span>Centro</span>
+                                </div>
+                                <div class="position-option" data-position="bottom">
+                                    <div class="position-preview">
+                                        <div class="pos-text bottom">T</div>
+                                    </div>
+                                    <span>Inferior</span>
+                                </div>
+                                <div class="position-option" data-position="side">
+                                    <div class="position-preview">
+                                        <div class="pos-text side">T</div>
+                                    </div>
+                                    <span>Lateral</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="personalizacao-summary">
+                            <div class="summary-item">
+                                <span>Produto:</span>
+                                <span id="summaryProduct">Garrafa Stanley 1L</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Personalização:</span>
+                                <span id="summaryPersonalization">+ R$ 20,00</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total:</span>
+                                <span id="summaryTotal">R$ 185,00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-back">Voltar</button>
+                    <button class="btn-next">Finalizar</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Finalização -->
+            <div class="wizard-step" data-step="4">
+                <div class="step-header">
+                    <h2>Seu produto está pronto!</h2>
+                    <p>Revise sua personalização e escolha como deseja prosseguir</p>
+                </div>
+                
+                <div class="finalizacao-layout">
+                    <!-- Preview Final -->
+                    <div class="preview-final">
+                        <div class="preview-final-product">
+                            <div class="product-final-base">
+                                <div class="product-final-shape"></div>
+                                <div class="personalization-final-text" id="finalPreviewText">SEU TEXTO</div>
+                            </div>
+                        </div>
+                        <div class="preview-final-info">
+                            <h4>Seu Produto Personalizado</h4>
+                            <div class="final-specs">
+                                <div class="spec-item">
+                                    <span>Produto:</span>
+                                    <span id="finalProduct">Garrafa Stanley 1L</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Cor:</span>
+                                    <span id="finalColor">Azul</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Texto:</span>
+                                    <span id="finalText">"SEU TEXTO"</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Fonte:</span>
+                                    <span id="finalFont">Arial</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span>Posição:</span>
+                                    <span id="finalPosition">Centro</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Opções de Finalização -->
+                    <div class="finalizacao-options">
+                        <div class="resumo-preco">
+                            <div class="preco-item">
+                                <span>Produto base:</span>
+                                <span id="basePrice">R$ 165,00</span>
+                            </div>
+                            <div class="preco-item">
+                                <span>Personalização:</span>
+                                <span id="personalizationPrice">R$ 20,00</span>
+                            </div>
+                            <div class="preco-total">
+                                <span>Total:</span>
+                                <span id="totalPrice">R$ 185,00</span>
+                            </div>
+                        </div>
+                        
+                        <div class="action-options">
+                            <button class="btn-action btn-carrinho">
+                                <span class="action-icon">🛒</span>
+                                <div class="action-content">
+                                    <div class="action-title">Adicionar ao Carrinho</div>
+                                    <div class="action-subtitle">Continue comprando outros produtos</div>
+                                </div>
+                            </button>
+                            
+                            <button class="btn-action btn-comprar">
+                                <span class="action-icon">⚡</span>
+                                <div class="action-content">
+                                    <div class="action-title">Comprar Agora</div>
+                                    <div class="action-subtitle">Ir direto para o checkout</div>
+                                </div>
+                            </button>
+                            
+                            <button class="btn-action btn-salvar">
+                                <span class="action-icon">💾</span>
+                                <div class="action-content">
+                                    <div class="action-title">Salvar Design</div>
+                                    <div class="action-subtitle">Finalizar depois</div>
+                                </div>
+                            </button>
+                        </div>
+                        
+                        <div class="share-options">
+                            <h4>Compartilhar seu design</h4>
+                            <div class="share-buttons">
+                                <button class="share-btn" data-platform="whatsapp">
+                                    <span>W</span> WhatsApp
+                                </button>
+                                <button class="share-btn" data-platform="facebook">
+                                    <span>F</span> Facebook
+                                </button>
+                                <button class="share-btn" data-platform="copy">
+                                    <span>📋</span> Copiar Link
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-actions">
+                    <button class="btn-back">Voltar</button>
+                    <button class="btn-novo-produto">Personalizar Outro Produto</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>QUEISE</h3>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua história.</p>
+                <div class="tagline">Use Queise, Use Exclusividade!</div>
+            </div>
+            <div class="footer-section">
+                <h4>Personalização</h4>
+                <a href="../paginas/personalizar.html">Sistema de Personalização</a>
+                <a href="../paginas/produtos.html">Produtos Personalizáveis</a>
+                <a href="#">Guia de Personalização</a>
+                <a href="#">Templates Prontos</a>
+            </div>
+            <div class="footer-section">
+                <h4>Suporte</h4>
+                <a href="#">Central de Ajuda</a>
+                <a href="#">Como Personalizar</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Prazo de Entrega</a>
+                <a href="#contato">Contato</a>
+            </div>
+            <div class="footer-section">
+                <h4>Conecte-se</h4>
+                <a href="#">Instagram @usequeise</a>
+                <a href="#">Facebook</a>
+                <a href="#">WhatsApp</a>
+                <a href="#">E-mail</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
+            <div class="social-links">
+                <a href="#" class="social-link">IG</a>
+                <a href="#" class="social-link">FB</a>
+                <a href="#" class="social-link">WA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="../js/personalizar.js"></script>
+</body>
+
+</html>

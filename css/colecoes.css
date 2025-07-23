@@ -1,0 +1,715 @@
+/* PÁGINA DE COLEÇÕES - QUEISE */
+
+/* Breadcrumb */
+.breadcrumb {
+    background: var(--bg);
+    padding: 8rem 5% 2rem;
+    border-bottom: 1px solid rgba(70, 130, 180, 0.08);
+}
+
+.breadcrumb-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+
+.breadcrumb-content a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.breadcrumb-content a:hover {
+    color: var(--secondary);
+}
+
+.breadcrumb-separator {
+    color: var(--text-light);
+    font-weight: 300;
+}
+
+.breadcrumb-current {
+    color: var(--text-dark);
+    font-weight: 500;
+}
+
+/* Hero Section específica para Coleções */
+.hero-colecoes {
+    padding: 4rem 5% 6rem;
+    background: 
+        radial-gradient(ellipse at top right, rgba(176, 196, 222, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at bottom left, rgba(95, 158, 160, 0.05) 0%, transparent 50%),
+        var(--bg);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-colecoes::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 100%;
+    background: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 80px,
+        rgba(70, 130, 180, 0.02) 80px,
+        rgba(70, 130, 180, 0.02) 82px);
+    pointer-events: none;
+}
+
+.hero-colecoes .hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-colecoes .hero-text {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-colecoes .tagline {
+    font-size: 0.9rem;
+    color: var(--secondary);
+    font-weight: 500;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.hero-colecoes .tagline::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.hero-colecoes h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-colecoes p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+/* Banner Sections */
+.banner-section {
+    padding: 2rem 5%;
+    background: var(--bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-placeholder {
+    width: 100%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, rgba(70, 130, 180, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
+    border: 2px dashed rgba(70, 130, 180, 0.2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.banner-placeholder::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(70, 130, 180, 0.05), 
+        transparent);
+    transition: left 2s ease;
+}
+
+.banner-placeholder:hover::before {
+    left: 100%;
+}
+
+.banner-placeholder:hover {
+    border-color: rgba(70, 130, 180, 0.4);
+    background: linear-gradient(135deg, rgba(70, 130, 180, 0.08) 0%, rgba(95, 158, 160, 0.05) 100%);
+}
+
+.banner-content {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-light);
+}
+
+.banner-content p {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.banner-content span {
+    font-size: 0.9rem;
+    color: var(--text-light);
+    font-style: italic;
+}
+
+/* Banner específicos por posição */
+.banner-top .banner-placeholder {
+    height: 200px;
+}
+
+.banner-middle .banner-placeholder {
+    height: 300px;
+}
+
+.banner-bottom .banner-placeholder {
+    height: 200px;
+}
+
+/* Quando banners reais forem adicionados */
+.banner-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.3s ease;
+}
+
+.banner-section img:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Collections Section */
+.collections-section {
+    padding: 4rem 5% 8rem;
+    background: var(--bg);
+    position: relative;
+}
+
+.collections-container {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Collections Grid */
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+/* Collection Card */
+.collection-card {
+    background: white;
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: var(--shadow-soft);
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    border: 1px solid rgba(70, 130, 180, 0.08);
+    cursor: pointer;
+}
+
+.collection-card:hover {
+    transform: translateY(-12px);
+    box-shadow: var(--shadow-strong);
+}
+
+.collection-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transition: transform 0.5s ease;
+}
+
+.collection-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Collection Image */
+.collection-image {
+    height: 240px;
+    background: var(--gradient-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.5s ease;
+}
+
+.collection-card:hover .collection-image {
+    background: var(--gradient-sophisticated);
+}
+
+.collection-image::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 120px;
+    height: 120px;
+    background: rgba(70, 130, 180, 0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 0.5s ease;
+}
+
+.collection-card:hover .collection-image::before {
+    width: 140px;
+    height: 140px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.collection-icon {
+    font-size: 3rem;
+    font-weight: 700;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary);
+    position: relative;
+    z-index: 2;
+    transition: all 0.5s ease;
+    text-shadow: 0 2px 8px rgba(70, 130, 180, 0.2);
+}
+
+.collection-card:hover .collection-icon {
+    transform: scale(1.1);
+    color: white;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Collection Content */
+.collection-content {
+    padding: 2.5rem;
+}
+
+.collection-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--text-dark);
+    margin-bottom: 1rem;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.collection-card:hover .collection-content h3 {
+    color: var(--primary);
+}
+
+.collection-content p {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.collection-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.collection-link:hover {
+    color: var(--secondary);
+    transform: translateX(4px);
+}
+
+/* Subcollections - Dropdown especial para Garrafas */
+.has-subcollections {
+    position: relative;
+}
+
+.subcollections-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0 0 24px 24px;
+    box-shadow: var(--shadow-strong);
+    border: 1px solid rgba(70, 130, 180, 0.08);
+    border-top: none;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    z-index: 10;
+    overflow: hidden;
+}
+
+.has-subcollections:hover .subcollections-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.subcollections-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+}
+
+.subcollections-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    padding: 1.5rem;
+}
+
+.subcollection-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: var(--text-dark);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.subcollection-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-soft);
+    transition: left 0.3s ease;
+    z-index: -1;
+}
+
+.subcollection-item:hover {
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.subcollection-item:hover::before {
+    left: 0;
+}
+
+.subcollection-icon {
+    font-size: 1.2rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    width: 40px;
+    height: 40px;
+    background: rgba(70, 130, 180, 0.08);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: var(--primary);
+}
+
+.subcollection-item:hover .subcollection-icon {
+    background: var(--gradient-primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+.subcollection-item span {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+/* Active state for navigation */
+.nav-links a.active {
+    color: var(--primary);
+}
+
+.nav-links a.active::after {
+    width: 100%;
+}
+
+/* Scroll Animations */
+.collections-grid .collection-card {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+.collections-grid .collection-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.collections-grid .collection-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.collections-grid .collection-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.collections-grid .collection-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.collections-grid .collection-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.collections-grid .collection-card:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Special hover effect for subcollections indicator */
+.has-subcollections::after {
+    content: '';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 12px;
+    height: 12px;
+    background: var(--gradient-primary);
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.2);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 0 8px rgba(70, 130, 180, 0.1);
+    }
+    100% {
+        box-shadow: 0 0 0 3px rgba(70, 130, 180, 0.2);
+    }
+}
+
+/* Loading states */
+.collection-card.loading {
+    pointer-events: none;
+}
+
+.collection-card.loading .collection-image {
+    background: linear-gradient(90deg, 
+        rgba(70, 130, 180, 0.1) 25%, 
+        rgba(70, 130, 180, 0.2) 50%, 
+        rgba(70, 130, 180, 0.1) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .collections-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2.5rem;
+    }
+
+    .hero-colecoes h1 {
+        font-size: 3rem;
+    }
+
+    .subcollections-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .banner-section {
+        padding: 1.5rem 4%;
+    }
+
+    .banner-top .banner-placeholder,
+    .banner-bottom .banner-placeholder {
+        height: 150px;
+    }
+
+    .banner-middle .banner-placeholder {
+        height: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .breadcrumb {
+        padding: 6rem 4% 1.5rem;
+    }
+
+    .hero-colecoes {
+        padding: 3rem 4% 4rem;
+    }
+
+    .hero-colecoes h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-colecoes p {
+        font-size: 1.1rem;
+    }
+
+    .collections-section {
+        padding: 3rem 4% 6rem;
+    }
+
+    .collections-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .collection-image {
+        height: 200px;
+    }
+
+    .collection-icon {
+        font-size: 2.5rem;
+    }
+
+    .subcollections-dropdown {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        border-radius: 0;
+        margin-top: 1rem;
+        box-shadow: none;
+        border: 1px solid rgba(70, 130, 180, 0.08);
+        border-radius: 16px;
+    }
+
+    .has-subcollections:hover .subcollections-dropdown {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+
+    .banner-section {
+        padding: 1rem 4%;
+    }
+
+    .banner-top .banner-placeholder,
+    .banner-bottom .banner-placeholder {
+        height: 120px;
+    }
+
+    .banner-middle .banner-placeholder {
+        height: 180px;
+    }
+
+    .banner-content {
+        padding: 1rem;
+    }
+
+    .banner-content p {
+        font-size: 0.9rem;
+    }
+
+    .banner-content span {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-colecoes h1 {
+        font-size: 2rem;
+    }
+
+    .collection-content {
+        padding: 2rem;
+    }
+
+    .subcollection-item {
+        padding: 0.8rem;
+    }
+
+    .subcollection-icon {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .subcollection-item span {
+        font-size: 0.85rem;
+    }
+
+    .banner-top .banner-placeholder,
+    .banner-bottom .banner-placeholder {
+        height: 100px;
+    }
+
+    .banner-middle .banner-placeholder {
+        height: 150px;
+    }
+
+    .banner-content {
+        padding: 0.8rem;
+    }
+
+    .banner-content p {
+        font-size: 0.85rem;
+    }
+
+    .banner-content span {
+        font-size: 0.7rem;
+    }
+}
