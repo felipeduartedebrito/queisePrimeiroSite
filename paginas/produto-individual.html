@@ -4,16 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Garrafa Stanley 1L Personalizada - QUEISE | Use Exclusividade</title>
-    <meta name="description" content="Personalize sua Garrafa Stanley 1L com texto exclusivo. Qualidade premium, isolamento térmico superior e design único.">
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- CSS Global -->
+    <title>Produto - QUEISE</title>
+    <meta name="description" content="Produto personalizado QUEISE com qualidade premium. Personalize com seu nome, frase ou design exclusivo.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
-    
-    <!-- CSS Específico da Página -->
     <link rel="stylesheet" href="../css/produto-individual.css">
 </head>
 
@@ -35,359 +31,339 @@
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
-                <li><a href="para-empresas.html">Para Empresas</a></li>
-                <li><a href="sobre.html">Sobre</a></li>
-                <li><a href="contato.html">Contato</a></li>
+                <li><a href="../paginas/produtos.html">Produtos</a></li>
+                <li><a href="#colecoes">Coleções</a></li>
+                <li><a href="#para-empresas">Para Empresas</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
             </ul>
-            <a href="personalizar.html" class="cta-button">Personalize Já</a>
+            <a href="../paginas/carrinho.html" class="cta-button">
+                <span>Carrinho</span>
+                <span class="cart-badge" id="headerCartBadge" style="display: none;">0</span>
+            </a>
         </nav>
     </header>
 
-    <!-- Product Hero -->
-    <section class="product-hero">
-        <div class="product-hero-content">
-            <div class="breadcrumb">
-                <a href="../index.html">Home</a>
-                <span>/</span>
-                <a href="produtos.html">Produtos</a>
-                <span>/</span>
-                <strong>Garrafa Stanley 1L</strong>
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-content">
+            <div class="breadcrumb-path">
+                <a href="../index.html">Início</a>
+                <span class="breadcrumb-separator">→</span>
+                <a href="../paginas/produtos.html">Produtos</a>
+                <span class="breadcrumb-separator">→</span>
+                <span class="breadcrumb-current" id="breadcrumbProduct">Carregando...</span>
             </div>
         </div>
     </section>
 
-    <!-- Product Main -->
-    <main class="product-main">
+    <!-- Product Detail Section -->
+    <section class="product-detail" id="productDetail">
         <div class="product-container">
             
             <!-- Product Gallery -->
-            <section class="product-gallery">
-                <div class="main-image">
-                    <div class="product-badge">Premium</div>
-                    <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" 
-                         alt="Garrafa Stanley 1L" 
-                         id="mainProductImage">
-                    <div class="zoom-hint">🔍 Clique para ampliar</div>
-                </div>
-                
-                <div class="thumbnail-gallery">
-                    <div class="thumbnail active" data-image="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Vista frontal">
+            <div class="product-gallery">
+                <div class="main-image-container">
+                    <img id="mainProductImage" src="" alt="Produto Principal" class="main-product-image">
+                    <div class="image-zoom-overlay" id="imageZoomOverlay">
+                        <span>🔍 Clique para ampliar</span>
                     </div>
-                    <div class="thumbnail" data-image="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Vista lateral">
-                    </div>
-                    <div class="thumbnail" data-image="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Vista traseira">
-                    </div>
-                    <div class="thumbnail" data-image="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Detalhes">
+                    <div class="gallery-navigation">
+                        <button class="gallery-nav-btn prev" id="prevImageBtn" aria-label="Imagem anterior">‹</button>
+                        <button class="gallery-nav-btn next" id="nextImageBtn" aria-label="Próxima imagem">›</button>
                     </div>
                 </div>
-            </section>
+                <div class="thumbnail-gallery" id="thumbnailGallery">
+                    <!-- Thumbnails serão inseridas dinamicamente -->
+                </div>
+            </div>
 
-            <!-- Product Info -->
-            <section class="product-info">
+            <!-- Product Information -->
+            <div class="product-info">
                 <div class="product-header">
-                    <div class="product-category">Garrafas Térmicas</div>
-                    <h1 class="product-title">Garrafa Stanley 1L Personalizada</h1>
-                    <div class="product-rating">
-                        <div class="stars">★★★★★</div>
-                        <span class="rating-text">(47 avaliações)</span>
+                    <div class="product-badges">
+                        <span class="badge premium-badge">Premium</span>
+                        <span class="badge personalizavel-badge" id="personalizableBadge" style="display: none;">Personalizável</span>
+                    </div>
+                    <h1 id="productTitle" class="product-title">Carregando produto...</h1>
+                    <div class="product-vendor">
+                        <span>Por</span>
+                        <strong id="productVendor">QUEISE</strong>
                     </div>
                 </div>
 
-                <div class="product-price">
-                    <div class="price-display">
-                        <span class="price-base">R$ 165,00</span>
-                        <span class="price-personalization">+ R$ <span id="personalizationPrice">20,00</span></span>
+                <!-- Pricing Section -->
+                <div class="pricing-section">
+                    <div class="price-container">
+                        <span class="current-price" id="currentPrice">R$ 0,00</span>
+                        <span class="compare-price" id="comparePrice" style="display: none;">R$ 0,00</span>
+                        <span class="discount-badge" id="discountBadge" style="display: none;">-0%</span>
                     </div>
-                    <div class="price-total">
-                        Total: <strong>R$ <span id="totalPrice">185,00</span></strong>
+                    <div class="personalization-price" id="personalizationPrice" style="display: none;">
+                        + Personalização: R$ 20,00
+                    </div>
+                    <div class="total-price-container">
+                        <span class="total-label">Total:</span>
+                        <span class="total-price" id="totalPrice">R$ 0,00</span>
                     </div>
                 </div>
 
-                <div class="product-description">
-                    <p>Garrafa térmica premium Stanley com isolamento duplo de aço inoxidável. Mantém bebidas quentes por até 12 horas e frias por até 24 horas. Design robusto e elegante, perfeita para aventuras e uso diário.</p>
+                <!-- Availability -->
+                <div class="availability-section">
+                    <div class="availability" id="availability">
+                        <span class="availability-icon">⏳</span>
+                        <span class="availability-text">Verificando disponibilidade...</span>
+                    </div>
                 </div>
 
-                <div class="product-features">
-                    <h3>Características:</h3>
-                    <ul>
-                        <li>🌡️ Isolamento térmico duplo</li>
-                        <li>🔒 Tampa com vedação hermética</li>
-                        <li>⚡ Aço inoxidável 18/8</li>
-                        <li>🎨 Personalizável com texto</li>
-                        <li>♻️ Livre de BPA</li>
-                        <li>🏆 Garantia vitalícia Stanley</li>
-                    </ul>
-                </div>
-
-                <!-- Product Variants -->
-                <div class="product-variants">
-                    <div class="variant-group">
+                <!-- Variant Options -->
+                <div class="variant-options">
+                    <div class="variant-group" id="tamanhoGroup" style="display: none;">
                         <label class="variant-label">Tamanho:</label>
-                        <div class="variant-options">
-                            <input type="radio" id="size-600ml" name="size" value="600ml" data-price="125">
-                            <label for="size-600ml" class="variant-option">600ml</label>
-                            
-                            <input type="radio" id="size-1l" name="size" value="1l" data-price="165" checked>
-                            <label for="size-1l" class="variant-option">1L</label>
-                            
-                            <input type="radio" id="size-1-2l" name="size" value="1.2l" data-price="185">
-                            <label for="size-1-2l" class="variant-option">1.2L</label>
+                        <div class="variant-options-grid" id="tamanhoOptions">
+                            <!-- Opções de tamanho serão inseridas dinamicamente -->
                         </div>
                     </div>
 
-                    <div class="variant-group">
+                    <div class="variant-group" id="corGroup" style="display: none;">
                         <label class="variant-label">Cor:</label>
-                        <div class="variant-options color-options">
-                            <input type="radio" id="color-black" name="color" value="black" checked>
-                            <label for="color-black" class="variant-option color-option" data-color="#2C3E50">
-                                <span class="color-swatch" style="background: #2C3E50;"></span>
-                                Preto
-                            </label>
-                            
-                            <input type="radio" id="color-blue" name="color" value="blue">
-                            <label for="color-blue" class="variant-option color-option" data-color="#4682B4">
-                                <span class="color-swatch" style="background: #4682B4;"></span>
-                                Azul
-                            </label>
-                            
-                            <input type="radio" id="color-green" name="color" value="green">
-                            <label for="color-green" class="variant-option color-option" data-color="#27AE60">
-                                <span class="color-swatch" style="background: #27AE60;"></span>
-                                Verde
-                            </label>
-                            
-                            <input type="radio" id="color-red" name="color" value="red">
-                            <label for="color-red" class="variant-option color-option" data-color="#E74C3C">
-                                <span class="color-swatch" style="background: #E74C3C;"></span>
-                                Vermelho
-                            </label>
+                        <div class="variant-options-grid" id="corOptions">
+                            <!-- Opções de cor serão inseridas dinamicamente -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Quantity Selector -->
-                <div class="quantity-selector">
-                    <label class="variant-label">Quantidade:</label>
-                    <div class="quantity-controls">
-                        <button type="button" class="qty-btn" id="decreaseQty">−</button>
-                        <input type="number" id="quantity" value="1" min="1" max="10">
-                        <button type="button" class="qty-btn" id="increaseQty">+</button>
-                    </div>
-                </div>
-
-                <!-- Add to Cart -->
-                <div class="product-actions">
-                    <button class="btn-add-cart" id="addToCart">
-                        <span>Adicionar ao Carrinho</span>
-                        <span class="price">R$ <span id="cartPrice">185,00</span></span>
-                    </button>
-                    <button class="btn-wishlist" id="addToWishlist">
-                        ♡ Favoritar
-                    </button>
-                </div>
-
-                <!-- Additional Info -->
-                <div class="product-info-tabs">
-                    <div class="tab-buttons">
-                        <button class="tab-btn active" data-tab="shipping">Entrega</button>
-                        <button class="tab-btn" data-tab="warranty">Garantia</button>
-                        <button class="tab-btn" data-tab="care">Cuidados</button>
-                    </div>
-                    
-                    <div class="tab-content">
-                        <div class="tab-panel active" id="shipping">
-                            <h4>Informações de Entrega</h4>
-                            <p>📦 Entrega em 5-10 dias úteis</p>
-                            <p>🚚 Frete grátis acima de R$ 200</p>
-                            <p>📍 Entregamos para todo o Brasil</p>
-                        </div>
-                        
-                        <div class="tab-panel" id="warranty">
-                            <h4>Garantia Stanley</h4>
-                            <p>🏆 Garantia vitalícia contra defeitos de fabricação</p>
-                            <p>🔄 30 dias para trocas e devoluções</p>
-                            <p>🛠️ Suporte técnico especializado</p>
-                        </div>
-                        
-                        <div class="tab-panel" id="care">
-                            <h4>Cuidados e Limpeza</h4>
-                            <p>🧽 Lave apenas com água morna e sabão neutro</p>
-                            <p>❌ Não use lava-louças ou microondas</p>
-                            <p>💧 Seque completamente após o uso</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Personalization Panel -->
-            <section class="personalization-panel">
-                <div class="personalization-header">
-                    <h2>🎨 Personalize Seu Produto</h2>
-                    <p>Adicione um toque pessoal com texto personalizado</p>
-                </div>
-
-                <div class="personalization-options">
-                    
-                    <!-- Text Input -->
-                    <div class="personalization-group">
-                        <label class="personalization-label">Texto Personalizado:</label>
-                        <input type="text" 
-                               id="customText" 
-                               class="personalization-input" 
-                               placeholder="Digite seu texto aqui..." 
-                               maxlength="30">
-                        <div class="char-counter">
-                            <span id="charCount">0</span>/30 caracteres
-                        </div>
+                <!-- Personalization Panel -->
+                <div class="personalization-panel" id="personalizationPanel" style="display: none;">
+                    <div class="panel-header">
+                        <h3>✨ Personalizar Produto</h3>
+                        <p>Torne este produto único com sua personalização!</p>
                     </div>
 
-                    <!-- Font Selection -->
-                    <div class="personalization-group">
-                        <label class="personalization-label">Fonte:</label>
-                        <div class="font-options">
-                            <input type="radio" id="font-arial" name="font" value="Arial" checked>
-                            <label for="font-arial" class="font-option" style="font-family: Arial;">Arial</label>
-                            
-                            <input type="radio" id="font-times" name="font" value="Times New Roman">
-                            <label for="font-times" class="font-option" style="font-family: 'Times New Roman';">Times</label>
-                            
-                            <input type="radio" id="font-script" name="font" value="Brush Script MT">
-                            <label for="font-script" class="font-option" style="font-family: cursive;">Script</label>
-                            
-                            <input type="radio" id="font-bold" name="font" value="Arial Black">
-                            <label for="font-bold" class="font-option" style="font-family: Arial; font-weight: bold;">Bold</label>
+                    <div class="personalization-form">
+                        <div class="form-group">
+                            <label for="personalizationText">Texto para personalização:</label>
+                            <div class="text-input-container">
+                                <input type="text" id="personalizationText" placeholder="Digite seu texto aqui..." maxlength="30">
+                                <span class="char-count" id="charCount">0/30</span>
+                            </div>
+                            <small class="input-help">Digite o texto que aparecerá no produto</small>
                         </div>
-                    </div>
 
-                    <!-- Text Color -->
-                    <div class="personalization-group">
-                        <label class="personalization-label">Cor do Texto:</label>
-                        <div class="color-options text-colors">
-                            <input type="radio" id="text-white" name="textColor" value="#FFFFFF" checked>
-                            <label for="text-white" class="color-option">
-                                <span class="color-swatch" style="background: #FFFFFF; border: 1px solid #ddd;"></span>
-                                Branco
-                            </label>
-                            
-                            <input type="radio" id="text-black" name="textColor" value="#000000">
-                            <label for="text-black" class="color-option">
-                                <span class="color-swatch" style="background: #000000;"></span>
-                                Preto
-                            </label>
-                            
-                            <input type="radio" id="text-gold" name="textColor" value="#FFD700">
-                            <label for="text-gold" class="color-option">
-                                <span class="color-swatch" style="background: #FFD700;"></span>
-                                Dourado
-                            </label>
-                            
-                            <input type="radio" id="text-silver" name="textColor" value="#C0C0C0">
-                            <label for="text-silver" class="color-option">
-                                <span class="color-swatch" style="background: #C0C0C0;"></span>
-                                Prata
-                            </label>
-                        </div>
-                    </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="personalizationFont">Fonte:</label>
+                                <select id="personalizationFont">
+                                    <option value="Arial">Arial</option>
+                                    <option value="Times New Roman">Times New Roman</option>
+                                    <option value="Brush Script MT">Script</option>
+                                    <option value="Arial Black">Arial Bold</option>
+                                </select>
+                            </div>
 
-                    <!-- Text Position -->
-                    <div class="personalization-group">
-                        <label class="personalization-label">Posição do Texto:</label>
-                        <div class="position-options">
-                            <input type="radio" id="pos-center" name="position" value="center" checked>
-                            <label for="pos-center" class="position-option">Centro</label>
-                            
-                            <input type="radio" id="pos-bottom" name="position" value="bottom">
-                            <label for="pos-bottom" class="position-option">Parte Inferior</label>
-                            
-                            <input type="radio" id="pos-side" name="position" value="side">
-                            <label for="pos-side" class="position-option">Lateral</label>
-                        </div>
-                    </div>
-
-                    <!-- Preview -->
-                    <div class="personalization-preview">
-                        <h3>Preview da Personalização:</h3>
-                        <div class="preview-container">
-                            <div class="product-preview">
-                                <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" 
-                                     alt="Preview do produto" 
-                                     class="preview-image">
-                                <div class="preview-text" id="previewText">
-                                    SEU TEXTO AQUI
+                            <div class="form-group">
+                                <label for="personalizationColor">Cor do texto:</label>
+                                <div class="color-picker-container">
+                                    <select id="personalizationColor">
+                                        <option value="#FFFFFF">Branco</option>
+                                        <option value="#000000">Preto</option>
+                                        <option value="#FFD700">Dourado</option>
+                                        <option value="#C0C0C0">Prata</option>
+                                    </select>
+                                    <div class="color-preview" id="colorPreview"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="preview-note">
-                            💡 Esta é uma simulação. O produto final pode ter pequenas variações.
+
+                        <div class="form-group">
+                            <label for="personalizationPosition">Posição no produto:</label>
+                            <div class="position-selector">
+                                <input type="radio" id="pos-center" name="position" value="center" checked>
+                                <label for="pos-center" class="position-option">
+                                    <span class="position-icon">📍</span>
+                                    <span>Centro</span>
+                                </label>
+
+                                <input type="radio" id="pos-bottom" name="position" value="bottom">
+                                <label for="pos-bottom" class="position-option">
+                                    <span class="position-icon">⬇️</span>
+                                    <span>Inferior</span>
+                                </label>
+
+                                <input type="radio" id="pos-side" name="position" value="side">
+                                <label for="pos-side" class="position-option">
+                                    <span class="position-icon">➡️</span>
+                                    <span>Lateral</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Live Preview -->
+                        <div class="personalization-preview" id="personalizationPreview" style="display: none;">
+                            <h4>👀 Preview da personalização:</h4>
+                            <div class="preview-container">
+                                <!-- Preview será inserido dinamicamente -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quantity and Actions -->
+                <div class="purchase-section">
+                    <div class="quantity-selector">
+                        <label>Quantidade:</label>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn minus" id="quantityMinus" aria-label="Diminuir quantidade">-</button>
+                            <input type="number" id="quantityInput" value="1" min="1" max="99" class="quantity-input">
+                            <button class="quantity-btn plus" id="quantityPlus" aria-label="Aumentar quantidade">+</button>
                         </div>
                     </div>
 
+                    <div class="action-buttons">
+                        <button class="add-to-cart-btn" id="addToCartBtn">
+                            <span class="btn-icon">🛒</span>
+                            <span class="btn-text">Adicionar ao Carrinho</span>
+                            <span class="btn-loading" style="display: none;">⏳</span>
+                        </button>
+                        
+                        <button class="buy-now-btn" id="buyNowBtn">
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-text">Comprar Agora</span>
+                        </button>
+                    </div>
                 </div>
-            </section>
-        </div>
-    </main>
 
-    <!-- Related Products -->
-    <section class="related-products">
-        <div class="related-container">
-            <div class="section-header">
-                <h2>Produtos Relacionados</h2>
-                <p>Outros produtos que você pode gostar</p>
+                <!-- Product Features -->
+                <div class="product-features">
+                    <div class="feature-item">
+                        <span class="feature-icon">🚚</span>
+                        <div class="feature-text">
+                            <strong>Frete grátis</strong>
+                            <small>Para compras acima de R$ 200</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🔄</span>
+                        <div class="feature-text">
+                            <strong>Troca garantida</strong>
+                            <small>30 dias para trocar</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✨</span>
+                        <div class="feature-text">
+                            <strong>Personalização premium</strong>
+                            <small>Qualidade profissional</small>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🇧🇷</span>
+                        <div class="feature-text">
+                            <strong>Feito no Brasil</strong>
+                            <small>Produto nacional de qualidade</small>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
 
-            <div class="related-grid">
-                <div class="related-item">
-                    <div class="related-image">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Copo Térmico">
-                    </div>
-                    <div class="related-info">
-                        <h3>Copo Térmico 500ml</h3>
-                        <div class="related-price">R$ 80,00</div>
-                        <a href="produto-individual.html" class="btn-related">Ver Produto</a>
-                    </div>
+        <!-- Product Details Tabs -->
+        <div class="product-details-tabs">
+            <div class="tabs-container">
+                <div class="tab-headers">
+                    <button class="tab-header active" data-tab="description">Descrição</button>
+                    <button class="tab-header" data-tab="specifications">Especificações</button>
+                    <button class="tab-header" data-tab="care">Cuidados</button>
+                    <button class="tab-header" data-tab="shipping">Entrega</button>
                 </div>
 
-                <div class="related-item">
-                    <div class="related-image">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Garrafa 600ml">
+                <div class="tab-content">
+                    <div class="tab-panel active" id="tab-description">
+                        <div class="description-content" id="productDescription">
+                            <p>Carregando descrição do produto...</p>
+                        </div>
                     </div>
-                    <div class="related-info">
-                        <h3>Garrafa Sport 600ml</h3>
-                        <div class="related-price">R$ 125,00</div>
-                        <a href="produto-individual.html" class="btn-related">Ver Produto</a>
-                    </div>
-                </div>
 
-                <div class="related-item">
-                    <div class="related-image">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Bolsa Térmica">
+                    <div class="tab-panel" id="tab-specifications">
+                        <div class="specifications-grid" id="productSpecifications">
+                            <!-- Especificações serão inseridas dinamicamente -->
+                        </div>
                     </div>
-                    <div class="related-info">
-                        <h3>Bolsa Térmica 20L</h3>
-                        <div class="related-price">Sob consulta</div>
-                        <a href="produto-individual.html" class="btn-related">Ver Produto</a>
-                    </div>
-                </div>
 
-                <div class="related-item">
-                    <div class="related-image">
-                        <img src="../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp" alt="Mochila">
+                    <div class="tab-panel" id="tab-care">
+                        <div class="care-instructions">
+                            <h4>🧼 Instruções de Limpeza</h4>
+                            <ul>
+                                <li>Lave apenas com água morna e detergente neutro</li>
+                                <li>Não utilize produtos abrasivos ou palha de aço</li>
+                                <li>Seque completamente após a lavagem</li>
+                                <li>Evite choques térmicos extremos</li>
+                            </ul>
+                            <h4>💡 Dicas de Uso</h4>
+                            <ul>
+                                <li>Para melhor isolamento, pré-aqueça ou pré-resfrie o produto</li>
+                                <li>Não deixe líquidos ácidos por períodos prolongados</li>
+                                <li>Mantenha sempre a tampa bem fechada</li>
+                            </ul>
+                        </div>
                     </div>
-                    <div class="related-info">
-                        <h3>Mochila Executiva 30L</h3>
-                        <div class="related-price">R$ 220,00</div>
-                        <a href="produto-individual.html" class="btn-related">Ver Produto</a>
+
+                    <div class="tab-panel" id="tab-shipping">
+                        <div class="shipping-info">
+                            <h4>📦 Informações de Entrega</h4>
+                            <div class="shipping-grid">
+                                <div class="shipping-option">
+                                    <strong>PAC</strong>
+                                    <span>8 a 12 dias úteis</span>
+                                    <span>A partir de R$ 15,00</span>
+                                </div>
+                                <div class="shipping-option">
+                                    <strong>SEDEX</strong>
+                                    <span>3 a 5 dias úteis</span>
+                                    <span>A partir de R$ 25,00</span>
+                                </div>
+                                <div class="shipping-option highlight">
+                                    <strong>Frete Grátis</strong>
+                                    <span>Compras acima de R$ 200</span>
+                                    <span>Prazo: PAC</span>
+                                </div>
+                            </div>
+                            <p><strong>📍 Calculadora de frete:</strong> O valor exato será calculado no carrinho com base no seu CEP.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- Related Products -->
+    <section class="related-products scroll-animate">
+        <div class="related-content">
+            <div class="section-header">
+                <div class="tagline">Você também pode gostar</div>
+                <h2>Produtos Relacionados</h2>
+                <p>Outros produtos que complementam sua escolha</p>
+            </div>
+
+            <div class="related-grid" id="relatedProductsGrid">
+                <!-- Produtos relacionados serão inseridos dinamicamente -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Image Zoom Modal -->
+    <div class="image-zoom-modal" id="imageZoomModal" style="display: none;">
+        <div class="zoom-modal-overlay" id="zoomModalOverlay">
+            <div class="zoom-modal-content">
+                <button class="zoom-close-btn" id="zoomCloseBtn">✕</button>
+                <img id="zoomModalImage" src="" alt="Imagem ampliada">
+                <div class="zoom-navigation">
+                    <button class="zoom-nav-btn prev" id="zoomPrevBtn">‹</button>
+                    <button class="zoom-nav-btn next" id="zoomNextBtn">›</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Footer -->
     <footer class="footer">
@@ -400,19 +376,19 @@
             </div>
             <div class="footer-section">
                 <h4>Produtos</h4>
-                <a href="produtos.html">Garrafas & Copos</a>
-                <a href="produtos.html">Bolsas Térmicas</a>
-                <a href="produtos.html">Malas & Mochilas</a>
-                <a href="para-empresas.html">Para Empresas</a>
-                <a href="produtos.html">Imãs de Geladeira</a>
+                <a href="#">Garrafas & Copos</a>
+                <a href="#">Bolsas Térmicas</a>
+                <a href="#">Malas & Mochilas</a>
+                <a href="#">Para Empresas</a>
+                <a href="#">Imãs de Geladeira</a>
             </div>
             <div class="footer-section">
                 <h4>Suporte</h4>
-                <a href="contato.html">Central de Ajuda</a>
-                <a href="personalizar.html">Como Personalizar</a>
-                <a href="contato.html">Trocas e Devoluções</a>
-                <a href="contato.html">Prazo de Entrega</a>
-                <a href="contato.html">Contato</a>
+                <a href="#">Central de Ajuda</a>
+                <a href="#">Como Personalizar</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Prazo de Entrega</a>
+                <a href="#">Contato</a>
             </div>
             <div class="footer-section">
                 <h4>Conecte-se</h4>
@@ -432,7 +408,6 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
     <script src="../script.js"></script>
     <script src="../js/produto-individual.js"></script>
 </body>

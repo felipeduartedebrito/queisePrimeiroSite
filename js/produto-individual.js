@@ -1,1165 +1,1709 @@
-// QUEISE - Sistema Completo com Integração Shopify + Ícones Personalizados
-// Versão Final - Pronto para Produção
+// PRODUTO-INDIVIDUAL.JS - Sistema Completo Renovado QUEISE
 
-// ============================================================================
-// CONFIGURAÇÃO DA API - CREDENCIAIS REAIS
-// ============================================================================
+// ========================================
+// CONFIGURAÇÃO E CONSTANTES
+// ========================================
 
-const API_CONFIG = {
-    // ALTERE PARA false PARA ATIVAR SHOPIFY
-    isDevelopment: true, // ← MUDADO PARA PRODUÇÃO!
+const CONFIG = {
+    isDevelopment: true,
+    storageKey: 'queise_cart',
+    maxQuantity: 99,
+    minQuantity: 1,
     
     shopify: {
-        domain: 'jkw270-xq.myshopify.com',
-        storefrontAccessToken: '5d841f990665c317cdef27bbcdf88ab0',
-        apiVersion: '2024-10'
+        domain: 'queise.myshopify.com',
+        storefrontAccessToken: 'your-storefront-access-token'
     }
 };
 
-// ============================================================================
-// CONFIGURAÇÃO DOS ÍCONES QUEISE
-// ============================================================================
-
-const QUEISE_ICONS = {
-    'sol-ondas': {
-        name: 'Sol com Ondas',
-        file: 'imagens/icones/sol-ondas.png',
-        description: 'Sol estilizado com ondas'
-    },
-    'girassol': {
-        name: 'Girassol',
-        file: 'imagens/icones/girassol.png',
-        description: 'Girassol detalhado'
-    },
-    'olho-paz': {
-        name: 'Olho com Paz',
-        file: 'imagens/icones/olho-paz.png',
-        description: 'Olho com símbolo da paz'
-    },
-    'arvore': {
-        name: 'Árvore',
-        file: 'imagens/icones/arvore.png',
-        description: 'Árvore estilizada'
-    }
-};
-
-// ============================================================================
-// DADOS MOCK ATUALIZADOS (para desenvolvimento)
-// ============================================================================
+// ========================================
+// DADOS MOCK COMPLETOS
+// ========================================
 
 const MOCK_PRODUCTS = {
-    'garrafa-termica-1l-teste': {
-        id: 'gid://shopify/Product/teste',
-        handle: 'garrafa-termica-1l-teste',
-        title: 'Garrafa Térmica 1L Teste',
-        description: 'Produto de teste para integração Shopify. Garrafa térmica de 1 litro com personalização completa.',
-        price: 16500, // R$ 165,00 em centavos
+    'garrafa-stanley-1l': {
+        id: 'garrafa-stanley-1l',
+        handle: 'garrafa-stanley-1l',
+        title: 'Garrafa Térmica Stanley Adventure 1L',
+        vendor: 'Stanley',
+        productType: 'Garrafa Térmica',
+        price: 16500,
+        compareAtPrice: 19900,
+        availableForSale: true,
+        totalInventory: 50,
+        
+        description: `
+            <p>A Garrafa Térmica Stanley Adventure 1L é o companheiro perfeito para suas aventuras. Com tecnologia de vácuo duplo, mantém suas bebidas quentes por até 16 horas e frias por até 20 horas.</p>
+            
+            <h3>🌟 Principais Características</h3>
+            <ul>
+                <li>Capacidade generosa de 1 litro</li>
+                <li>Isolamento térmico superior com vácuo duplo</li>
+                <li>Construção em aço inoxidável 18/8 de alta qualidade</li>
+                <li>Tampa com sistema de vedação hermética</li>
+                <li>Acabamento resistente a riscos e impactos</li>
+                <li>Design ergonômico com alça confortável</li>
+                <li>100% livre de BPA e materiais tóxicos</li>
+            </ul>
+            
+            <h3>🎯 Ideal Para</h3>
+            <ul>
+                <li>Viagens e aventuras ao ar livre</li>
+                <li>Academia e atividades esportivas</li>
+                <li>Escritório e uso diário</li>
+                <li>Camping e trilhas</li>
+            </ul>
+        `,
+        
         images: [
-            { 
-                id: 'teste1', 
-                src: 'imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp', 
-                alt: 'Garrafa Térmica 1L Teste' 
+            {
+                id: 'img1',
+                url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                altText: 'Garrafa Stanley 1L - Vista principal'
+            },
+            {
+                id: 'img2',
+                url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                altText: 'Garrafa Stanley 1L - Vista lateral'
+            },
+            {
+                id: 'img3',
+                url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                altText: 'Garrafa Stanley 1L - Detalhes'
             }
         ],
+        
+        options: [
+            {
+                name: 'Tamanho',
+                values: ['1L']
+            },
+            {
+                name: 'Cor',
+                values: ['Azul Marinho', 'Verde Militar', 'Preto Fosco', 'Cinza Grafite']
+            }
+        ],
+        
         variants: [
             { 
-                id: 'var-teste1', 
-                title: 'Azul / 1L', 
+                id: 'var1', 
+                title: '1L / Azul Marinho', 
                 price: 16500, 
-                available: true, 
-                options: { cor: 'azul', tamanho: '1l' }, 
-                image: { 
-                    src: 'imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp', 
-                    alt: 'Azul' 
-                } 
+                compareAtPrice: 19900,
+                availableForSale: true, 
+                quantityAvailable: 15, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '1L' }, 
+                    { name: 'Cor', value: 'Azul Marinho' }
+                ] 
             },
             { 
-                id: 'var-teste2', 
-                title: 'Preto / 1L', 
+                id: 'var2', 
+                title: '1L / Verde Militar', 
                 price: 16500, 
-                available: true, 
-                options: { cor: 'preto', tamanho: '1l' }, 
-                image: { 
-                    src: 'imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp', 
-                    alt: 'Preto' 
-                } 
+                compareAtPrice: 19900,
+                availableForSale: true, 
+                quantityAvailable: 12, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '1L' }, 
+                    { name: 'Cor', value: 'Verde Militar' }
+                ] 
+            },
+            { 
+                id: 'var3', 
+                title: '1L / Preto Fosco', 
+                price: 16500, 
+                compareAtPrice: 19900,
+                availableForSale: true, 
+                quantityAvailable: 8, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '1L' }, 
+                    { name: 'Cor', value: 'Preto Fosco' }
+                ] 
+            },
+            { 
+                id: 'var4', 
+                title: '1L / Cinza Grafite', 
+                price: 16500, 
+                compareAtPrice: 19900,
+                availableForSale: false, 
+                quantityAvailable: 0, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '1L' }, 
+                    { name: 'Cor', value: 'Cinza Grafite' }
+                ] 
             }
         ],
-        options: [
-            { name: 'Cor', values: ['Azul', 'Preto'] },
-            { name: 'Tamanho', values: ['1L'] }
-        ],
-        personalization: {
-            enabled: true,
-            price: 2000,
-            max_chars: 30,
-            allowed_types: ['texto-vertical', 'texto-horizontal', 'icone-texto-vertical', 'icone-texto-horizontal', 'icone'],
-            allowed_fonts: ['Arial', 'Times New Roman', 'Brush Script MT', 'Arial Black'],
-            allowed_icons: ['sol-ondas', 'girassol', 'olho-paz', 'arvore']
+        
+        specifications: {
+            'Capacidade': '1000ml (1 litro)',
+            'Material': 'Aço inoxidável 18/8',
+            'Isolamento': 'Vácuo duplo',
+            'Dimensões': '32cm x 9cm',
+            'Peso': '650g',
+            'Garantia': '2 anos',
+            'Origem': 'Nacional'
         },
-        category: 'Garrafas Térmicas',
-        tags: ['teste', 'garrafa', 'térmica', '1l'],
-        available: true
+        
+        metafields: {
+            personalization: {
+                enabled: true,
+                price: 2000,
+                maxChars: 30,
+                allowedFonts: ['Arial', 'Times New Roman', 'Brush Script MT', 'Arial Black'],
+                allowedColors: ['#FFFFFF', '#000000', '#FFD700', '#C0C0C0'],
+                allowedPositions: ['center', 'bottom', 'side']
+            }
+        }
+    },
+    
+    'copo-termico-500ml': {
+        id: 'copo-termico-500ml',
+        handle: 'copo-termico-500ml',
+        title: 'Copo Térmico Premium 500ml',
+        vendor: 'QUEISE',
+        productType: 'Copo Térmico',
+        price: 8000,
+        compareAtPrice: 9500,
+        availableForSale: true,
+        totalInventory: 30,
+        
+        description: `
+            <p>Copo térmico de alta qualidade, perfeito para seu café, chá ou qualquer bebida. Mantém a temperatura ideal por horas com design elegante e funcional.</p>
+            
+            <h3>✨ Destaques</h3>
+            <ul>
+                <li>Capacidade ideal de 500ml</li>
+                <li>Isolamento térmico por até 6 horas</li>
+                <li>Material premium em aço inoxidável</li>
+                <li>Tampa antivazamento com sistema de rosca</li>
+                <li>Base antiderrapante</li>
+                <li>Design ergonômico</li>
+            </ul>
+        `,
+        
+        images: [
+            {
+                id: 'img1',
+                url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                altText: 'Copo Térmico 500ml'
+            }
+        ],
+        
+        options: [
+            { name: 'Tamanho', values: ['500ml'] },
+            { name: 'Cor', values: ['Preto', 'Branco', 'Azul'] }
+        ],
+        
+        variants: [
+            { 
+                id: 'var1', 
+                title: '500ml / Preto', 
+                price: 8000, 
+                compareAtPrice: 9500,
+                availableForSale: true, 
+                quantityAvailable: 10, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '500ml' }, 
+                    { name: 'Cor', value: 'Preto' }
+                ] 
+            },
+            { 
+                id: 'var2', 
+                title: '500ml / Branco', 
+                price: 8000, 
+                compareAtPrice: 9500,
+                availableForSale: true, 
+                quantityAvailable: 15, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '500ml' }, 
+                    { name: 'Cor', value: 'Branco' }
+                ] 
+            },
+            { 
+                id: 'var3', 
+                title: '500ml / Azul', 
+                price: 8000, 
+                compareAtPrice: 9500,
+                availableForSale: true, 
+                quantityAvailable: 5, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '500ml' }, 
+                    { name: 'Cor', value: 'Azul' }
+                ] 
+            }
+        ],
+        
+        specifications: {
+            'Capacidade': '500ml',
+            'Material': 'Aço inoxidável',
+            'Isolamento': 'Vácuo duplo',
+            'Dimensões': '15cm x 8cm',
+            'Peso': '280g',
+            'Garantia': '1 ano',
+            'Origem': 'Nacional'
+        },
+        
+        metafields: {
+            personalization: {
+                enabled: true,
+                price: 2000,
+                maxChars: 20,
+                allowedFonts: ['Arial', 'Times New Roman', 'Brush Script MT'],
+                allowedColors: ['#FFFFFF', '#000000', '#FFD700'],
+                allowedPositions: ['center', 'bottom']
+            }
+        }
+    },
+
+    'bolsa-termica-20l': {
+        id: 'bolsa-termica-20l',
+        handle: 'bolsa-termica-20l',
+        title: 'Bolsa Térmica Profissional 20L',
+        vendor: 'QUEISE',
+        productType: 'Bolsa Térmica',
+        price: 12000,
+        availableForSale: true,
+        totalInventory: 20,
+        
+        description: `
+            <p>Bolsa térmica espaçosa e eficiente para manter seus alimentos e bebidas sempre frescos. Ideal para piqueniques, viagens, trabalho e uso diário.</p>
+            
+            <h3>🎒 Características</h3>
+            <ul>
+                <li>Capacidade generosa de 20 litros</li>
+                <li>Isolamento térmico avançado</li>
+                <li>Tecido impermeável e resistente</li>
+                <li>Alças reforçadas e ajustáveis</li>
+                <li>Bolsos externos para acessórios</li>
+                <li>Fácil limpeza</li>
+            </ul>
+        `,
+        
+        images: [
+            {
+                id: 'img1',
+                url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                altText: 'Bolsa Térmica 20L'
+            }
+        ],
+        
+        options: [
+            { name: 'Tamanho', values: ['20L'] },
+            { name: 'Cor', values: ['Azul', 'Cinza'] }
+        ],
+        
+        variants: [
+            { 
+                id: 'var1', 
+                title: '20L / Azul', 
+                price: 12000, 
+                availableForSale: true, 
+                quantityAvailable: 10, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '20L' }, 
+                    { name: 'Cor', value: 'Azul' }
+                ] 
+            },
+            { 
+                id: 'var2', 
+                title: '20L / Cinza', 
+                price: 12000, 
+                availableForSale: true, 
+                quantityAvailable: 10, 
+                selectedOptions: [
+                    { name: 'Tamanho', value: '20L' }, 
+                    { name: 'Cor', value: 'Cinza' }
+                ] 
+            }
+        ],
+        
+        specifications: {
+            'Capacidade': '20 litros',
+            'Material': 'Tecido PVC + Isolamento',
+            'Dimensões': '35cm x 25cm x 25cm',
+            'Peso': '800g',
+            'Garantia': '6 meses',
+            'Origem': 'Nacional'
+        },
+        
+        metafields: {
+            personalization: {
+                enabled: false
+            }
+        }
     }
 };
 
-// ============================================================================
-// SISTEMA DE API SHOPIFY
-// ============================================================================
+const RELATED_PRODUCTS = [
+    {
+        id: 'copo-termico-500ml',
+        handle: 'copo-termico-500ml',
+        name: 'Copo Térmico 500ml',
+        price: 8000,
+        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+    },
+    {
+        id: 'bolsa-termica-20l',
+        handle: 'bolsa-termica-20l',
+        name: 'Bolsa Térmica 20L',
+        price: 12000,
+        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+    },
+    {
+        id: 'garrafa-600ml',
+        handle: 'garrafa-600ml',
+        name: 'Garrafa Térmica 600ml',
+        price: 14500,
+        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+    }
+];
 
-class ProductAPI {
+// ========================================
+// CLASSE PRINCIPAL COMPLETA
+// ========================================
+
+class ModernProductManager {
     constructor() {
-        this.graphqlEndpoint = `https://${API_CONFIG.shopify.domain}/api/${API_CONFIG.shopify.apiVersion}/graphql.json`;
-    }
-
-    async getProduct(productHandle) {
-        if (API_CONFIG.isDevelopment) {
-            console.log('🔧 Modo desenvolvimento - usando dados mock para:', productHandle);
-            return this.getMockProduct(productHandle);
-        } else {
-            console.log('🛍️ Buscando produto na Shopify:', productHandle);
-            return this.getShopifyProduct(productHandle);
-        }
-    }
-
-    getMockProduct(productHandle) {
-        const product = MOCK_PRODUCTS[productHandle];
-        if (!product) {
-            throw new Error(`Produto não encontrado: ${productHandle}`);
-        }
-        return Promise.resolve(product);
-    }
-
-    async getShopifyProduct(handle) {
-        const query = `
-            query getProduct($handle: String!) {
-                product(handle: $handle) {
-                    id
-                    handle
-                    title
-                    description
-                    descriptionHtml
-                    productType
-                    vendor
-                    tags
-                    availableForSale
-                    priceRange {
-                        minVariantPrice {
-                            amount
-                            currencyCode
-                        }
-                    }
-                    variants(first: 100) {
-                        edges {
-                            node {
-                                id
-                                title
-                                availableForSale
-                                selectedOptions {
-                                    name
-                                    value
-                                }
-                                price {
-                                    amount
-                                    currencyCode
-                                }
-                                image {
-                                    url
-                                    altText
-                                }
-                            }
-                        }
-                    }
-                    images(first: 20) {
-                        edges {
-                            node {
-                                id
-                                url
-                                altText
-                            }
-                        }
-                    }
-                    options {
-                        id
-                        name
-                        values
-                    }
-                    metafields(first: 20) {
-                        edges {
-                            node {
-                                namespace
-                                key
-                                value
-                                type
-                            }
-                        }
-                    }
-                }
-            }
-        `;
-
-        try {
-            const response = await fetch(this.graphqlEndpoint, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-Shopify-Storefront-Access-Token': API_CONFIG.shopify.storefrontAccessToken
-                },
-                body: JSON.stringify({
-                    query: query,
-                    variables: { handle: handle }
-                })
-            });
-
-            const data = await response.json();
-            
-            if (data.errors) {
-                console.error('Shopify API Errors:', data.errors);
-                throw new Error(`Shopify API Error: ${JSON.stringify(data.errors)}`);
-            }
-
-            if (!data.data.product) {
-                throw new Error(`Produto não encontrado: ${handle}`);
-            }
-
-            return this.transformShopifyProduct(data.data.product);
-        } catch (error) {
-            console.error('❌ Erro ao buscar produto na Shopify:', error);
-            throw error;
-        }
-    }
-
-    transformShopifyProduct(shopifyProduct) {
-        // Extrair metafields de personalização
-        const metafields = {};
-        shopifyProduct.metafields.edges.forEach(edge => {
-            const meta = edge.node;
-            if (meta.namespace === 'custom') {
-                try {
-                    // Tentar parsear como JSON primeiro
-                    metafields[meta.key] = JSON.parse(meta.value || 'null');
-                } catch {
-                    // Se não for JSON, usar como string
-                    metafields[meta.key] = meta.value;
-                }
-            }
-        });
-
-        // Processar arrays que podem vir como string separada por vírgula
-        const processArray = (value, fallback = []) => {
-            if (Array.isArray(value)) return value;
-            if (typeof value === 'string') return value.split(',').map(item => item.trim());
-            return fallback;
-        };
-
-        // Configuração de personalização dos metafields
-        const personalizationConfig = {
-            enabled: metafields.personalization_enabled || false,
-            price: metafields.personalization_price || 2000,
-            max_chars: metafields.personalization_max_chars || 30,
-            allowed_types: processArray(metafields.personalization_types, ['texto-vertical', 'texto-horizontal']),
-            allowed_fonts: processArray(metafields.personalization_fonts, ['Arial', 'Times New Roman', 'Brush Script MT', 'Arial Black']),
-            allowed_icons: processArray(metafields.personalization_icons, ['sol-ondas', 'girassol', 'olho-paz', 'arvore'])
-        };
-
-        return {
-            id: shopifyProduct.id,
-            handle: shopifyProduct.handle,
-            title: shopifyProduct.title,
-            description: shopifyProduct.description,
-            price: Math.round(parseFloat(shopifyProduct.priceRange.minVariantPrice.amount) * 100),
-            images: shopifyProduct.images.edges.map(edge => ({
-                id: edge.node.id,
-                src: edge.node.url,
-                alt: edge.node.altText || shopifyProduct.title
-            })),
-            variants: shopifyProduct.variants.edges.map(edge => ({
-                id: edge.node.id,
-                title: edge.node.title,
-                price: Math.round(parseFloat(edge.node.price.amount) * 100),
-                available: edge.node.availableForSale,
-                options: edge.node.selectedOptions.reduce((acc, option) => {
-                    acc[option.name.toLowerCase()] = option.value.toLowerCase();
-                    return acc;
-                }, {}),
-                image: edge.node.image ? {
-                    src: edge.node.image.url,
-                    alt: edge.node.image.altText
-                } : null
-            })),
-            options: shopifyProduct.options.map(option => ({
-                name: option.name,
-                values: option.values
-            })),
-            personalization: personalizationConfig,
-            category: shopifyProduct.productType || 'Produto',
-            tags: shopifyProduct.tags || [],
-            available: shopifyProduct.availableForSale
-        };
-    }
-
-    async addToCart(variantId, quantity = 1, properties = {}) {
-        if (API_CONFIG.isDevelopment) {
-            console.log('🛒 Modo desenvolvimento - simulando adição ao carrinho:', {
-                variantId,
-                quantity,
-                properties
-            });
-            return Promise.resolve({
-                success: true,
-                message: 'Produto adicionado ao carrinho (modo desenvolvimento)',
-                cart_item: { variantId, quantity, properties }
-            });
-        } else {
-            // Para Shopify real, vamos simular sucesso por enquanto
-            // A implementação completa do carrinho seria feita numa próxima fase
-            console.log('🛍️ Shopify - preparando dados para carrinho:', {
-                variantId,
-                quantity,
-                properties
-            });
-            
-            return Promise.resolve({
-                success: true,
-                message: 'Dados preparados para Shopify - implementação do carrinho na próxima fase',
-                cart_item: { variantId, quantity, properties }
-            });
-        }
-    }
-}
-
-// ============================================================================
-// SISTEMA DE PERSONALIZAÇÃO AVANÇADO
-// ============================================================================
-
-class PersonalizationSystem {
-    constructor() {
-        this.config = null;
-        this.preview = {
-            type: '',
-            text: '',
-            font: '',
-            icon: ''
-        };
-        this.price = 0;
-    }
-
-    init(personalizationConfig) {
-        this.config = personalizationConfig;
-        this.setupUI();
-        this.bindEvents();
-    }
-
-    setupUI() {
-        if (!this.config.enabled) {
-            document.getElementById('personalizationSection').style.display = 'none';
-            return;
-        }
-
-        // Configurar tipos de personalização
-        const typeSelect = document.getElementById('personalizationType');
-        if (typeSelect) {
-            typeSelect.innerHTML = this.config.allowed_types.map(type => 
-                `<option value="${type}">${this.getTypeName(type)}</option>`
-            ).join('');
-        }
-
-        // Configurar fontes
-        const fontSelect = document.getElementById('fontSelect');
-        if (fontSelect) {
-            fontSelect.innerHTML = this.config.allowed_fonts.map(font => 
-                `<option value="${font}">${font}</option>`
-            ).join('');
-        }
-
-        // Configurar ícones
-        const iconSelect = document.getElementById('iconSelect');
-        if (iconSelect) {
-            iconSelect.innerHTML = this.config.allowed_icons.map(icon => 
-                `<option value="${icon}">${QUEISE_ICONS[icon]?.name || icon}</option>`
-            ).join('');
-        }
-
-        // Configurar preço
-        const priceElement = document.getElementById('personalizationPrice');
-        if (priceElement) {
-            priceElement.textContent = this.formatPrice(this.config.price);
-        }
-
-        // Configurar limite de caracteres
-        const textInput = document.getElementById('personalizationText');
-        if (textInput) {
-            textInput.setAttribute('maxlength', this.config.max_chars);
-        }
-        
-        const charCount = document.getElementById('charCount');
-        if (charCount) {
-            charCount.textContent = `0/${this.config.max_chars}`;
-        }
-
-        // Configurar visibilidade inicial
-        this.updateFieldVisibility();
-    }
-
-    bindEvents() {
-        if (!this.config.enabled) return;
-
-        const elements = {
-            type: document.getElementById('personalizationType'),
-            text: document.getElementById('personalizationText'),
-            font: document.getElementById('fontSelect'),
-            icon: document.getElementById('iconSelect'),
-            enable: document.getElementById('enablePersonalization')
-        };
-
-        // Atualizar preview em tempo real
-        Object.values(elements).forEach(element => {
-            if (element) {
-                element.addEventListener('change', () => {
-                    this.updateFieldVisibility();
-                    this.updatePreview();
-                });
-                element.addEventListener('input', () => {
-                    this.updateFieldVisibility();
-                    this.updatePreview();
-                });
-            }
-        });
-
-        // Contador de caracteres
-        if (elements.text) {
-            elements.text.addEventListener('input', () => {
-                const count = elements.text.value.length;
-                const charCount = document.getElementById('charCount');
-                if (charCount) {
-                    charCount.textContent = `${count}/${this.config.max_chars}`;
-                }
-            });
-        }
-
-        // Toggle personalização
-        if (elements.enable) {
-            elements.enable.addEventListener('change', (e) => {
-                const isEnabled = e.target.checked;
-                const options = document.getElementById('personalizationOptions');
-                if (options) {
-                    options.style.display = isEnabled ? 'block' : 'none';
-                }
-                this.updatePrice();
-            });
-        }
-    }
-
-    updateFieldVisibility() {
-        const type = document.getElementById('personalizationType')?.value || '';
-        const iconField = document.getElementById('iconField');
-        const textField = document.getElementById('textField');
-        const fontField = document.getElementById('fontField');
-
-        if (iconField) {
-            iconField.style.display = type.includes('icone') ? 'block' : 'none';
-        }
-        
-        if (textField) {
-            textField.style.display = type !== 'icone' ? 'block' : 'none';
-        }
-        
-        if (fontField) {
-            fontField.style.display = type !== 'icone' ? 'block' : 'none';
-        }
-    }
-
-    updatePreview() {
-        const type = document.getElementById('personalizationType')?.value || '';
-        const text = document.getElementById('personalizationText')?.value || '';
-        const font = document.getElementById('fontSelect')?.value || '';
-        const icon = document.getElementById('iconSelect')?.value || '';
-
-        this.preview = { type, text, font, icon };
-
-        const previewElement = document.getElementById('personalizationPreview');
-        if (!previewElement) return;
-
-        let previewHTML = '';
-
-        switch (type) {
-            case 'texto-vertical':
-                previewHTML = this.renderTextVertical(text, font);
-                break;
-            case 'texto-horizontal':
-                previewHTML = this.renderTextHorizontal(text, font);
-                break;
-            case 'icone-texto-vertical':
-                previewHTML = this.renderIconTextVertical(icon, text, font);
-                break;
-            case 'icone-texto-horizontal':
-                previewHTML = this.renderIconTextHorizontal(icon, text, font);
-                break;
-            case 'icone':
-                previewHTML = this.renderIconOnly(icon);
-                break;
-            default:
-                previewHTML = '<p>Selecione um tipo de personalização</p>';
-        }
-
-        previewElement.innerHTML = previewHTML;
-    }
-
-    renderTextVertical(text, font) {
-        if (!text) return '<p>Digite seu texto...</p>';
-        const letters = text.split('').join('<br>');
-        return `<div class="preview-text-vertical" style="font-family: '${font}', sans-serif; text-align: center; line-height: 1.2;">${letters}</div>`;
-    }
-
-    renderTextHorizontal(text, font) {
-        if (!text) return '<p>Digite seu texto...</p>';
-        return `<div class="preview-text-horizontal" style="font-family: '${font}', sans-serif; text-align: center;">${text}</div>`;
-    }
-
-    renderIconTextVertical(icon, text, font) {
-        const iconInfo = QUEISE_ICONS[icon];
-        const iconHTML = iconInfo ? `<img src="${iconInfo.file}" alt="${iconInfo.name}" style="width: 30px; height: 30px; margin-bottom: 10px;">` : '';
-        const textHTML = text ? this.renderTextVertical(text, font) : '';
-        return `<div style="text-align: center;">${iconHTML}<br>${textHTML}</div>`;
-    }
-
-    renderIconTextHorizontal(icon, text, font) {
-        const iconInfo = QUEISE_ICONS[icon];
-        const iconHTML = iconInfo ? `<img src="${iconInfo.file}" alt="${iconInfo.name}" style="width: 30px; height: 30px; margin-right: 10px; vertical-align: middle;">` : '';
-        const textHTML = text ? `<span style="font-family: '${font}', sans-serif;">${text}</span>` : '';
-        return `<div style="text-align: center;">${iconHTML}${textHTML}</div>`;
-    }
-
-    renderIconOnly(icon) {
-        const iconInfo = QUEISE_ICONS[icon];
-        return iconInfo ? `<div style="text-align: center;"><img src="${iconInfo.file}" alt="${iconInfo.name}" style="width: 40px; height: 40px;"></div>` : '<p>Selecione um ícone</p>';
-    }
-
-    updatePrice() {
-        const isPersonalizationEnabled = document.getElementById('enablePersonalization')?.checked || false;
-        this.price = isPersonalizationEnabled ? this.config.price : 0;
-        
-        // Disparar evento para atualizar preço total
-        window.dispatchEvent(new CustomEvent('personalizationPriceChanged', {
-            detail: { price: this.price }
-        }));
-    }
-
-    getPersonalizationData() {
-        const isEnabled = document.getElementById('enablePersonalization')?.checked || false;
-        if (!isEnabled) return null;
-
-        return {
-            type: this.preview.type,
-            text: this.preview.text,
-            font: this.preview.font,
-            icon: this.preview.icon,
-            price: this.price
-        };
-    }
-
-    getTypeName(type) {
-        const names = {
-            'texto-vertical': 'Texto Vertical',
-            'texto-horizontal': 'Texto Horizontal',
-            'icone-texto-vertical': 'Ícone + Texto Vertical',
-            'icone-texto-horizontal': 'Ícone + Texto Horizontal',
-            'icone': 'Apenas Ícone'
-        };
-        return names[type] || type;
-    }
-
-    formatPrice(centavos) {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(centavos / 100);
-    }
-}
-
-// ============================================================================
-// CONTROLADOR PRINCIPAL DA PÁGINA
-// ============================================================================
-
-class ProductPageController {
-    constructor() {
-        this.api = new ProductAPI();
-        this.personalization = new PersonalizationSystem();
         this.currentProduct = null;
         this.selectedVariant = null;
-        this.currentPrice = 0;
-        this.currentImage = 0;
+        this.selectedImageIndex = 0;
+        this.quantity = 1;
+        this.isLoading = false;
+        
+        // Personalization state
+        this.personalization = {
+            enabled: false,
+            text: '',
+            font: 'Arial',
+            color: '#FFFFFF',
+            position: 'center'
+        };
+
+        this.init();
     }
 
     async init() {
         try {
             await this.loadProduct();
-            this.setupImageGallery();
-            this.setupVariantSelection();
-            this.setupPricing();
-            this.setupAddToCart();
-            this.setupBreadcrumb();
+            this.setupEventListeners();
+            this.setupImageZoom();
+            this.setupTabs();
+            
+            console.log('ModernProductManager inicializado');
         } catch (error) {
-            this.handleError(error);
+            console.error('Erro na inicialização:', error);
+            this.showError('Erro ao carregar produto');
         }
     }
+
+    // ========================================
+    // CARREGAMENTO DO PRODUTO
+    // ========================================
 
     async loadProduct() {
-        const urlParams = new URLSearchParams(window.location.search);
-        const productHandle = urlParams.get('id') || 'garrafa-termica-1l-teste';
-
+        this.showMainLoading(true);
+        
         try {
-            this.showLoading(true);
-            this.currentProduct = await this.api.getProduct(productHandle);
-            this.renderProduct();
-            
-            // Inicializar personalização se habilitada
-            if (this.currentProduct.personalization.enabled) {
-                this.personalization.init(this.currentProduct.personalization);
+            const productHandle = this.getProductHandle();
+            if (!productHandle) {
+                throw new Error('Handle do produto não encontrado');
             }
+
+            const product = CONFIG.isDevelopment ? 
+                MOCK_PRODUCTS[productHandle] : 
+                await this.fetchShopifyProduct(productHandle);
+
+            if (!product) {
+                throw new Error('Produto não encontrado');
+            }
+
+            this.currentProduct = product;
+            this.selectedVariant = product.variants[0];
+            this.setupPersonalization();
             
-            this.showLoading(false);
+            await this.renderProduct();
+            
         } catch (error) {
             console.error('Erro ao carregar produto:', error);
-            this.showError('Produto não encontrado ou erro de conexão');
-            this.showLoading(false);
+            this.showError(error.message);
+        } finally {
+            this.showMainLoading(false);
         }
     }
 
-    renderProduct() {
-        // Título e categoria
-        const titleElement = document.getElementById('productTitle');
-        if (titleElement) titleElement.textContent = this.currentProduct.title;
-        
-        const categoryElement = document.getElementById('productCategory');
-        if (categoryElement) categoryElement.textContent = this.currentProduct.category;
-        
-        const descriptionElement = document.getElementById('productDescription');
-        if (descriptionElement) descriptionElement.textContent = this.currentProduct.description;
-        
-        // Preço inicial
-        this.currentPrice = this.currentProduct.price;
-        const priceElement = document.getElementById('currentPrice');
-        if (priceElement) priceElement.textContent = this.formatPrice(this.currentPrice);
-        
-        // Renderizar imagens
+    getProductHandle() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('id');
+    }
+
+    async fetchShopifyProduct(handle) {
+        // Implementação Shopify para produção
+        const query = `
+            query getProduct($handle: String!) {
+                product(handle: $handle) {
+                    id handle title vendor productType description 
+                    availableForSale totalInventory
+                    priceRange { minVariantPrice { amount } }
+                    images(first: 10) { edges { node { id url altText } } }
+                    variants(first: 50) { 
+                        edges { 
+                            node { 
+                                id title availableForSale quantityAvailable
+                                price { amount }
+                                selectedOptions { name value }
+                            } 
+                        } 
+                    }
+                }
+            }
+        `;
+
+        const response = await fetch(`https://${CONFIG.shopify.domain}/api/2023-10/graphql.json`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Shopify-Storefront-Access-Token': CONFIG.shopify.storefrontAccessToken
+            },
+            body: JSON.stringify({ query, variables: { handle } })
+        });
+
+        const data = await response.json();
+        return this.transformShopifyProduct(data.data.product);
+    }
+
+    transformShopifyProduct(shopifyProduct) {
+        if (!shopifyProduct) return null;
+
+        return {
+            id: shopifyProduct.handle,
+            handle: shopifyProduct.handle,
+            title: shopifyProduct.title,
+            vendor: shopifyProduct.vendor,
+            productType: shopifyProduct.productType,
+            price: Math.round(parseFloat(shopifyProduct.priceRange.minVariantPrice.amount) * 100),
+            availableForSale: shopifyProduct.availableForSale,
+            totalInventory: shopifyProduct.totalInventory,
+            description: shopifyProduct.description,
+            images: shopifyProduct.images.edges.map(edge => edge.node),
+            variants: shopifyProduct.variants.edges.map(edge => ({
+                ...edge.node,
+                price: Math.round(parseFloat(edge.node.price.amount) * 100)
+            }))
+        };
+    }
+
+    // ========================================
+    // RENDERIZAÇÃO PRINCIPAL
+    // ========================================
+
+    async renderProduct() {
+        this.updateBreadcrumb();
+        this.renderProductInfo();
         this.renderGallery();
+        this.renderVariants();
+        this.renderPersonalization();
+        this.renderSpecifications();
+        this.updatePricing();
+        this.updateAvailability();
+        this.renderRelatedProducts();
         
-        // Renderizar opções de variantes
-        this.renderVariantOptions();
+        // Animar entrada
+        await this.delay(100);
+        document.getElementById('productDetail').classList.add('loaded');
+    }
+
+    updateBreadcrumb() {
+        const breadcrumb = document.getElementById('breadcrumbProduct');
+        if (breadcrumb && this.currentProduct) {
+            breadcrumb.textContent = this.currentProduct.title;
+        }
+    }
+
+    renderProductInfo() {
+        const { title, vendor, description } = this.currentProduct;
         
-        // Selecionar primeira variante disponível
-        const firstAvailableVariant = this.currentProduct.variants.find(v => v.available);
-        if (firstAvailableVariant) {
-            this.selectVariant(firstAvailableVariant);
+        this.updateElement('productTitle', title);
+        this.updateElement('productVendor', vendor);
+        this.updateElement('productDescription', description);
+
+        // Show personalization badge
+        const personalizableBadge = document.getElementById('personalizableBadge');
+        if (personalizableBadge && this.currentProduct.metafields?.personalization?.enabled) {
+            personalizableBadge.style.display = 'inline-block';
         }
     }
 
     renderGallery() {
-        const mainImage = document.getElementById('mainImage');
-        const thumbnails = document.getElementById('thumbnails');
+        const { images } = this.currentProduct;
+        const mainImage = document.getElementById('mainProductImage');
+        const thumbnailContainer = document.getElementById('thumbnailGallery');
         
-        if (this.currentProduct.images.length > 0 && mainImage) {
-            mainImage.src = this.currentProduct.images[0].src;
-            mainImage.alt = this.currentProduct.images[0].alt;
+        if (!images || !images.length) return;
+
+        // Main image
+        if (mainImage) {
+            const currentImage = images[this.selectedImageIndex];
+            mainImage.src = currentImage.url;
+            mainImage.alt = currentImage.altText || this.currentProduct.title;
         }
-        
-        if (thumbnails) {
-            thumbnails.innerHTML = this.currentProduct.images.map((image, index) => `
-                <img src="${image.src}" 
-                     alt="${image.alt}" 
-                     class="thumbnail ${index === 0 ? 'active' : ''}"
-                     onclick="productController.selectImage(${index})">
-            `).join('');
+
+        // Thumbnails
+        if (thumbnailContainer) {
+            thumbnailContainer.innerHTML = '';
+            images.forEach((image, index) => {
+                const thumbnail = document.createElement('div');
+                thumbnail.className = `thumbnail ${index === this.selectedImageIndex ? 'active' : ''}`;
+                thumbnail.innerHTML = `<img src="${image.url}" alt="${image.altText}" loading="lazy">`;
+                
+                thumbnail.addEventListener('click', () => {
+                    this.selectedImageIndex = index;
+                    this.renderGallery();
+                });
+                
+                thumbnailContainer.appendChild(thumbnail);
+            });
+        }
+
+        // Update navigation buttons
+        this.updateGalleryNavigation();
+    }
+
+    updateGalleryNavigation() {
+        const prevBtn = document.getElementById('prevImageBtn');
+        const nextBtn = document.getElementById('nextImageBtn');
+        const totalImages = this.currentProduct.images?.length || 0;
+
+        if (prevBtn) {
+            prevBtn.disabled = this.selectedImageIndex === 0;
+        }
+        if (nextBtn) {
+            nextBtn.disabled = this.selectedImageIndex === totalImages - 1;
         }
     }
 
-    renderVariantOptions() {
-        const variantOptions = document.getElementById('variantOptions');
-        if (!variantOptions) return;
-        
-        variantOptions.innerHTML = '';
-        
+    renderVariants() {
+        if (!this.currentProduct.options) return;
+
         this.currentProduct.options.forEach(option => {
-            const optionDiv = document.createElement('div');
-            optionDiv.className = 'variant-option';
-            optionDiv.innerHTML = `
-                <label>${option.name}:</label>
-                <select id="option-${option.name.toLowerCase()}" onchange="productController.updateVariantSelection()">
-                    ${option.values.map(value => `<option value="${value}">${value}</option>`).join('')}
-                </select>
+            const groupElement = document.getElementById(`${option.name.toLowerCase()}Group`);
+            const optionsContainer = document.getElementById(`${option.name.toLowerCase()}Options`);
+            
+            if (!groupElement || !optionsContainer) return;
+
+            groupElement.style.display = 'block';
+            optionsContainer.innerHTML = '';
+            
+            option.values.forEach(value => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = 'variant-option';
+                optionBtn.textContent = value;
+                
+                // Check availability
+                const isAvailable = this.currentProduct.variants.some(variant => 
+                    variant.selectedOptions.some(opt => opt.name === option.name && opt.value === value) &&
+                    variant.availableForSale
+                );
+                
+                if (!isAvailable) {
+                    optionBtn.classList.add('unavailable');
+                    optionBtn.disabled = true;
+                }
+                
+                // Check if selected
+                const isSelected = this.selectedVariant?.selectedOptions?.some(
+                    opt => opt.name === option.name && opt.value === value
+                );
+                
+                if (isSelected) {
+                    optionBtn.classList.add('selected');
+                }
+                
+                optionBtn.addEventListener('click', () => {
+                    if (!isAvailable) return;
+                    this.selectVariant(option.name, value);
+                });
+                
+                optionsContainer.appendChild(optionBtn);
+            });
+        });
+    }
+
+    selectVariant(optionName, optionValue) {
+        // Update visual selection
+        const container = document.getElementById(`${optionName.toLowerCase()}Options`);
+        if (container) {
+            container.querySelectorAll('.variant-option').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent.trim() === optionValue) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+
+        // Find matching variant
+        const newVariant = this.currentProduct.variants.find(variant =>
+            variant.selectedOptions.some(opt => opt.name === optionName && opt.value === optionValue)
+        );
+
+        if (newVariant) {
+            this.selectedVariant = newVariant;
+            this.updatePricing();
+            this.updateAvailability();
+            this.updatePersonalizationPreview();
+        }
+    }
+
+    renderPersonalization() {
+        const panel = document.getElementById('personalizationPanel');
+        const config = this.currentProduct.metafields?.personalization;
+        
+        if (!panel) return;
+
+        if (config?.enabled) {
+            panel.style.display = 'block';
+            this.personalization.enabled = true;
+            this.setupPersonalizationOptions(config);
+        } else {
+            panel.style.display = 'none';
+            this.personalization.enabled = false;
+        }
+    }
+
+    setupPersonalization() {
+        const config = this.currentProduct?.metafields?.personalization;
+        if (config?.enabled) {
+            this.personalization.enabled = true;
+        }
+    }
+
+    setupPersonalizationOptions(config) {
+        // Setup font options
+        const fontSelect = document.getElementById('personalizationFont');
+        if (fontSelect && config.allowedFonts) {
+            fontSelect.innerHTML = '';
+            config.allowedFonts.forEach(font => {
+                const option = document.createElement('option');
+                option.value = font;
+                option.textContent = font;
+                fontSelect.appendChild(option);
+            });
+        }
+
+        // Setup color options
+        const colorSelect = document.getElementById('personalizationColor');
+        if (colorSelect && config.allowedColors) {
+            colorSelect.innerHTML = '';
+            config.allowedColors.forEach(color => {
+                const option = document.createElement('option');
+                option.value = color;
+                option.textContent = this.getColorName(color);
+                colorSelect.appendChild(option);
+            });
+            this.updateColorPreview();
+        }
+
+        // Setup position options
+        const positionInputs = document.querySelectorAll('input[name="position"]');
+        positionInputs.forEach(input => {
+            if (config.allowedPositions && !config.allowedPositions.includes(input.value)) {
+                input.closest('.position-option').style.display = 'none';
+            }
+        });
+
+        // Setup character limit
+        const textInput = document.getElementById('personalizationText');
+        if (textInput && config.maxChars) {
+            textInput.maxLength = config.maxChars;
+            textInput.placeholder = `Digite seu texto (máximo ${config.maxChars} caracteres)`;
+        }
+
+        this.updateCharCount();
+    }
+
+    renderSpecifications() {
+        const container = document.getElementById('productSpecifications');
+        if (!container || !this.currentProduct.specifications) return;
+
+        container.innerHTML = '';
+        Object.entries(this.currentProduct.specifications).forEach(([label, value]) => {
+            const specItem = document.createElement('div');
+            specItem.className = 'spec-item';
+            specItem.innerHTML = `
+                <span class="spec-label">${label}:</span>
+                <span class="spec-value">${value}</span>
             `;
-            variantOptions.appendChild(optionDiv);
+            container.appendChild(specItem);
         });
     }
 
-    setupImageGallery() {
-        // Event listeners já configurados no renderGallery
-    }
+    // ========================================
+    // PREÇOS E DISPONIBILIDADE
+    // ========================================
 
-    setupVariantSelection() {
-        // Event listeners já configurados no renderVariantOptions
-    }
+    updatePricing() {
+        if (!this.selectedVariant) return;
 
-    setupPricing() {
-        // Listener para mudanças no preço de personalização
-        window.addEventListener('personalizationPriceChanged', (e) => {
-            this.updateTotalPrice();
-        });
-    }
+        const { price, compareAtPrice } = this.selectedVariant;
+        const personalizationPrice = this.getPersonalizationPrice();
+        const totalPrice = (price + personalizationPrice) * this.quantity;
 
-    setupAddToCart() {
+        // Current price
+        this.updateElement('currentPrice', this.formatPrice(price));
+
+        // Compare price and discount
+        if (compareAtPrice && compareAtPrice > price) {
+            this.updateElement('comparePrice', this.formatPrice(compareAtPrice));
+            document.getElementById('comparePrice').style.display = 'inline';
+            
+            const discount = Math.round(((compareAtPrice - price) / compareAtPrice) * 100);
+            this.updateElement('discountBadge', `-${discount}%`);
+            document.getElementById('discountBadge').style.display = 'inline-block';
+        } else {
+            document.getElementById('comparePrice').style.display = 'none';
+            document.getElementById('discountBadge').style.display = 'none';
+        }
+
+        // Personalization price
+        const personalizationElement = document.getElementById('personalizationPrice');
+        if (personalizationElement) {
+            if (personalizationPrice > 0) {
+                personalizationElement.textContent = `+ Personalização: ${this.formatPrice(personalizationPrice)}`;
+                personalizationElement.style.display = 'block';
+            } else {
+                personalizationElement.style.display = 'none';
+            }
+        }
+
+        // Total price
+        this.updateElement('totalPrice', this.formatPrice(totalPrice));
+
+        // Update button text
         const addToCartBtn = document.getElementById('addToCartBtn');
         if (addToCartBtn) {
-            addToCartBtn.addEventListener('click', () => {
-                this.addToCart();
+            const btnText = addToCartBtn.querySelector('.btn-text');
+            if (btnText) {
+                btnText.textContent = `Adicionar ao Carrinho - ${this.formatPrice(totalPrice)}`;
+            }
+        }
+    }
+
+    getPersonalizationPrice() {
+        if (this.personalization.enabled && this.personalization.text.trim()) {
+            return this.currentProduct?.metafields?.personalization?.price || 0;
+        }
+        return 0;
+    }
+
+    updateAvailability() {
+        const availabilityElement = document.getElementById('availability');
+        if (!availabilityElement || !this.selectedVariant) return;
+
+        const { availableForSale, quantityAvailable } = this.selectedVariant;
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+        const quantityInput = document.getElementById('quantityInput');
+
+        if (availableForSale && quantityAvailable > 0) {
+            availabilityElement.innerHTML = `
+                <span class="availability-icon">✓</span>
+                <span class="availability-text">Em estoque (${quantityAvailable} disponíveis)</span>
+            `;
+            availabilityElement.className = 'availability in-stock';
+            
+            // Enable controls
+            if (addToCartBtn) addToCartBtn.disabled = false;
+            if (buyNowBtn) buyNowBtn.disabled = false;
+            if (quantityInput) {
+                quantityInput.disabled = false;
+                quantityInput.max = quantityAvailable;
+            }
+        } else {
+            availabilityElement.innerHTML = `
+                <span class="availability-icon">✗</span>
+                <span class="availability-text">Indisponível</span>
+            `;
+            availabilityElement.className = 'availability out-of-stock';
+            
+            // Disable controls
+            if (addToCartBtn) {
+                addToCartBtn.disabled = true;
+                const btnText = addToCartBtn.querySelector('.btn-text');
+                if (btnText) btnText.textContent = 'Indisponível';
+            }
+            if (buyNowBtn) buyNowBtn.disabled = true;
+            if (quantityInput) quantityInput.disabled = true;
+        }
+    }
+
+    // ========================================
+    // PERSONALIZAÇÃO
+    // ========================================
+
+    updatePersonalizationPreview() {
+        const preview = document.getElementById('personalizationPreview');
+        if (!preview) return;
+
+        if (this.personalization.text.trim()) {
+            preview.style.display = 'block';
+            const container = preview.querySelector('.preview-container');
+            if (container) {
+                container.innerHTML = `
+                    <div class="preview-text" style="
+                        font-family: ${this.personalization.font};
+                        color: ${this.personalization.color};
+                        text-align: ${this.personalization.position};
+                        background: ${this.personalization.color === '#FFFFFF' ? '#333' : '#f8f9fa'};
+                        padding: 1rem;
+                        border-radius: 8px;
+                        margin-bottom: 1rem;
+                    ">
+                        "${this.personalization.text}"
+                    </div>
+                    <div class="preview-info">
+                        <strong>Configuração:</strong><br>
+                        Fonte: ${this.personalization.font} | 
+                        Cor: ${this.getColorName(this.personalization.color)} | 
+                        Posição: ${this.getPositionName(this.personalization.position)}
+                    </div>
+                `;
+            }
+        } else {
+            preview.style.display = 'none';
+        }
+        
+        this.updatePricing();
+    }
+
+    updateCharCount() {
+        const charCount = document.getElementById('charCount');
+        const maxChars = this.currentProduct?.metafields?.personalization?.maxChars || 30;
+        
+        if (charCount) {
+            const current = this.personalization.text.length;
+            charCount.textContent = `${current}/${maxChars}`;
+            
+            charCount.className = 'char-count';
+            if (current > maxChars * 0.8) {
+                charCount.classList.add(current > maxChars * 0.9 ? 'danger' : 'warning');
+            }
+        }
+    }
+
+    updateColorPreview() {
+        const preview = document.getElementById('colorPreview');
+        if (preview) {
+            preview.style.backgroundColor = this.personalization.color;
+        }
+    }
+
+    // ========================================
+    // CARRINHO E AÇÕES
+    // ========================================
+
+    async addToCart() {
+        if (this.isLoading) return;
+        
+        if (!this.selectedVariant || !this.selectedVariant.availableForSale) {
+            this.showNotification('Produto indisponível', 'error');
+            return;
+        }
+
+        if (this.quantity > this.selectedVariant.quantityAvailable) {
+            this.showNotification('Quantidade solicitada não disponível', 'error');
+            return;
+        }
+
+        const cartItem = this.buildCartItem();
+        
+        try {
+            this.setButtonLoading('addToCartBtn', true);
+            
+            await this.delay(800); // Simular processamento
+            
+            const success = this.addItemToCart(cartItem);
+            
+            if (success) {
+                this.showNotification('Produto adicionado ao carrinho!', 'success');
+                this.updateCartBadge();
+                
+                setTimeout(() => {
+                    this.showCartModal();
+                }, 1000);
+            } else {
+                this.showNotification('Erro ao adicionar produto ao carrinho', 'error');
+            }
+
+        } catch (error) {
+            console.error('Erro ao adicionar ao carrinho:', error);
+            this.showNotification('Erro ao adicionar produto ao carrinho', 'error');
+        } finally {
+            this.setButtonLoading('addToCartBtn', false);
+        }
+    }
+
+    buildCartItem() {
+        const basePrice = this.selectedVariant.price;
+        const personalizationPrice = this.getPersonalizationPrice();
+        
+        const cartItem = {
+            id: `${this.currentProduct.handle}-${this.selectedVariant.id}-${Date.now()}`,
+            handle: this.currentProduct.handle,
+            variantId: this.selectedVariant.id,
+            name: this.currentProduct.title,
+            basePrice: basePrice,
+            image: this.currentProduct.images[0]?.url,
+            quantity: this.quantity,
+            variant: {
+                id: this.selectedVariant.id,
+                title: this.selectedVariant.title,
+                size: this.getSelectedOptionValue('Tamanho'),
+                color: this.getSelectedOptionValue('Cor')
+            }
+        };
+
+        // Add personalization if configured
+        if (this.personalization.enabled && this.personalization.text.trim()) {
+            cartItem.personalization = {
+                text: this.personalization.text,
+                font: this.personalization.font,
+                color: this.personalization.color,
+                position: this.personalization.position
+            };
+            cartItem.personalizationPrice = personalizationPrice;
+        }
+
+        return cartItem;
+    }
+
+    addItemToCart(cartItem) {
+        try {
+            const cart = this.loadCart();
+            
+            // Check for existing item
+            const existingItemIndex = cart.items.findIndex(item => 
+                item.handle === cartItem.handle &&
+                item.variantId === cartItem.variantId &&
+                JSON.stringify(item.personalization) === JSON.stringify(cartItem.personalization)
+            );
+
+            if (existingItemIndex > -1) {
+                cart.items[existingItemIndex].quantity += cartItem.quantity;
+            } else {
+                cart.items.push(cartItem);
+            }
+
+            this.saveCart(cart);
+            return true;
+        } catch (error) {
+            console.error('Erro ao adicionar item ao carrinho:', error);
+            return false;
+        }
+    }
+
+    async buyNow() {
+        await this.addToCart();
+        setTimeout(() => {
+            window.location.href = '../paginas/carrinho.html';
+        }, 1500);
+    }
+
+    // ========================================
+    // PRODUTOS RELACIONADOS
+    // ========================================
+
+    renderRelatedProducts() {
+        const container = document.getElementById('relatedProductsGrid');
+        if (!container) return;
+
+        // Filter out current product
+        const currentProductId = this.currentProduct.id;
+        const relatedProducts = RELATED_PRODUCTS.filter(product => product.id !== currentProductId);
+
+        container.innerHTML = '';
+        
+        relatedProducts.slice(0, 3).forEach(product => {
+            const productElement = document.createElement('div');
+            productElement.className = 'related-product';
+            productElement.innerHTML = `
+                <div class="related-image">
+                    <img src="${product.image}" alt="${product.name}" loading="lazy">
+                </div>
+                <div class="related-info">
+                    <h4 class="related-name">${product.name}</h4>
+                    <div class="related-price">${this.formatPrice(product.price)}</div>
+                    <a href="produto-individual.html?id=${product.handle}" class="btn-secondary btn-small">
+                        Ver Produto
+                        <span>→</span>
+                    </a>
+                </div>
+            `;
+            container.appendChild(productElement);
+        });
+    }
+
+    // ========================================
+    // EVENT LISTENERS
+    // ========================================
+
+    setupEventListeners() {
+        // Quantity controls
+        this.setupQuantityControls();
+        
+        // Action buttons
+        this.setupActionButtons();
+        
+        // Gallery navigation
+        this.setupGalleryNavigation();
+        
+        // Personalization controls
+        this.setupPersonalizationListeners();
+        
+        // Cart badge update
+        this.updateCartBadge();
+    }
+
+    setupQuantityControls() {
+        const quantityInput = document.getElementById('quantityInput');
+        const quantityMinus = document.getElementById('quantityMinus');
+        const quantityPlus = document.getElementById('quantityPlus');
+
+        if (quantityInput) {
+            quantityInput.addEventListener('change', (e) => {
+                this.quantity = Math.max(1, Math.min(99, parseInt(e.target.value) || 1));
+                e.target.value = this.quantity;
+                this.updatePricing();
+            });
+        }
+
+        if (quantityMinus) {
+            quantityMinus.addEventListener('click', () => {
+                this.quantity = Math.max(1, this.quantity - 1);
+                if (quantityInput) quantityInput.value = this.quantity;
+                this.updatePricing();
+            });
+        }
+
+        if (quantityPlus) {
+            quantityPlus.addEventListener('click', () => {
+                const maxQty = this.selectedVariant?.quantityAvailable || 99;
+                this.quantity = Math.min(maxQty, this.quantity + 1);
+                if (quantityInput) quantityInput.value = this.quantity;
+                this.updatePricing();
             });
         }
     }
 
-    setupBreadcrumb() {
-        const breadcrumb = document.getElementById('breadcrumb');
-        if (breadcrumb && this.currentProduct) {
-            breadcrumb.innerHTML = `
-                <a href="../index.html">Início</a> → 
-                <a href="produtos.html">Produtos</a> → 
-                <a href="produtos.html?categoria=${this.currentProduct.category.toLowerCase()}">${this.currentProduct.category}</a> → 
-                <span>${this.currentProduct.title}</span>
-            `;
-        }
-    }
-
-    selectImage(index) {
-        this.currentImage = index;
-        const mainImage = document.getElementById('mainImage');
-        if (mainImage) {
-            mainImage.src = this.currentProduct.images[index].src;
-            mainImage.alt = this.currentProduct.images[index].alt;
-        }
-        
-        // Atualizar thumbnail ativo
-        document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
-            thumb.classList.toggle('active', i === index);
-        });
-    }
-
-    updateVariantSelection() {
-        const selectedOptions = {};
-        
-        this.currentProduct.options.forEach(option => {
-            const select = document.getElementById(`option-${option.name.toLowerCase()}`);
-            if (select) {
-                selectedOptions[option.name.toLowerCase()] = select.value.toLowerCase();
-            }
-        });
-        
-        // Encontrar variante correspondente
-        const variant = this.currentProduct.variants.find(v => {
-            return Object.keys(selectedOptions).every(key => 
-                v.options[key] === selectedOptions[key]
-            );
-        });
-        
-        if (variant) {
-            this.selectVariant(variant);
-        }
-    }
-
-    selectVariant(variant) {
-        this.selectedVariant = variant;
-        this.currentPrice = variant.price;
-        
-        // Atualizar preço
-        const priceElement = document.getElementById('currentPrice');
-        if (priceElement) {
-            priceElement.textContent = this.formatPrice(this.currentPrice);
-        }
-        
-        // Atualizar disponibilidade
+    setupActionButtons() {
         const addToCartBtn = document.getElementById('addToCartBtn');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+
         if (addToCartBtn) {
-            if (variant.available) {
-                addToCartBtn.disabled = false;
-                addToCartBtn.textContent = 'Adicionar ao Carrinho';
-                addToCartBtn.className = 'btn-primary';
-            } else {
-                addToCartBtn.disabled = true;
-                addToCartBtn.textContent = 'Produto Indisponível';
-                addToCartBtn.className = 'btn-disabled';
-            }
+            addToCartBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.addToCart();
+            });
         }
-        
-        // Atualizar imagem se a variante tiver uma
-        if (variant.image) {
-            const mainImage = document.getElementById('mainImage');
-            if (mainImage) {
-                mainImage.src = variant.image.src;
-                mainImage.alt = variant.image.alt;
-            }
-        }
-        
-        this.updateTotalPrice();
-    }
 
-    updateTotalPrice() {
-        const personalizationData = this.personalization.getPersonalizationData();
-        const personalizationPrice = personalizationData ? personalizationData.price : 0;
-        const totalPrice = this.currentPrice + personalizationPrice;
-        
-        const totalPriceElement = document.getElementById('totalPrice');
-        if (totalPriceElement) {
-            totalPriceElement.textContent = this.formatPrice(totalPrice);
-        }
-        
-        // Mostrar breakdown do preço
-        const priceBreakdown = document.getElementById('priceBreakdown');
-        if (priceBreakdown) {
-            if (personalizationPrice > 0) {
-                priceBreakdown.innerHTML = `
-                    <div class="price-item">
-                        <span>Produto:</span>
-                        <span>${this.formatPrice(this.currentPrice)}</span>
-                    </div>
-                    <div class="price-item">
-                        <span>Personalização:</span>
-                        <span>${this.formatPrice(personalizationPrice)}</span>
-                    </div>
-                    <div class="price-item total">
-                        <span>Total:</span>
-                        <span>${this.formatPrice(totalPrice)}</span>
-                    </div>
-                `;
-            } else {
-                priceBreakdown.innerHTML = `
-                    <div class="price-item total">
-                        <span>Total:</span>
-                        <span>${this.formatPrice(totalPrice)}</span>
-                    </div>
-                `;
-            }
+        if (buyNowBtn) {
+            buyNowBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.buyNow();
+            });
         }
     }
 
-    async addToCart() {
-        if (!this.selectedVariant) {
-            this.showMessage('Selecione uma variante do produto', 'error');
-            return;
-        }
+    setupGalleryNavigation() {
+        const prevBtn = document.getElementById('prevImageBtn');
+        const nextBtn = document.getElementById('nextImageBtn');
 
-        const personalizationData = this.personalization.getPersonalizationData();
-        const properties = {};
-        
-        if (personalizationData) {
-            properties['Tipo de Personalização'] = personalizationData.type;
-            properties['Texto Personalizado'] = personalizationData.text || '';
-            properties['Fonte'] = personalizationData.font || '';
-            properties['Ícone'] = personalizationData.icon || '';
-            properties['Preço Personalização'] = this.formatPrice(personalizationData.price);
-        }
-
-        try {
-            this.showLoading(true, 'Adicionando ao carrinho...');
-            
-            const result = await this.api.addToCart(this.selectedVariant.id, 1, properties);
-            
-            if (result.success) {
-                this.showMessage('Produto adicionado ao carrinho com sucesso!', 'success');
-                
-                // Em produção, redirecionar para carrinho ou mostrar drawer
-                if (!API_CONFIG.isDevelopment) {
-                    setTimeout(() => {
-                        // Por enquanto só mostra mensagem, carrinho será implementado depois
-                        console.log('Redirecionamento para carrinho será implementado');
-                    }, 2000);
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (this.selectedImageIndex > 0) {
+                    this.selectedImageIndex--;
+                    this.renderGallery();
                 }
-            } else {
-                this.showMessage(result.message || 'Erro ao adicionar produto ao carrinho', 'error');
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                const maxIndex = (this.currentProduct?.images?.length || 1) - 1;
+                if (this.selectedImageIndex < maxIndex) {
+                    this.selectedImageIndex++;
+                    this.renderGallery();
+                }
+            });
+        }
+    }
+
+    setupPersonalizationListeners() {
+        const textInput = document.getElementById('personalizationText');
+        const fontSelect = document.getElementById('personalizationFont');
+        const colorSelect = document.getElementById('personalizationColor');
+        const positionInputs = document.querySelectorAll('input[name="position"]');
+
+        if (textInput) {
+            textInput.addEventListener('input', (e) => {
+                this.personalization.text = e.target.value;
+                this.updateCharCount();
+                this.updatePersonalizationPreview();
+            });
+        }
+
+        if (fontSelect) {
+            fontSelect.addEventListener('change', (e) => {
+                this.personalization.font = e.target.value;
+                this.updatePersonalizationPreview();
+            });
+        }
+
+        if (colorSelect) {
+            colorSelect.addEventListener('change', (e) => {
+                this.personalization.color = e.target.value;
+                this.updateColorPreview();
+                this.updatePersonalizationPreview();
+            });
+        }
+
+        positionInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                this.personalization.position = e.target.value;
+                this.updatePersonalizationPreview();
+            });
+        });
+    }
+
+    // ========================================
+    // IMAGE ZOOM E TABS
+    // ========================================
+
+    setupImageZoom() {
+        const mainImage = document.getElementById('mainProductImage');
+        const modal = document.getElementById('imageZoomModal');
+        const closeBtn = document.getElementById('zoomCloseBtn');
+        const overlay = document.getElementById('zoomModalOverlay');
+
+        if (mainImage && modal) {
+            mainImage.addEventListener('click', () => {
+                this.openImageZoom();
+            });
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    this.closeImageZoom();
+                });
+            }
+
+            if (overlay) {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        this.closeImageZoom();
+                    }
+                });
+            }
+        }
+
+        // Keyboard support for zoom modal
+        document.addEventListener('keydown', (e) => {
+            if (modal && modal.style.display === 'block') {
+                if (e.key === 'Escape') {
+                    this.closeImageZoom();
+                } else if (e.key === 'ArrowLeft') {
+                    this.navigateZoomImage(-1);
+                } else if (e.key === 'ArrowRight') {
+                    this.navigateZoomImage(1);
+                }
+            }
+        });
+    }
+
+    openImageZoom() {
+        const modal = document.getElementById('imageZoomModal');
+        const modalImage = document.getElementById('zoomModalImage');
+        
+        if (modal && modalImage && this.currentProduct.images) {
+            const currentImage = this.currentProduct.images[this.selectedImageIndex];
+            modalImage.src = currentImage.url;
+            modalImage.alt = currentImage.altText;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    closeImageZoom() {
+        const modal = document.getElementById('imageZoomModal');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+    }
+
+    navigateZoomImage(direction) {
+        const totalImages = this.currentProduct?.images?.length || 0;
+        if (totalImages <= 1) return;
+
+        if (direction > 0 && this.selectedImageIndex < totalImages - 1) {
+            this.selectedImageIndex++;
+        } else if (direction < 0 && this.selectedImageIndex > 0) {
+            this.selectedImageIndex--;
+        }
+
+        this.renderGallery();
+        this.openImageZoom(); // Update zoom modal image
+    }
+
+    setupTabs() {
+        const tabHeaders = document.querySelectorAll('.tab-header');
+        const tabPanels = document.querySelectorAll('.tab-panel');
+
+        tabHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const targetTab = header.dataset.tab;
+                
+                // Remove active from all
+                tabHeaders.forEach(h => h.classList.remove('active'));
+                tabPanels.forEach(p => p.classList.remove('active'));
+                
+                // Add active to clicked
+                header.classList.add('active');
+                const targetPanel = document.getElementById(`tab-${targetTab}`);
+                if (targetPanel) {
+                    targetPanel.classList.add('active');
+                }
+            });
+        });
+    }
+
+    // ========================================
+    // CART E STORAGE
+    // ========================================
+
+    loadCart() {
+        try {
+            const saved = localStorage.getItem(CONFIG.storageKey);
+            return saved ? JSON.parse(saved) : { items: [], timestamp: Date.now() };
+        } catch (error) {
+            console.warn('Erro ao carregar carrinho:', error);
+            return { items: [], timestamp: Date.now() };
+        }
+    }
+
+    saveCart(cart) {
+        try {
+            cart.timestamp = Date.now();
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(cart));
+            
+            // Dispatch event for other pages
+            window.dispatchEvent(new CustomEvent('cartUpdated', {
+                detail: { cart: cart }
+            }));
+        } catch (error) {
+            console.error('Erro ao salvar carrinho:', error);
+        }
+    }
+
+    updateCartBadge() {
+        try {
+            const cart = this.loadCart();
+            const count = cart.items.reduce((total, item) => total + item.quantity, 0);
+            
+            const badge = document.getElementById('headerCartBadge');
+            if (badge) {
+                badge.textContent = count;
+                badge.style.display = count > 0 ? 'inline' : 'none';
+            }
+
+            // Update global cart system if available
+            if (window.cartSystem) {
+                window.cartSystem.updateCartDisplay();
             }
         } catch (error) {
-            console.error('Erro ao adicionar ao carrinho:', error);
-            this.showMessage('Erro ao adicionar produto ao carrinho', 'error');
-        } finally {
-            this.showLoading(false);
+            console.error('Erro ao atualizar badge do carrinho:', error);
         }
     }
 
-    formatPrice(centavos) {
-        return new Intl.NumberFormat('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        }).format(centavos / 100);
+    // ========================================
+    // MODALS E NOTIFICAÇÕES
+    // ========================================
+
+    showCartModal() {
+        const modal = document.createElement('div');
+        modal.className = 'cart-success-modal';
+        modal.innerHTML = `
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>✅ Produto adicionado ao carrinho!</h3>
+                        <button class="close-btn" id="closeModal">✕</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>O que você gostaria de fazer agora?</p>
+                        <div class="modal-actions">
+                            <button class="btn-secondary" id="continueShopping">
+                                Continuar Comprando
+                            </button>
+                            <a href="../paginas/carrinho.html" class="btn-primary">
+                                Ver Carrinho
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Styles
+        Object.assign(modal.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: '10000'
+        });
+
+        const modalContent = modal.querySelector('.modal-content');
+        Object.assign(modalContent.style, {
+            background: 'white',
+            padding: '2rem',
+            borderRadius: '16px',
+            textAlign: 'center',
+            maxWidth: '400px',
+            position: 'relative',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+        });
+
+        const modalActions = modal.querySelector('.modal-actions');
+        Object.assign(modalActions.style, {
+            display: 'flex',
+            gap: '1rem',
+            marginTop: '1.5rem',
+            justifyContent: 'center'
+        });
+
+        const closeBtn = modal.querySelector('.close-btn');
+        Object.assign(closeBtn.style, {
+            position: 'absolute',
+            top: '10px',
+            right: '15px',
+            background: 'none',
+            border: 'none',
+            fontSize: '1.5rem',
+            cursor: 'pointer',
+            color: '#999'
+        });
+
+        document.body.appendChild(modal);
+
+        // Event listeners
+        modal.querySelector('#closeModal').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+
+        modal.querySelector('#continueShopping').addEventListener('click', () => {
+            document.body.removeChild(modal);
+        });
+
+        modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+            if (e.target.classList.contains('modal-overlay')) {
+                document.body.removeChild(modal);
+            }
+        });
+
+        // Auto close after 8 seconds
+        setTimeout(() => {
+            if (document.body.contains(modal)) {
+                document.body.removeChild(modal);
+            }
+        }, 8000);
     }
 
-    showLoading(show, message = 'Carregando...') {
+    showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <div class="notification-content">
+                <span class="notification-icon">
+                    ${type === 'success' ? '✓' : type === 'error' ? '✗' : 'ℹ'}
+                </span>
+                <span class="notification-message">${message}</span>
+            </div>
+        `;
+
+        Object.assign(notification.style, {
+            position: 'fixed',
+            top: '100px',
+            right: '20px',
+            padding: '1rem 1.5rem',
+            background: type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : 'var(--primary)',
+            color: 'white',
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            zIndex: '10000',
+            transform: 'translateX(100%)',
+            transition: 'transform 0.3s ease',
+            maxWidth: '300px',
+            fontSize: '0.9rem',
+            fontWeight: '500'
+        });
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => notification.style.transform = 'translateX(0)', 100);
+        
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 4000);
+    }
+
+    // ========================================
+    // UTILITIES
+    // ========================================
+
+    getSelectedOptionValue(optionName) {
+        return this.selectedVariant?.selectedOptions?.find(
+            opt => opt.name === optionName
+        )?.value || '';
+    }
+
+    getColorName(colorCode) {
+        const colorNames = {
+            '#FFFFFF': 'Branco',
+            '#000000': 'Preto',
+            '#FFD700': 'Dourado',
+            '#C0C0C0': 'Prata'
+        };
+        return colorNames[colorCode] || colorCode;
+    }
+
+    getPositionName(position) {
+        const positionNames = {
+            'center': 'Centro',
+            'bottom': 'Inferior',
+            'side': 'Lateral'
+        };
+        return positionNames[position] || position;
+    }
+
+    formatPrice(priceInCents) {
+        return (priceInCents / 100).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        });
+    }
+
+    updateElement(id, content) {
+        const element = document.getElementById(id);
+        if (element) {
+            if (content.includes('<')) {
+                element.innerHTML = content;
+            } else {
+                element.textContent = content;
+            }
+        }
+    }
+
+    setButtonLoading(buttonId, isLoading) {
+        const button = document.getElementById(buttonId);
+        if (!button) return;
+
+        const btnText = button.querySelector('.btn-text');
+        const btnIcon = button.querySelector('.btn-icon');
+        const btnLoading = button.querySelector('.btn-loading');
+
+        if (isLoading) {
+            button.disabled = true;
+            button.classList.add('loading');
+            if (btnText) btnText.style.opacity = '0';
+            if (btnIcon) btnIcon.style.opacity = '0';
+            if (btnLoading) btnLoading.style.display = 'inline-block';
+        } else {
+            button.disabled = false;
+            button.classList.remove('loading');
+            if (btnText) btnText.style.opacity = '1';
+            if (btnIcon) btnIcon.style.opacity = '1';
+            if (btnLoading) btnLoading.style.display = 'none';
+            
+            // Restore button text
+            this.updatePricing();
+        }
+    }
+
+    showMainLoading(show) {
         const loader = document.getElementById('pageLoader');
         if (loader) {
             if (show) {
-                loader.style.display = 'flex';
-                const loaderText = loader.querySelector('.loader-text');
-                if (loaderText) {
-                    loaderText.textContent = message;
-                }
+                loader.classList.remove('hidden');
             } else {
-                loader.style.display = 'none';
+                loader.classList.add('hidden');
             }
         }
     }
 
-    showMessage(message, type = 'info') {
-        // Criar ou atualizar elemento de mensagem
-        let messageEl = document.getElementById('messageAlert');
-        if (!messageEl) {
-            messageEl = document.createElement('div');
-            messageEl.id = 'messageAlert';
-            messageEl.className = 'message-alert';
-            document.body.appendChild(messageEl);
-        }
-        
-        messageEl.className = `message-alert ${type}`;
-        messageEl.textContent = message;
-        messageEl.style.display = 'block';
-        
-        // Auto-hide após 5 segundos
-        setTimeout(() => {
-            messageEl.style.display = 'none';
-        }, 5000);
-    }
-
     showError(message) {
-        const errorContainer = document.getElementById('errorContainer');
-        if (errorContainer) {
-            errorContainer.innerHTML = `
-                <div class="error-message">
-                    <h3>Ops! Algo deu errado</h3>
-                    <p>${message}</p>
-                    <button onclick="location.reload()" class="btn-primary">Tentar Novamente</button>
-                    <a href="produtos.html" class="btn-secondary">Voltar aos Produtos</a>
+        const errorContainer = document.createElement('div');
+        errorContainer.className = 'error-container';
+        errorContainer.innerHTML = `
+            <div class="error-content">
+                <h2>❌ Ops! Algo deu errado</h2>
+                <p>${message}</p>
+                <div class="error-actions">
+                    <button class="btn-primary" onclick="window.location.reload()">
+                        Tentar Novamente
+                    </button>
+                    <a href="../paginas/produtos.html" class="btn-secondary">
+                        Ver Outros Produtos
+                    </a>
                 </div>
-            `;
-            errorContainer.style.display = 'block';
-        }
-    }
+            </div>
+        `;
 
-    handleError(error) {
-        console.error('Erro na aplicação:', error);
-        this.showError(error.message || 'Erro inesperado');
-    }
-}
-
-// ============================================================================
-// INICIALIZAÇÃO DA APLICAÇÃO
-// ============================================================================
-
-// Instância global do controlador
-let productController;
-
-// Aguardar DOM carregar
-document.addEventListener('DOMContentLoaded', () => {
-    // Verificar se estamos na página correta
-    if (document.getElementById('productTitle')) {
-        productController = new ProductPageController();
-        productController.init();
-        
-        console.log('🎯 QUEISE - Sistema Completo Iniciado');
-        console.log('🛍️ Modo: Produção (conectado à Shopify)');
-        console.log('🏪 Loja:', API_CONFIG.shopify.domain);
-        console.log('🎨 Ícones QUEISE carregados:', Object.keys(QUEISE_ICONS));
-    }
-});
-
-// Funções auxiliares globais para uso nos event handlers HTML
-window.selectImage = (index) => productController?.selectImage(index);
-window.updateVariantSelection = () => productController?.updateVariantSelection();
-
-// ============================================================================
-// ESTILOS CSS ADICIONAIS
-// ============================================================================
-
-// Adicionar estilos dinamicamente
-const additionalStyles = `
-    .message-alert {
-        position: fixed;
-        top: 100px;
-        right: 20px;
-        padding: 15px 20px;
-        border-radius: 8px;
-        color: white;
-        font-weight: 600;
-        z-index: 10000;
-        display: none;
-        max-width: 400px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    .message-alert.success {
-        background: linear-gradient(135deg, #10B981, #059669);
-    }
-    
-    .message-alert.error {
-        background: linear-gradient(135deg, #EF4444, #DC2626);
-    }
-    
-    .message-alert.info {
-        background: linear-gradient(135deg, #3B82F6, #2563EB);
-    }
-    
-    .btn-disabled {
-        background: #9CA3AF !important;
-        cursor: not-allowed !important;
-        opacity: 0.6;
-    }
-    
-    .btn-disabled:hover {
-        transform: none !important;
-        box-shadow: none !important;
-    }
-    
-    .price-breakdown {
-        background: rgba(70, 130, 180, 0.05);
-        padding: 1rem;
-        border-radius: 8px;
-        margin-top: 1rem;
-    }
-    
-    .price-item {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 0.5rem;
-        font-size: 0.9rem;
-    }
-    
-    .price-item.total {
-        border-top: 1px solid var(--primary);
-        padding-top: 0.5rem;
-        font-weight: 700;
-        font-size: 1.1rem;
-        color: var(--primary);
-    }
-    
-    .error-message {
-        text-align: center;
-        padding: 3rem;
-        background: white;
-        border-radius: 16px;
-        box-shadow: var(--shadow-medium);
-        max-width: 500px;
-        margin: 2rem auto;
-    }
-    
-    .error-message h3 {
-        color: var(--text-dark);
-        margin-bottom: 1rem;
-        font-family: 'Playfair Display', serif;
-    }
-    
-    .error-message p {
-        color: var(--text-light);
-        margin-bottom: 2rem;
-    }
-    
-    .error-message .btn-primary {
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-    }
-    
-    #pageLoader .loader-text {
-        margin-top: 1rem;
-        color: var(--primary);
-        font-weight: 600;
-    }
-    
-    .personalization-field {
-        margin-bottom: 1rem;
-    }
-    
-    .personalization-field label {
-        display: block;
-        margin-bottom: 0.5rem;
-        font-weight: 600;
-        color: var(--text-dark);
-    }
-    
-    .personalization-field select,
-    .personalization-field input[type="text"] {
-        width: 100%;
-        padding: 0.75rem;
-        border: 2px solid #E5E7EB;
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.3s ease;
-    }
-    
-    .personalization-field select:focus,
-    .personalization-field input[type="text"]:focus {
-        outline: none;
-        border-color: var(--primary);
-    }
-    
-    .preview-text-vertical {
-        font-size: 18px;
-        font-weight: bold;
-        letter-spacing: 2px;
-    }
-    
-    .preview-text-horizontal {
-        font-size: 18px;
-        font-weight: bold;
-    }
-    
-    #personalizationPreview {
-        background: rgba(70, 130, 180, 0.05);
-        border: 2px dashed var(--primary);
-        border-radius: 12px;
-        padding: 2rem;
-        min-height: 100px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 1rem;
-    }
-`;
-
-// Injetar estilos na página
-if (!document.getElementById('shopify-integration-styles')) {
-    const styleElement = document.createElement('style');
-    styleElement.id = 'shopify-integration-styles';
-    styleElement.textContent = additionalStyles;
-    document.head.appendChild(styleElement);
-}
-
-// ============================================================================
-// EXPORTAR PARA USO EXTERNO (DEBUG)
-// ============================================================================
-
-// Para uso em outros scripts ou debug no console
-window.QueiseShopify = {
-    API_CONFIG,
-    ProductAPI,
-    PersonalizationSystem,
-    ProductPageController,
-    QUEISE_ICONS,
-    // Função helper para testar conexão
-    async testShopifyConnection() {
-        try {
-            const api = new ProductAPI();
-            await api.getProduct('garrafa-termica-1l-teste');
-            console.log('✅ Conexão com Shopify funcionando perfeitamente!');
-            return true;
-        } catch (error) {
-            console.error('❌ Erro na conexão com Shopify:', error);
-            return false;
-        }
-    },
-    // Função para testar ícones
-    testIcons() {
-        console.log('🎨 Ícones QUEISE disponíveis:', QUEISE_ICONS);
-        Object.keys(QUEISE_ICONS).forEach(key => {
-            console.log(`${key}: ${QUEISE_ICONS[key].name} (${QUEISE_ICONS[key].file})`);
+        Object.assign(errorContainer.style, {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            width: '100%',
+            height: '100%',
+            background: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: '9999',
+            textAlign: 'center'
         });
+
+        document.body.appendChild(errorContainer);
+    }
+
+    delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+}
+
+// ========================================
+// INICIALIZAÇÃO
+// ========================================
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.modernProductManager = new ModernProductManager();
+    });
+} else {
+    window.modernProductManager = new ModernProductManager();
+}
+
+// ========================================
+// ESTILOS CSS PARA COMPONENTES DINÂMICOS
+// ========================================
+
+if (!document.querySelector('#modern-product-styles')) {
+    const style = document.createElement('style');
+    style.id = 'modern-product-styles';
+    style.textContent = `
+        .notification-content {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .notification-icon {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .modal-header h3 {
+            color: var(--primary);
+            margin-bottom: 0;
+        }
+
+        .modal-body p {
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+        }
+
+        .error-content h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .error-content p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.8rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .close-btn:hover {
+            color: var(--primary);
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// ========================================
+// FUNÇÕES GLOBAIS PARA COMPATIBILIDADE
+// ========================================
+
+window.addProductToCart = function(productData) {
+    try {
+        const cart = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '{"items":[]}');
+        
+        const existingItem = cart.items.find(item => 
+            item.id === productData.id
+        );
+
+        if (existingItem) {
+            existingItem.quantity += productData.quantity || 1;
+        } else {
+            cart.items.push({
+                ...productData,
+                quantity: productData.quantity || 1,
+                timestamp: Date.now()
+            });
+        }
+
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(cart));
+        
+        window.dispatchEvent(new CustomEvent('cartUpdated', {
+            detail: { cart: cart }
+        }));
+
+        return true;
+    } catch (error) {
+        console.error('Erro ao adicionar ao carrinho:', error);
+        return false;
     }
 };
 
-console.log('🎉 QUEISE - Sistema Completo Carregado!');
-console.log('🔧 Para testar conexão: window.QueiseShopify.testShopifyConnection()');
-console.log('🎨 Para ver ícones: window.QueiseShopify.testIcons()');
-console.log('🛍️ Produto de teste: produto-individual.html?id=garrafa-termica-1l-teste');
+window.getCartCount = function() {
+    try {
+        const cart = JSON.parse(localStorage.getItem(CONFIG.storageKey) || '{"items":[]}');
+        return cart.items.reduce((total, item) => total + item.quantity, 0);
+    } catch (error) {
+        return 0;
+    }
+};
+
+// Export for global access
+window.ModernProductManager = ModernProductManager;
+
+console.log('Modern Product Manager inicializado completamente');

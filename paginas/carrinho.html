@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho - QUEISE</title>
+    <meta name="description" content="Revise seus produtos personalizados QUEISE antes de finalizar sua compra. Qualidade premium e exclusividade garantida.">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/carrinho.css">
+</head>
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="../imagens/logoQbonito2.png" alt="QUEISE Logo">
+                </div>
+                <div class="logo-write">
+                    <img src="../imagens/logoescrita2.png" alt="QUEISE Logo Escrito">
+                </div>
+            </a>
+            <ul class="nav-links">
+                <li><a href="../paginas/produtos.html">Produtos</a></li>
+                <li><a href="#colecoes">Coleções</a></li>
+                <li><a href="#para-empresas">Para Empresas</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#contato">Contato</a></li>
+            </ul>
+            <a href="#personalizar" class="cta-button">Personalizar Já</a>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-content">
+            <div class="breadcrumb-path">
+                <a href="../index.html">Início</a>
+                <span class="breadcrumb-separator">→</span>
+                <span class="breadcrumb-current">Carrinho</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section class="cart-section">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h1>Seu Carrinho</h1>
+                <div class="cart-count">
+                    <span id="cartItemCount">0 itens</span>
+                </div>
+            </div>
+
+            <!-- Empty Cart State -->
+            <div class="empty-cart" id="emptyCart" style="display: none;">
+                <div class="empty-cart-content">
+                    <div class="empty-cart-icon">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                            <circle cx="60" cy="60" r="60" fill="var(--gradient-soft)"/>
+                            <path d="M40 45h40l-4 25H44l-4-25z" stroke="var(--primary)" stroke-width="3" fill="none"/>
+                            <circle cx="50" cy="85" r="5" fill="var(--primary)"/>
+                            <circle cx="70" cy="85" r="5" fill="var(--primary)"/>
+                            <path d="M35 35h10l5 10" stroke="var(--primary)" stroke-width="3" fill="none"/>
+                        </svg>
+                    </div>
+                    <h2>Seu carrinho está vazio</h2>
+                    <p>Que tal adicionar alguns produtos personalizados únicos?</p>
+                    <a href="../paginas/produtos.html" class="btn-primary">
+                        Explorar Produtos
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Cart with Items -->
+            <div class="cart-with-items" id="cartWithItems">
+                <div class="cart-layout">
+                    <!-- Cart Items -->
+                    <div class="cart-items">
+                        <div class="cart-items-header">
+                            <h2>Itens do Carrinho</h2>
+                            <button class="clear-cart-btn" id="clearCartBtn">
+                                Limpar Carrinho
+                            </button>
+                        </div>
+
+                        <div class="cart-items-list" id="cartItemsList">
+                            <!-- Cart items will be dynamically inserted here -->
+                        </div>
+
+                        <!-- Continue Shopping -->
+                        <div class="continue-shopping">
+                            <a href="../paginas/produtos.html" class="btn-secondary">
+                                <span>←</span>
+                                Continuar Comprando
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Cart Summary -->
+                    <div class="cart-summary">
+                        <div class="summary-card">
+                            <h3>Resumo do Pedido</h3>
+                            
+                            <div class="summary-line">
+                                <span>Subtotal</span>
+                                <span id="subtotalPrice">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="summary-line">
+                                <span>Personalização</span>
+                                <span id="personalizationPrice">R$ 0,00</span>
+                            </div>
+                            
+                            <div class="summary-line">
+                                <span>Frete</span>
+                                <span id="shippingPrice">Calcular</span>
+                            </div>
+                            
+                            <div class="summary-divider"></div>
+                            
+                            <div class="summary-total">
+                                <span>Total</span>
+                                <span id="totalPrice">R$ 0,00</span>
+                            </div>
+
+                            <!-- Shipping Calculator -->
+                            <div class="shipping-calculator">
+                                <label for="zipCode">Calcular Frete</label>
+                                <div class="zip-input-group">
+                                    <input type="text" id="zipCode" placeholder="00000-000" maxlength="9">
+                                    <button type="button" id="calculateShipping" class="btn-calculate">
+                                        Calcular
+                                    </button>
+                                </div>
+                                <div class="shipping-options" id="shippingOptions" style="display: none;">
+                                    <!-- Shipping options will be inserted here -->
+                                </div>
+                            </div>
+
+                            <!-- Coupon Code -->
+                            <div class="coupon-section">
+                                <label for="couponCode">Cupom de Desconto</label>
+                                <div class="coupon-input-group">
+                                    <input type="text" id="couponCode" placeholder="Digite seu cupom">
+                                    <button type="button" id="applyCoupon" class="btn-calculate">
+                                        Aplicar
+                                    </button>
+                                </div>
+                                <div class="coupon-message" id="couponMessage"></div>
+                            </div>
+
+                            <!-- Checkout Button -->
+                            <button class="checkout-btn" id="checkoutBtn">
+                                Finalizar Compra
+                                <span>→</span>
+                            </button>
+
+                            <!-- Security Badges -->
+                            <div class="security-badges">
+                                <div class="security-item">
+                                    <span class="security-icon">🔒</span>
+                                    <span>Compra Segura</span>
+                                </div>
+                                <div class="security-item">
+                                    <span class="security-icon">📦</span>
+                                    <span>Entrega Garantida</span>
+                                </div>
+                                <div class="security-item">
+                                    <span class="security-icon">↩️</span>
+                                    <span>Troca Fácil</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Recommended Products -->
+    <section class="recommended-products scroll-animate">
+        <div class="recommended-content">
+            <div class="section-header">
+                <div class="tagline">Você também pode gostar</div>
+                <h2>Produtos Recomendados</h2>
+                <p>Complete sua experiência QUEISE com estes produtos únicos</p>
+            </div>
+
+            <div class="recommended-grid" id="recommendedGrid">
+                <!-- Recommended products will be dynamically inserted -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Item Template -->
+    <template id="cartItemTemplate">
+        <div class="cart-item" data-product-id="">
+            <div class="item-image">
+                <img src="" alt="Produto" loading="lazy">
+                <div class="item-customization-badge" style="display: none;">
+                    <span>Personalizado</span>
+                </div>
+            </div>
+            
+            <div class="item-details">
+                <h3 class="item-name"></h3>
+                <div class="item-variant"></div>
+                <div class="item-customization" style="display: none;">
+                    <div class="customization-preview">
+                        <strong>Personalização:</strong>
+                        <div class="customization-details"></div>
+                    </div>
+                </div>
+                <div class="item-actions">
+                    <button class="edit-item-btn" title="Editar">
+                        ✏️ Editar
+                    </button>
+                    <button class="remove-item-btn" title="Remover">
+                        🗑️ Remover
+                    </button>
+                </div>
+            </div>
+            
+            <div class="item-quantity">
+                <label>Quantidade</label>
+                <div class="quantity-controls">
+                    <button class="quantity-btn quantity-minus">-</button>
+                    <input type="number" class="quantity-input" value="1" min="1" max="99">
+                    <button class="quantity-btn quantity-plus">+</button>
+                </div>
+            </div>
+            
+            <div class="item-price">
+                <div class="current-price"></div>
+                <div class="price-breakdown">
+                    <div class="base-price"></div>
+                    <div class="customization-price" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Recommended Product Template -->
+    <template id="recommendedProductTemplate">
+        <div class="recommended-product">
+            <div class="recommended-image">
+                <img src="" alt="Produto Recomendado" loading="lazy">
+            </div>
+            <div class="recommended-info">
+                <h4 class="recommended-name"></h4>
+                <div class="recommended-price"></div>
+                <a href="#" class="btn-secondary btn-small">
+                    Ver Produto
+                    <span>→</span>
+                </a>
+            </div>
+        </div>
+    </template>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>QUEISE</h3>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua
+                    história. Nosso compromisso é com a excelência e a sofisticação em cada detalhe.</p>
+                <div class="tagline">Use Queise, Use Exclusividade!</div>
+            </div>
+            <div class="footer-section">
+                <h4>Produtos</h4>
+                <a href="#">Garrafas & Copos</a>
+                <a href="#">Bolsas Térmicas</a>
+                <a href="#">Malas & Mochilas</a>
+                <a href="#">Para Empresas</a>
+                <a href="#">Imãs de Geladeira</a>
+            </div>
+            <div class="footer-section">
+                <h4>Suporte</h4>
+                <a href="#">Central de Ajuda</a>
+                <a href="#">Como Personalizar</a>
+                <a href="#">Trocas e Devoluções</a>
+                <a href="#">Prazo de Entrega</a>
+                <a href="#">Contato</a>
+            </div>
+            <div class="footer-section">
+                <h4>Conecte-se</h4>
+                <a href="#">Instagram @usequeise</a>
+                <a href="#">Facebook</a>
+                <a href="#">WhatsApp</a>
+                <a href="#">E-mail</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
+            <div class="social-links">
+                <a href="#" class="social-link">IG</a>
+                <a href="#" class="social-link">FB</a>
+                <a href="#" class="social-link">WA</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script src="../js/carrinho.js"></script>
+</body>
+
+</html>
