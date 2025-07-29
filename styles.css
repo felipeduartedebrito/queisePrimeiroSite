@@ -1710,3 +1710,66 @@ section {
         font-size: 2rem;
     }
 }
+
+/* ========================================
+   CORREÇÃO: APENAS BORDAS DOS BOTÕES
+   Adicione este código no FINAL do styles.css
+   ======================================== */
+
+/* Botões principais da home - bordas menos arredondadas */
+.btn-primary {
+    border-radius: 6px !important;
+}
+
+.btn-secondary {
+    border-radius: 6px !important;
+}
+
+.cta-button {
+    border-radius: 6px !important;
+}
+
+.btn-white {
+    border-radius: 6px !important;
+}
+
+.btn-view-collection {
+    border-radius: 6px !important;
+}
+
+/* Outros botões do site para consistência */
+.btn-submit {
+    border-radius: 6px !important;
+}
+
+.load-more-btn {
+    border-radius: 6px !important;
+}
+
+.checkout-btn {
+    border-radius: 6px !important;
+}
+
+.add-to-cart-btn {
+    border-radius: 6px !important;
+}
+
+.buy-now-btn {
+    border-radius: 6px !important;
+}
+
+.btn-back {
+    border-radius: 6px !important;
+}
+
+.btn-next {
+    border-radius: 6px !important;
+}
+
+.btn-novo-produto {
+    border-radius: 6px !important;
+}
+
+.btn-comprar {
+    border-radius: 6px !important;
+}
