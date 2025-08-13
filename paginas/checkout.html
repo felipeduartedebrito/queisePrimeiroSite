@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Compra - QUEISE | Use Exclusividade</title>
+    <meta name="description" content="Finalize sua compra de produtos personalizados QUEISE de forma segura e rápida.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/checkout.css">
+</head>
+
+<body>
+    <!-- Page Loader -->
+    <div class="page-loader" id="pageLoader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header Minimal -->
+    <header class="header header-minimal" id="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <div class="logo-icon">
+                    <img src="../imagens/logoQbonito2.png" alt="QUEISE Logo">
+                </div>
+                <div class="logo-write">
+                    <img src="../imagens/logoescrita2.png" alt="QUEISE Logo Escrito">
+                </div>
+            </a>
+            
+            <div class="checkout-security">
+                <div class="security-badge">
+                    <svg class="security-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z" fill="currentColor"/>
+                    </svg>
+                    <span>Compra Segura</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="breadcrumb">
+        <div class="breadcrumb-content">
+            <a href="../index.html">Home</a>
+            <span class="breadcrumb-separator">→</span>
+            <a href="../paginas/carrinho.html">Carrinho</a>
+            <span class="breadcrumb-separator">→</span>
+            <span class="breadcrumb-current">Finalizar Compra</span>
+        </div>
+    </section>
+
+    <!-- Checkout Container -->
+    <section class="checkout-container">
+        <div class="checkout-layout">
+            
+            <!-- Checkout Form -->
+            <div class="checkout-form">
+                <form id="checkoutForm">
+                    
+                    <!-- Contact Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Informações de Contato</h2>
+                            <div class="section-number">1</div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" id="email" name="email" required>
+                                <div class="field-hint">Você receberá confirmações neste e-mail</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="phone">Telefone *</label>
+                                <input type="tel" id="phone" name="phone" placeholder="(11) 99999-9999" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="whatsapp">WhatsApp</label>
+                                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Information -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Endereço de Entrega</h2>
+                            <div class="section-number">2</div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="firstName">Nome *</label>
+                                <input type="text" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName">Sobrenome *</label>
+                                <input type="text" id="lastName" name="lastName" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="zipCode">CEP *</label>
+                                <input type="text" id="zipCode" name="zipCode" placeholder="00000-000" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Endereço *</label>
+                                <input type="text" id="address" name="address" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="number">Número *</label>
+                                <input type="text" id="number" name="number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="complement">Complemento</label>
+                                <input type="text" id="complement" name="complement" placeholder="Apto, bloco...">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row two-columns">
+                            <div class="form-group">
+                                <label for="neighborhood">Bairro *</label>
+                                <input type="text" id="neighborhood" name="neighborhood" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="city">Cidade *</label>
+                                <input type="text" id="city" name="city" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="state">Estado *</label>
+                                <select id="state" name="state" required>
+                                    <option value="">Selecione o estado</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Shipping Options -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Forma de Entrega</h2>
+                            <div class="section-number">3</div>
+                        </div>
+                        
+                        <div class="shipping-options" id="shippingOptions">
+                            <div class="shipping-loading">
+                                <div class="loading-spinner"></div>
+                                <p>Calculando opções de entrega...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Method -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <h2>Forma de Pagamento</h2>
+                            <div class="section-number">4</div>
+                        </div>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-option">
+                                <input type="radio" id="pix" name="paymentMethod" value="pix" checked>
+                                <label for="pix" class="payment-label">
+                                    <div class="payment-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="2" y="6" width="20" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                                            <path d="M6 10h12" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="payment-info">
+                                        <h4>PIX</h4>
+                                        <p>Aprovação instantânea</p>
+                                        <span class="payment-discount">5% de desconto</span>
+                                    </div>
+                                    <div class="payment-arrow">→</div>
+                                </label>
+                            </div>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="creditCard" name="paymentMethod" value="creditCard">
+                                <label for="creditCard" class="payment-label">
+                                    <div class="payment-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <rect x="2" y="5" width="20" height="14" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                                            <path d="M2 10h20" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="payment-info">
+                                        <h4>Cartão de Crédito</h4>
+                                        <p>Parcelamento até 12x</p>
+                                        <span class="payment-installments">sem juros</span>
+                                    </div>
+                                    <div class="payment-arrow">→</div>
+                                </label>
+                            </div>
+                            
+                            <div class="payment-option">
+                                <input type="radio" id="boleto" name="paymentMethod" value="boleto">
+                                <label for="boleto" class="payment-label">
+                                    <div class="payment-icon">
+                                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                            <polyline points="14,2 14,8 20,8" stroke="currentColor" stroke-width="2" fill="none"/>
+                                            <line x1="16" y1="13" x2="8" y2="13" stroke="currentColor" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="payment-info">
+                                        <h4>Boleto Bancário</h4>
+                                        <p>Vencimento em 3 dias úteis</p>
+                                        <span class="payment-note">3% de desconto</span>
+                                    </div>
+                                    <div class="payment-arrow">→</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <a href="../paginas/carrinho.html" class="btn-back">
+                            <span>←</span>
+                            Voltar ao Carrinho
+                        </a>
+                        
+                        <button type="submit" class="btn-finish-order">
+                            Finalizar Pedido
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="summary-card">
+                    <h3>Resumo do Pedido</h3>
+                    
+                    <!-- Cart Items Summary -->
+                    <div class="summary-items" id="summaryItems">
+                        <div class="summary-item">
+                            <div class="item-image">
+                                <img src="../imagens/placeholder-product.jpg" alt="Produto">
+                            </div>
+                            <div class="item-details">
+                                <div class="item-name">Garrafa Stanley 1L</div>
+                                <div class="item-variant">1L Azul</div>
+                                <div class="item-personalization">Personalizado: "JOÃO SILVA"</div>
+                                <div class="item-quantity">Qtd: 2</div>
+                            </div>
+                            <div class="item-price">R$ 185,00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Coupon Section -->
+                    <div class="coupon-section">
+                        <div class="coupon-input">
+                            <input type="text" id="couponCode" placeholder="Código de desconto">
+                            <button type="button" id="applyCoupon">Aplicar</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Price Breakdown -->
+                    <div class="price-breakdown">
+                        <div class="price-line">
+                            <span>Subtotal</span>
+                            <span id="subtotalPrice">R$ 370,00</span>
+                        </div>
+                        <div class="price-line">
+                            <span>Frete</span>
+                            <span id="shippingPrice">Calculando...</span>
+                        </div>
+                        <div class="price-line total-line">
+                            <span>Total</span>
+                            <span id="totalPrice">R$ 370,00</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Security Badges -->
+                    <div class="security-info">
+                        <div class="security-item">
+                            <svg class="security-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9V6z" fill="currentColor"/>
+                            </svg>
+                            <span>Dados protegidos com SSL</span>
+                        </div>
+                        <div class="security-item">
+                            <svg class="security-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 1l3 6 6 .75-4.5 4.5L18 19l-6-3.25L6 19l1.5-6.75L3 7.75 9 7z" fill="currentColor"/>
+                            </svg>
+                            <span>Compra 100% segura</span>
+                        </div>
+                        <div class="security-item">
+                            <svg class="security-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <polyline points="3.27,6.96 12,12.01 20.73,6.96" stroke="currentColor" stroke-width="2"/>
+                                <line x1="12" y1="22.08" x2="12" y2="12" stroke="currentColor" stroke-width="2"/>
+                            </svg>
+                            <span>Entrega garantida</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="../script.js"></script>
+    <script src="../js/checkout.js"></script>
+</body>
+
+</html>
