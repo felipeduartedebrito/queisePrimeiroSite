@@ -60,137 +60,136 @@
     </section>
 
     <!-- Products Main -->
-    <main class="products-main">
-        <div class="products-controls">
-            <!-- Filters Sidebar -->
-            <aside class="filters-sidebar">
-                <div class="filters-header">
-                    <h3>Filtros</h3>
-                    <button class="clear-filters" onclick="clearAllFilters()">Limpar</button>
-                </div>
+    <!-- ESTRUTURA HTML LIMPA -->
+<!-- Products Main -->
+<main class="products-main">
+    <!-- Coluna Esquerda: Filtros -->
+    <aside class="filters-sidebar">
+        <div class="filters-header">
+            <h3>Filtros</h3>
+            <button class="clear-filters" onclick="clearAllFilters()">Limpar</button>
+        </div>
 
-                <!-- Category Filter -->
-                <div class="filter-group">
-                    <div class="filter-title">Categoria</div>
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <input type="checkbox" id="garrafas" name="category" value="garrafas">
-                            <label for="garrafas">Garrafas Térmicas</label>
-                            <span class="filter-count">12</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="copos" name="category" value="copos">
-                            <label for="copos">Copos Térmicos</label>
-                            <span class="filter-count">8</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="bolsas" name="category" value="bolsas">
-                            <label for="bolsas">Bolsas Térmicas</label>
-                            <span class="filter-count">6</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="malas" name="category" value="malas">
-                            <label for="malas">Malas & Mochilas</label>
-                            <span class="filter-count">10</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="imas" name="category" value="imas">
-                            <label for="imas">Imãs de Geladeira</label>
-                            <span class="filter-count">15</span>
-                        </div>
-                    </div>
+        <!-- Category Filter -->
+        <div class="filter-group">
+            <div class="filter-title">Categoria</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="checkbox" id="garrafas" name="category" value="garrafas">
+                    <label for="garrafas">Garrafas Térmicas</label>
+                    <span class="filter-count">12</span>
                 </div>
-
-                <!-- Price Filter -->
-                <div class="filter-group">
-                    <div class="filter-title">Faixa de Preço</div>
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <input type="checkbox" id="price1" name="price" value="0-50">
-                            <label for="price1">Até R$ 50</label>
-                            <span class="filter-count">8</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="price2" name="price" value="50-100">
-                            <label for="price2">R$ 50 - R$ 100</label>
-                            <span class="filter-count">15</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="price3" name="price" value="100-200">
-                            <label for="price3">R$ 100 - R$ 200</label>
-                            <span class="filter-count">12</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="price4" name="price" value="200+">
-                            <label for="price4">Acima de R$ 200</label>
-                            <span class="filter-count">6</span>
-                        </div>
-                    </div>
-                    <div class="price-range">
-                        <div class="price-inputs">
-                            <input type="number" class="price-input" placeholder="Min" id="priceMin">
-                            <span class="price-separator">-</span>
-                            <input type="number" class="price-input" placeholder="Max" id="priceMax">
-                        </div>
-                    </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="copos" name="category" value="copos">
+                    <label for="copos">Copos Térmicos</label>
+                    <span class="filter-count">8</span>
                 </div>
-
-                <!-- Features Filter -->
-                <div class="filter-group">
-                    <div class="filter-title">Características</div>
-                    <div class="filter-options">
-                        <div class="filter-option">
-                            <input type="checkbox" id="termico" name="features" value="termico">
-                            <label for="termico">Térmico</label>
-                            <span class="filter-count">26</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="personalizavel" name="features" value="personalizavel">
-                            <label for="personalizavel">Personalizável</label>
-                            <span class="filter-count">41</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="premium" name="features" value="premium">
-                            <label for="premium">Premium</label>
-                            <span class="filter-count">18</span>
-                        </div>
-                        <div class="filter-option">
-                            <input type="checkbox" id="eco" name="features" value="eco">
-                            <label for="eco">Ecológico</label>
-                            <span class="filter-count">12</span>
-                        </div>
-                    </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="bolsas" name="category" value="bolsas">
+                    <label for="bolsas">Bolsas Térmicas</label>
+                    <span class="filter-count">6</span>
                 </div>
-            </aside>
-
-            <!-- Search and Sort Area -->
-            <div class="search-sort-area">
-                <!-- Search -->
-                <div class="search-container">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" class="search-input" placeholder="Buscar produtos..." id="searchInput">
+                <div class="filter-option">
+                    <input type="checkbox" id="malas" name="category" value="malas">
+                    <label for="malas">Malas & Mochilas</label>
+                    <span class="filter-count">10</span>
                 </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="imas" name="category" value="imas">
+                    <label for="imas">Imãs de Geladeira</label>
+                    <span class="filter-count">15</span>
+                </div>
+            </div>
+        </div>
 
-                <!-- Sort Controls -->
-                <div class="sort-controls">
-                    <div class="results-count">
-                        Mostrando <strong id="resultsCount">51</strong> produtos
-                    </div>
-                    <div class="sort-dropdown">
-                        <label for="sortSelect">Ordenar por:</label>
-                        <select class="sort-select" id="sortSelect">
-                            <option value="relevance">Relevância</option>
-                            <option value="name-asc">Nome A-Z</option>
-                            <option value="name-desc">Nome Z-A</option>
-                            <option value="price-asc">Menor Preço</option>
-                            <option value="price-desc">Maior Preço</option>
-                            <option value="newest">Mais Recentes</option>
-                        </select>
-                    </div>
-                    <div class="view-toggle">
-                        <button class="view-btn active" onclick="setGridView()">⊞</button>
-                        <button class="view-btn" onclick="setListView()">☰</button>
-                    </div>
+        <!-- Price Filter -->
+        <div class="filter-group">
+            <div class="filter-title">Faixa de Preço</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="checkbox" id="price1" name="price" value="0-50">
+                    <label for="price1">Até R$ 50</label>
+                    <span class="filter-count">8</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price2" name="price" value="50-100">
+                    <label for="price2">R$ 50 - R$ 100</label>
+                    <span class="filter-count">15</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price3" name="price" value="100-200">
+                    <label for="price3">R$ 100 - R$ 200</label>
+                    <span class="filter-count">12</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="price4" name="price" value="200+">
+                    <label for="price4">Acima de R$ 200</label>
+                    <span class="filter-count">6</span>
+                </div>
+            </div>
+            <div class="price-range">
+                <div class="price-inputs">
+                    <input type="number" class="price-input" placeholder="Min" id="priceMin">
+                    <span class="price-separator">-</span>
+                    <input type="number" class="price-input" placeholder="Max" id="priceMax">
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Filter -->
+        <div class="filter-group">
+            <div class="filter-title">Características</div>
+            <div class="filter-options">
+                <div class="filter-option">
+                    <input type="checkbox" id="termico" name="features" value="termico">
+                    <label for="termico">Térmico</label>
+                    <span class="filter-count">26</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="personalizavel" name="features" value="personalizavel">
+                    <label for="personalizavel">Personalizável</label>
+                    <span class="filter-count">41</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="premium" name="features" value="premium">
+                    <label for="premium">Premium</label>
+                    <span class="filter-count">18</span>
+                </div>
+                <div class="filter-option">
+                    <input type="checkbox" id="eco" name="features" value="eco">
+                    <label for="eco">Ecológico</label>
+                    <span class="filter-count">12</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Coluna Direita: Busca + Produtos + Paginação -->
+    <div class="products-area">
+        <!-- Search and Sort Area -->
+        <div class="search-sort-area">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" class="search-input" placeholder="Buscar produtos..." id="searchInput">
+            </div>
+            <div class="sort-controls">
+                <div class="results-count">
+                    Mostrando <strong id="resultsCount">51</strong> produtos
+                </div>
+                <div class="sort-dropdown">
+                    <label for="sortSelect">Ordenar por:</label>
+                    <select class="sort-select" id="sortSelect">
+                        <option value="relevance">Relevância</option>
+                        <option value="name-asc">Nome A-Z</option>
+                        <option value="name-desc">Nome Z-A</option>
+                        <option value="price-asc">Menor Preço</option>
+                        <option value="price-desc">Maior Preço</option>
+                        <option value="newest">Mais Recentes</option>
+                    </select>
+                </div>
+                <div class="view-toggle">
+                    <button class="view-btn active" onclick="setGridView()">⊞</button>
+                    <button class="view-btn" onclick="setListView()">☰</button>
                 </div>
             </div>
         </div>
@@ -209,11 +208,7 @@
                     <div class="product-category">Garrafas Térmicas</div>
                     <h3 class="product-name">Garrafa Stanley 1L Personalizada</h3>
                     <p class="product-description">Garrafa térmica premium com isolamento duplo, mantém bebidas quentes por 12h e frias por 24h.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">Térmico</span>
-                        <span class="feature-tag">1L</span>
-                        <span class="feature-tag">Aço Inox</span>
-                    </div>
+                    <div class="product-spacer"></div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 165,00</div>
@@ -243,11 +238,6 @@
                     <div class="product-category">Copos Térmicos</div>
                     <h3 class="product-name">Copo Térmico 500ml</h3>
                     <p class="product-description">Copo ergonômico com tampa antivazamento, ideal para café, chá e bebidas quentes.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">Térmico</span>
-                        <span class="feature-tag">500ml</span>
-                        <span class="feature-tag">Tampa</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 80,00</div>
@@ -278,11 +268,6 @@
                     <div class="product-category">Bolsas Térmicas</div>
                     <h3 class="product-name">Bolsa Térmica Premium 20L</h3>
                     <p class="product-description">Bolsa térmica de alta capacidade com isolamento superior para manter alimentos frescos.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">20L</span>
-                        <span class="feature-tag">Isolamento</span>
-                        <span class="feature-tag">Resistente</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">Sob consulta</div>
@@ -312,11 +297,6 @@
                     <div class="product-category">Malas & Mochilas</div>
                     <h3 class="product-name">Mochila Executiva 30L</h3>
                     <p class="product-description">Mochila profissional com compartimentos organizadores e design sofisticado.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">30L</span>
-                        <span class="feature-tag">Executiva</span>
-                        <span class="feature-tag">Organizadores</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 220,00</div>
@@ -346,11 +326,6 @@
                     <div class="product-category">Imãs de Geladeira</div>
                     <h3 class="product-name">Imã Personalizado Premium</h3>
                     <p class="product-description">Imã de geladeira personalizado com alta qualidade de impressão e acabamento premium.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">Alta Qualidade</span>
-                        <span class="feature-tag">Durável</span>
-                        <span class="feature-tag">Colorido</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 25,00</div>
@@ -381,11 +356,6 @@
                     <div class="product-category">Garrafas Térmicas</div>
                     <h3 class="product-name">Garrafa Térmica 600ml Sport</h3>
                     <p class="product-description">Garrafa compacta ideal para esportes e atividades físicas com bico esportivo.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">Sport</span>
-                        <span class="feature-tag">600ml</span>
-                        <span class="feature-tag">Bico</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 125,00</div>
@@ -415,11 +385,6 @@
                     <div class="product-category">Bolsas Térmicas</div>
                     <h3 class="product-name">Bolsa Térmica Compacta 8L</h3>
                     <p class="product-description">Bolsa térmica pequena e prática para lanches e bebidas do dia a dia.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">8L</span>
-                        <span class="feature-tag">Compacta</span>
-                        <span class="feature-tag">Prática</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 85,00</div>
@@ -450,11 +415,6 @@
                     <div class="product-category">Malas & Mochilas</div>
                     <h3 class="product-name">Mala de Viagem Premium 60L</h3>
                     <p class="product-description">Mala de viagem resistente com rodas e design moderno para suas aventuras.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">60L</span>
-                        <span class="feature-tag">Rodas</span>
-                        <span class="feature-tag">Resistente</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 350,00</div>
@@ -484,11 +444,6 @@
                     <div class="product-category">Copos Térmicos</div>
                     <h3 class="product-name">Copo Para Café 350ml</h3>
                     <p class="product-description">Copo térmico especial para café com design elegante e isolamento perfeito.</p>
-                    <div class="product-features">
-                        <span class="feature-tag">Café</span>
-                        <span class="feature-tag">350ml</span>
-                        <span class="feature-tag">Elegante</span>
-                    </div>
                     <div class="product-pricing">
                         <div>
                             <div class="price-main">R$ 65,00</div>
@@ -526,7 +481,8 @@
             <a href="#" class="pagination-btn">12</a>
             <button class="pagination-btn" onclick="changePage('next')">Próximo →</button>
         </nav>
-    </main>
+    </div>
+</main>
 
     <!-- Footer -->
     <footer class="footer">

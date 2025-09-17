@@ -1,4 +1,11 @@
-/* QUEISE - Premium Stylesheet */
+/* ========================================
+   QUEISE - Premium Stylesheet (Refatorado)
+   Blocos 1-4: Base, Header, Hero, Buttons
+   ======================================== */
+
+/* ========================================
+   BLOCO 1: BASE & VARIABLES
+   ======================================== */
 
 /* Reset & Base Styles */
 * {
@@ -7,21 +14,37 @@
     box-sizing: border-box;
 }
 
-/* CSS Variables */
+/* CSS Variables - Design System */
 :root {
+    /* Cores principais */
     --primary: #4682B4;
     --secondary: #5F9EA0;
     --accent: #B0C4DE;
     --bg: #FFFAFA;
     --text-dark: #2C3E50;
     --text-light: #7F8C8D;
+    
+    /* Gradientes */
     --gradient-primary: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
     --gradient-soft: linear-gradient(135deg, #B0C4DE 0%, #E6F3FF 100%);
     --gradient-sophisticated: linear-gradient(135deg, rgba(70, 130, 180, 0.8) 0%, rgba(95, 158, 160, 0.9) 100%);
+    
+    /* Sombras */
     --shadow-soft: 0 8px 32px rgba(70, 130, 180, 0.1);
     --shadow-medium: 0 16px 48px rgba(70, 130, 180, 0.15);
     --shadow-strong: 0 24px 64px rgba(70, 130, 180, 0.2);
+    
+    /* Backdrop */
     --backdrop: rgba(255, 255, 255, 0.85);
+    
+    /* Transições */
+    --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    --transition-fast: all 0.3s ease;
+    
+    /* Espaçamentos */
+    --section-padding: 8rem 5%;
+    --border-radius-card: 24px;
+    --border-radius-button: 6px;
 }
 
 /* Body */
@@ -33,7 +56,11 @@ body {
     overflow-x: hidden;
 }
 
-/* Header */
+/* ========================================
+   BLOCO 2: HEADER & NAVIGATION
+   ======================================== */
+
+/* Header fixo */
 .header {
     position: fixed;
     top: 0;
@@ -42,7 +69,7 @@ body {
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(70, 130, 180, 0.08);
     z-index: 1000;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
 }
 
 .header.scrolled {
@@ -50,7 +77,7 @@ body {
     box-shadow: var(--shadow-soft);
 }
 
-/* Navigation Spacing - ALTERADO: Melhorado espaçamento entre elementos do header */
+/* Navegação principal */
 .nav {
     display: flex;
     justify-content: space-between;
@@ -58,10 +85,9 @@ body {
     padding: 1.2rem 5%;
     max-width: 1400px;
     margin: 0 auto;
-
-    /* NOVO: Espaçamento entre seções do nav */
 }
 
+/* Logo sistema */
 .logo {
     display: flex;
     align-items: center;
@@ -70,7 +96,7 @@ body {
     font-size: 1.8rem;
     color: var(--primary);
     text-decoration: none;
-    transition: transform 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .logo:hover {
@@ -85,14 +111,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .logo-icon img {
     width: 56px;
     height: 56px;
     object-fit: fill;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .logo-write {
@@ -103,14 +129,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .logo-write img {
     width: 150px;
     height: 40px;
     object-fit: fill;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .logo:hover .logo-icon {
@@ -123,14 +149,13 @@ body {
     transform: scale(1.1);
 }
 
+/* Links de navegação */
 .nav-links {
     display: flex;
     list-style: none;
     gap: 3rem;
-    /* ALTERADO: Aumentado de 2.5rem para 3rem para melhor espaçamento */
     align-items: center;
     margin: 0 auto;
-    /* NOVO: Centraliza a navegação */
 }
 
 .nav-links a {
@@ -138,7 +163,7 @@ body {
     color: var(--text-dark);
     font-weight: 500;
     font-size: 0.95rem;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
     position: relative;
     padding: 0.5rem 0;
 }
@@ -151,7 +176,7 @@ body {
     width: 0;
     height: 2px;
     background: var(--gradient-primary);
-    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     transform: translateX(-50%);
 }
 
@@ -163,16 +188,17 @@ body {
     width: 100%;
 }
 
+/* CTA Button do Header */
 .cta-button {
     background: var(--gradient-primary);
     color: white;
     padding: 0.9rem 2rem;
     border: none;
-    border-radius: 50px;
+    border-radius: var(--border-radius-button);
     font-weight: 600;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     text-decoration: none;
     box-shadow: var(--shadow-soft);
     position: relative;
@@ -199,7 +225,11 @@ body {
     left: 100%;
 }
 
-/* Hero Section */
+/* ========================================
+   BLOCO 3: HERO SECTION
+   ======================================== */
+
+/* Hero principal */
 .hero {
     min-height: 100vh;
     display: flex;
@@ -228,6 +258,7 @@ body {
     pointer-events: none;
 }
 
+/* Conteúdo do Hero */
 .hero-content {
     padding: 2rem 5%;
     max-width: 1400px;
@@ -241,20 +272,9 @@ body {
     z-index: 2;
 }
 
+/* Texto do Hero */
 .hero-text {
     animation: slideInLeft 1s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-@keyframes slideInLeft {
-    0% {
-        opacity: 0;
-        transform: translateX(-60px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
 }
 
 .hero-text .tagline {
@@ -304,18 +324,7 @@ body {
     animation: fadeInUp 1s 0.9s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
+/* Botões do Hero */
 .hero-buttons {
     display: flex;
     gap: 1.5rem;
@@ -324,17 +333,72 @@ body {
     animation: fadeInUp 1s 1.2s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
 }
 
-/* Buttons */
+/* Animações do Hero */
+@keyframes slideInLeft {
+    0% {
+        opacity: 0;
+        transform: translateX(-60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInRight {
+    0% {
+        opacity: 0;
+        transform: translateX(60px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* ========================================
+   BLOCO 4: BUTTON SYSTEM
+   ======================================== */
+
+/* Base para todos os botões */
+.btn-base {
+    padding: 1.2rem 2.5rem;
+    border: none;
+    border-radius: var(--border-radius-button);
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Botão Primário */
 .btn-primary {
     background: var(--gradient-primary);
     color: white;
     padding: 1.2rem 2.5rem;
     border: none;
-    border-radius: 50px;
+    border-radius: var(--border-radius-button);
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -364,16 +428,17 @@ body {
     left: 100%;
 }
 
+/* Botão Secundário */
 .btn-secondary {
     background: transparent;
     color: var(--primary);
     border: 2px solid var(--primary);
     padding: 1.2rem 2.5rem;
-    border-radius: 50px;
+    border-radius: var(--border-radius-button);
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -404,16 +469,17 @@ body {
     width: 100%;
 }
 
+/* Botão Branco */
 .btn-white {
     background: white;
     color: var(--primary);
     padding: 1.2rem 2.5rem;
     border: none;
-    border-radius: 50px;
+    border-radius: var(--border-radius-button);
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -426,7 +492,11 @@ body {
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* Product Showcase */
+/* ========================================
+   BLOCO 5: PRODUCT SHOWCASE
+   ======================================== */
+
+/* Hero Visual */
 .hero-visual {
     display: flex;
     justify-content: center;
@@ -435,18 +505,7 @@ body {
     animation: slideInRight 1s 0.5s cubic-bezier(0.165, 0.84, 0.44, 1) backwards;
 }
 
-@keyframes slideInRight {
-    0% {
-        opacity: 0;
-        transform: translateX(60px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
+/* Product Showcase */
 .product-showcase {
     position: relative;
     width: 100%;
@@ -466,18 +525,19 @@ body {
     transform: rotateY(0deg) rotateX(0deg);
 }
 
+/* Product Card Base */
 .product-card {
     width: 200px;
     height: 300px;
     background: white;
-    border-radius: 24px;
+    border-radius: var(--border-radius-card);
     box-shadow: var(--shadow-medium);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
     padding: 2.5rem 2rem;
-    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     position: relative;
     overflow: hidden;
     border: 1px solid rgba(70, 130, 180, 0.08);
@@ -504,6 +564,7 @@ body {
     background: var(--gradient-sophisticated);
 }
 
+/* Product Image Container */
 .product-image {
     width: 160px;
     height: 180px;
@@ -526,10 +587,10 @@ body {
     border-color: rgba(70, 130, 180, 0.2);
 }
 
+/* Product Visual (imagem dentro do container) */
 .product-visual {
     width: 100%;
     height: 200px;
-    /* ou o que fizer sentido pro layout */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -540,18 +601,11 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    /* Ou 'cover', veja a diferença abaixo */
     display: block;
     border-radius: 8px;
-    /* se quiser bordas arredondadas */
 }
 
-.product-card:hover .product-visual::before {
-    width: 50px;
-    height: 50px;
-    background: white;
-}
-
+/* Product Info */
 .product-info {
     text-align: center;
     position: relative;
@@ -572,6 +626,7 @@ body {
     font-size: 1rem;
 }
 
+/* Premium Badge */
 .premium-badge {
     position: absolute;
     top: 1rem;
@@ -588,14 +643,19 @@ body {
     z-index: 3;
 }
 
-/* Section Styles */
+/* ========================================
+   BLOCO 6: FEATURED PRODUCTS SECTION
+   ======================================== */
+
+/* Section Base */
 .featured-products {
-    padding: 8rem 5% 6rem;
+    padding: 6rem 5% 6rem;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
 }
 
+/* Section Header (reutilizable) */
 .section-header {
     text-align: center;
     margin-bottom: 5rem;
@@ -641,29 +701,41 @@ body {
 /* Featured Grid */
 .featured-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
     margin-bottom: 4rem;
 }
 
-.featured-main {
+/* Featured Card Base */
+.featured-main,
+.featured-side {
     background: white;
-    border-radius: 32px;
-    overflow: hidden;
-    box-shadow: var(--shadow-medium);
-    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-    position: relative;
+    border-radius: var(--border-radius-card);
+    overflow: visible;
+    box-shadow: var(--shadow-soft);
+    transition: var(--transition-smooth);
     border: 1px solid rgba(70, 130, 180, 0.08);
+    display: flex;
+    flex-direction: column;
+    min-height: 420px;
+    max-height: 420px;
 }
 
-.featured-main:hover {
+.featured-main:hover,
+.featured-side:hover {
     transform: translateY(-8px);
     box-shadow: var(--shadow-strong);
 }
 
+.featured-side:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Featured Image */
 .featured-image {
-    height: 400px;
-    background: var(--gradient-sophisticated);
+    height: 200px;
+    background: var(--gradient-soft);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -690,6 +762,11 @@ body {
     background: rgba(255, 255, 255, 0.25);
 }
 
+.featured-side .featured-image::before {
+    width: 80px;
+    height: 80px;
+}
+
 .featured-image::after {
     content: '';
     position: absolute;
@@ -703,16 +780,31 @@ body {
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
+.featured-side .featured-image::after {
+    width: 50px;
+    height: 50px;
+}
+
+/* Featured Content */
 .featured-content {
-    padding: 2.5rem;
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .featured-content h3 {
     font-family: 'Playfair Display', serif;
-    font-size: 1.8rem;
+    font-size: 1.3rem;
     color: var(--text-dark);
     margin-bottom: 1rem;
     font-weight: 600;
+}
+
+.featured-side .featured-content h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .featured-content p {
@@ -721,6 +813,12 @@ body {
     line-height: 1.6;
 }
 
+.featured-side .featured-content p {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+/* Featured Price */
 .featured-price {
     font-size: 1.4rem;
     font-weight: 700;
@@ -728,6 +826,11 @@ body {
     margin-bottom: 1.5rem;
     position: relative;
     display: inline-block;
+}
+
+.featured-side .featured-price {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
 }
 
 .featured-price::before {
@@ -742,74 +845,51 @@ body {
     z-index: -1;
 }
 
-.featured-side {
-    background: white;
-    border-radius: 24px;
-    overflow: hidden;
-    box-shadow: var(--shadow-soft);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    border: 1px solid rgba(70, 130, 180, 0.08);
+/* Collection Link */
+.collection-link,
+.featured-main .collection-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-fast);
+    margin-top: auto;
 }
 
-.featured-side:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-medium);
+.collection-link:hover {
+    color: var(--secondary);
+    transform: translateX(4px);
 }
 
-.featured-side .featured-image {
-    height: 200px;
-}
+/* ========================================
+   BLOCO 7: COLLECTIONS SECTION
+   ======================================== */
 
-.featured-side .featured-image::before {
-    width: 80px;
-    height: 80px;
-}
-
-.featured-side .featured-image::after {
-    width: 50px;
-    height: 50px;
-}
-
-.featured-side .featured-content {
-    padding: 1.5rem;
-}
-
-.featured-side .featured-content h3 {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-}
-
-.featured-side .featured-content p {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.featured-side .featured-price {
-    font-size: 1.1rem;
-    margin-bottom: 1rem;
-}
-
-/* NOVA SEÇÃO: Collections Section - Separada para melhor organização */
+/* Collections Section */
 .collections-section {
-    padding: 8rem 5% 6rem;
+    padding: 6rem 5% 8rem;
     max-width: 1400px;
     margin: 0 auto;
     position: relative;
 }
 
-/* Collections Grid - Mantido do layout original */
+/* Collections Grid */
 .collections-overview {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
 
+/* Collection Card */
 .collection-card {
     background: white;
-    border-radius: 24px;
+    border-radius: var(--border-radius-card);
     overflow: hidden;
     box-shadow: var(--shadow-soft);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     position: relative;
     border: 1px solid rgba(70, 130, 180, 0.08);
 }
@@ -819,6 +899,7 @@ body {
     box-shadow: var(--shadow-medium);
 }
 
+/* Collection Image */
 .collection-image {
     height: 220px;
     background: var(--gradient-soft);
@@ -870,6 +951,7 @@ body {
     transform: translate(-50%, -50%) scale(1.1);
 }
 
+/* Collection Content */
 .collection-content {
     padding: 2rem;
 }
@@ -888,24 +970,13 @@ body {
     line-height: 1.6;
 }
 
-.collection-link {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.collection-link:hover {
-    color: var(--secondary);
-    transform: translateX(4px);
-}
+/* ========================================
+   BLOCO 8: PARA EMPRESAS SECTION
+   ======================================== */
 
 /* Para Empresas Section */
 .para-empresas {
-    padding: 8rem 5%;
+    padding: var(--section-padding);
     background: var(--gradient-sophisticated);
     color: white;
     position: relative;
@@ -928,6 +999,7 @@ body {
     pointer-events: none;
 }
 
+/* Para Empresas Content */
 .para-empresas-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -939,6 +1011,7 @@ body {
     z-index: 2;
 }
 
+/* Para Empresas Text */
 .para-empresas-text .tagline {
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.8);
@@ -974,6 +1047,7 @@ body {
     opacity: 0.9;
 }
 
+/* Para Empresas Features */
 .para-empresas-features {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -987,7 +1061,7 @@ body {
     border-radius: 16px;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .empresa-feature:hover {
@@ -1007,6 +1081,7 @@ body {
     line-height: 1.5;
 }
 
+/* Para Empresas Visual */
 .para-empresas-visual {
     display: flex;
     justify-content: center;
@@ -1020,6 +1095,7 @@ body {
     max-width: 400px;
 }
 
+/* Empresa Card */
 .empresa-card {
     background: rgba(255, 255, 255, 0.1);
     border-radius: 20px;
@@ -1027,7 +1103,7 @@ body {
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
 }
 
 .empresa-card:hover {
@@ -1035,6 +1111,7 @@ body {
     transform: translateY(-8px);
 }
 
+/* Empresa Icon */
 .empresa-icon {
     width: 60px;
     height: 60px;
@@ -1047,7 +1124,7 @@ body {
     font-weight: bold;
     color: white;
     font-size: 1.2rem;
-    transition: all 0.4s ease;
+    transition: var(--transition-smooth);
 }
 
 .empresa-card:hover .empresa-icon {
@@ -1066,10 +1143,14 @@ body {
     opacity: 0.8;
 }
 
+/* ========================================
+   BLOCO 9: ABOUT SECTION
+   ======================================== */
+
 /* About Section */
 .about {
     background: linear-gradient(135deg, rgba(176, 196, 222, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
-    padding: 8rem 5%;
+    padding: var(--section-padding);
     position: relative;
     overflow: hidden;
 }
@@ -1090,6 +1171,7 @@ body {
     pointer-events: none;
 }
 
+/* About Content */
 .about-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -1101,6 +1183,7 @@ body {
     z-index: 2;
 }
 
+/* About Text */
 .about-text .tagline {
     font-size: 0.9rem;
     color: var(--secondary);
@@ -1137,6 +1220,7 @@ body {
     line-height: 1.7;
 }
 
+/* About Features */
 .about-features {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1150,7 +1234,7 @@ body {
     text-align: center;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(70, 130, 180, 0.08);
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .feature:hover {
@@ -1159,6 +1243,7 @@ body {
     background: rgba(255, 255, 255, 0.95);
 }
 
+/* Feature Icon */
 .feature-icon {
     width: 60px;
     height: 60px;
@@ -1172,7 +1257,7 @@ body {
     font-size: 1.4rem;
     box-shadow: var(--shadow-soft);
     position: relative;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .feature-icon img {
@@ -1188,7 +1273,7 @@ body {
     inset: 8px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 8px;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
 }
 
 .feature:hover .feature-icon::before {
@@ -1208,6 +1293,7 @@ body {
     line-height: 1.5;
 }
 
+/* About Visual */
 .about-visual {
     display: flex;
     justify-content: center;
@@ -1215,6 +1301,7 @@ body {
     position: relative;
 }
 
+/* Logo Display */
 .logo-display {
     width: 350px;
     height: 350px;
@@ -1279,20 +1366,25 @@ body {
     filter: brightness(0) invert(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
 }
 
-/* NOVA SEÇÃO: Contact Section - Para completar a navegação */
+/* ========================================
+   BLOCO 10: CONTACT SECTION
+   ======================================== */
+
+/* Contact Section */
 .contact-section {
-    padding: 8rem 5%;
+    padding: var(--section-padding);
     background: linear-gradient(135deg, rgba(176, 196, 222, 0.03) 0%, rgba(95, 158, 160, 0.02) 100%);
     position: relative;
 }
 
+/* Contact Content */
 .contact-content {
     max-width: 1400px;
     margin: 0 auto;
     text-align: center;
 }
 
-/* NOVO: Grid de informações de contato */
+/* Contact Info Grid */
 .contact-info {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -1300,13 +1392,13 @@ body {
     margin-top: 4rem;
 }
 
-/* NOVO: Cards de contato com hover effects */
+/* Contact Item */
 .contact-item {
     background: white;
     padding: 2.5rem;
-    border-radius: 24px;
+    border-radius: var(--border-radius-card);
     box-shadow: var(--shadow-soft);
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: var(--transition-smooth);
     border: 1px solid rgba(70, 130, 180, 0.08);
 }
 
@@ -1329,6 +1421,10 @@ body {
     font-weight: 600;
 }
 
+/* ========================================
+   BLOCO 11: FOOTER
+   ======================================== */
+
 /* Footer */
 .footer {
     background: linear-gradient(135deg, var(--text-dark) 0%, #34495e 100%);
@@ -1348,6 +1444,7 @@ body {
     background: var(--gradient-primary);
 }
 
+/* Footer Content */
 .footer-content {
     max-width: 1400px;
     margin: 0 auto;
@@ -1357,6 +1454,7 @@ body {
     margin-bottom: 3rem;
 }
 
+/* Footer Brand */
 .footer-brand h3 {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
@@ -1377,6 +1475,7 @@ body {
     font-style: italic;
 }
 
+/* Footer Section */
 .footer-section h4 {
     margin-bottom: 1.5rem;
     font-weight: 600;
@@ -1388,7 +1487,7 @@ body {
     text-decoration: none;
     display: block;
     margin-bottom: 0.8rem;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
     padding: 0.2rem 0;
 }
 
@@ -1397,6 +1496,7 @@ body {
     transform: translateX(4px);
 }
 
+/* Footer Bottom */
 .footer-bottom {
     max-width: 1400px;
     margin: 0 auto;
@@ -1414,6 +1514,7 @@ body {
     font-size: 0.9rem;
 }
 
+/* Social Links */
 .social-links {
     display: flex;
     gap: 1rem;
@@ -1429,7 +1530,7 @@ body {
     justify-content: center;
     color: white;
     text-decoration: none;
-    transition: all 0.3s ease;
+    transition: var(--transition-fast);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     font-weight: 600;
@@ -1441,7 +1542,11 @@ body {
     box-shadow: 0 8px 24px rgba(70, 130, 180, 0.3);
 }
 
-/* Loading Animation */
+/* ========================================
+   BLOCO 12: LOADING & ANIMATIONS
+   ======================================== */
+
+/* Page Loader */
 .page-loader {
     position: fixed;
     top: 0;
@@ -1461,6 +1566,7 @@ body {
     visibility: hidden;
 }
 
+/* Loader Animation */
 .loader {
     width: 60px;
     height: 60px;
@@ -1474,7 +1580,6 @@ body {
     0% {
         transform: rotate(0deg);
     }
-
     100% {
         transform: rotate(360deg);
     }
@@ -1522,89 +1627,83 @@ body {
 }
 
 @keyframes float {
-
-    0%,
-    100% {
+    0%, 100% {
         transform: translateY(0px) translateX(0px);
     }
-
     25% {
         transform: translateY(-30px) translateX(20px);
     }
-
     50% {
         transform: translateY(-15px) translateX(-25px);
     }
-
     75% {
         transform: translateY(-35px) translateX(10px);
     }
 }
 
-/* Section Spacing - ALTERADO: Melhorado espaçamento entre seções principais */
+/* ========================================
+   BLOCO 13: SECTION SPACING
+   ======================================== */
+
+/* Section Base - Removido espaçamento automático desnecessário */
 section {
-    margin-bottom: 2rem;
-    /* NOVO: Espaçamento consistente entre seções */
+    /* Removido margin-bottom genérico para controle manual */
 }
 
-/* ALTERADO: Espaçamento otimizado para seções principais */
+/* Seções principais com espaçamento controlado */
 .hero,
 .featured-products,
 .collections-section,
 .para-empresas,
 .about,
 .contact-section {
-    margin-bottom: 0;
-    /* Remove margens padrão para controle manual */
+    margin-bottom: 0; /* Controle manual de espaçamento */
 }
 
-/* ALTERADO: Padding reduzido para melhor fluxo visual */
+/* Featured products - spacing otimizado */
 .featured-products {
-    padding-top: 6rem;
-    /* Reduzido de 8rem para melhor espaçamento */
+    padding-top: 6rem; /* Otimizado de 8rem para melhor fluxo */
 }
 
-/* NOVO: Espaçamento específico para nova seção de coleções */
+/* Collections section - spacing específico */
 .collections-section {
     padding-top: 6rem;
     padding-bottom: 8rem;
 }
 
-/* Mantido: Espaçamento das seções existentes */
-.para-empresas {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-}
-
-.about {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
-}
-
-/* NOVO: Espaçamento para seção de contato */
+/* Outras seções mantêm padding padrão via variável */
+.para-empresas,
+.about,
 .contact-section {
-    padding-top: 8rem;
-    padding-bottom: 8rem;
+    padding: var(--section-padding); /* 8rem 5% via variável */
 }
 
-/* Mobile Responsiveness */
+/* ========================================
+   BLOCO 14: MEDIA QUERIES - RESPONSIVIDADE
+   ======================================== */
+
+/* Tablet - 1024px e abaixo */
 @media (max-width: 1024px) {
+    /* Hero responsivo */
     .hero-content {
         grid-template-columns: 1fr;
         gap: 4rem;
         text-align: center;
     }
 
+    /* About responsivo */
     .about-content {
         grid-template-columns: 1fr;
         gap: 4rem;
         text-align: center;
     }
 
+    /* Featured grid responsivo */
     .featured-grid {
         grid-template-columns: 1fr;
     }
 
+    /* Para empresas responsivo */
     .para-empresas-content {
         grid-template-columns: 1fr;
         gap: 4rem;
@@ -1612,7 +1711,9 @@ section {
     }
 }
 
+/* Mobile - 768px e abaixo */
 @media (max-width: 768px) {
+    /* Navigation mobile */
     .nav-links {
         display: none;
     }
@@ -1621,6 +1722,7 @@ section {
         padding: 1rem 5%;
     }
 
+    /* Hero mobile */
     .hero-text h1 {
         font-size: 3rem;
     }
@@ -1634,18 +1736,26 @@ section {
         align-items: center;
     }
 
-    .section-header h2 {
-        font-size: 2.2rem;
-    }
-
+    /* Typography mobile */
+    .section-header h2,
     .about-text h2 {
         font-size: 2.2rem;
     }
 
+    /* Grids mobile */
     .about-features {
         grid-template-columns: 1fr;
     }
 
+    .para-empresas-features {
+        grid-template-columns: 1fr;
+    }
+
+    .empresas-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer mobile */
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1656,6 +1766,7 @@ section {
         text-align: center;
     }
 
+    /* Product showcase mobile */
     .showcase-grid {
         grid-template-columns: 1fr;
         transform: none;
@@ -1666,18 +1777,11 @@ section {
         max-width: 280px;
         margin: 0 auto;
     }
-
-    .para-empresas-features {
-        grid-template-columns: 1fr;
-    }
-
-    .empresas-grid {
-        grid-template-columns: 1fr;
-    }
 }
 
+/* Mobile pequeno - 480px e abaixo */
 @media (max-width: 480px) {
-
+    /* Padding mobile pequeno */
     .hero,
     .featured-products,
     .about,
@@ -1686,6 +1790,7 @@ section {
         padding-right: 4%;
     }
 
+    /* Typography mobile pequeno */
     .hero-text h1 {
         font-size: 2.5rem;
     }
@@ -1694,6 +1799,11 @@ section {
         font-size: 1.1rem;
     }
 
+    .para-empresas-text h2 {
+        font-size: 2rem;
+    }
+
+    /* Buttons mobile pequeno */
     .btn-primary,
     .btn-secondary,
     .btn-white {
@@ -1701,75 +1811,47 @@ section {
         font-size: 1rem;
     }
 
+    /* Logo display mobile pequeno */
     .logo-display {
         width: 280px;
         height: 280px;
     }
-
-    .para-empresas-text h2 {
-        font-size: 2rem;
-    }
 }
 
 /* ========================================
-   CORREÇÃO: APENAS BORDAS DOS BOTÕES
-   Adicione este código no FINAL do styles.css
+   BLOCO 15: BUTTON FIXES - SISTEMA UNIFICADO
    ======================================== */
 
-/* Botões principais da home - bordas menos arredondadas */
-.btn-primary {
-    border-radius: 6px !important;
-}
+/* 
+NOTA: Este bloco substitui completamente as correções com !important
+Agora todos os botões usam border-radius consistente via variável CSS
+*/
 
-.btn-secondary {
-    border-radius: 6px !important;
-}
-
-.cta-button {
-    border-radius: 6px !important;
-}
-
+/* Botões principais - já definidos no Bloco 4, mas garantindo consistência */
+.btn-primary,
+.btn-secondary,
+.cta-button,
 .btn-white {
-    border-radius: 6px !important;
+    border-radius: var(--border-radius-button); /* 6px via variável */
 }
 
-.btn-view-collection {
-    border-radius: 6px !important;
-}
-
-/* Outros botões do site para consistência */
-.btn-submit {
-    border-radius: 6px !important;
-}
-
-.load-more-btn {
-    border-radius: 6px !important;
-}
-
-.checkout-btn {
-    border-radius: 6px !important;
-}
-
-.add-to-cart-btn {
-    border-radius: 6px !important;
-}
-
-.buy-now-btn {
-    border-radius: 6px !important;
-}
-
-.btn-back {
-    border-radius: 6px !important;
-}
-
-.btn-next {
-    border-radius: 6px !important;
-}
-
-.btn-novo-produto {
-    border-radius: 6px !important;
-}
-
+/* Botões específicos do sistema - casos de uso futuro */
+.btn-view-collection,
+.btn-submit,
+.load-more-btn,
+.checkout-btn,
+.add-to-cart-btn,
+.buy-now-btn,
+.btn-back,
+.btn-next,
+.btn-novo-produto,
 .btn-comprar {
-    border-radius: 6px !important;
+    border-radius: var(--border-radius-button);
+    /* Herdam estilos base dos botões principais conforme necessário */
 }
+
+/* 
+REMOVIDAS: Todas as 13 regras com !important do CSS original
+BENEFÍCIO: Agora o border-radius é controlado centralmente via --border-radius-button
+RESULTADO: Manutenção muito mais simples e sem conflitos de especificidade
+*/
