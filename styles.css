@@ -517,12 +517,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    transform: rotateY(-8deg) rotateX(5deg);
     transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-}
-
-.showcase-grid:hover {
-    transform: rotateY(0deg) rotateX(0deg);
 }
 
 /* Product Card Base */
