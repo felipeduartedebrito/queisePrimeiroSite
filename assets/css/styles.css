@@ -4,19 +4,19 @@
    ======================================== */
 
 /* === BASE === */
-@import url('assets/css/base/variables.css');
-@import url('assets/css/base/reset.css');
-@import url('assets/css/base/typography.css');
+@import url('base/variables.css');
+@import url('base/reset.css');
+@import url('base/typography.css');
 
 /* === COMPONENTS === */
-@import url('assets/css/components/header.css');
-@import url('assets/css/components/buttons.css');
-@import url('assets/css/components/cards.css');
-@import url('assets/css/components/footer.css');
-@import url('assets/css/components/animations.css');
+@import url('components/header.css');
+@import url('components/buttons.css');
+@import url('components/cards.css');
+@import url('components/footer.css');
+@import url('components/animations.css');
 
 /* === PAGES === */
-@import url('assets/css/pages/home.css');
+@import url('pages/home.css');
 
 /* 
   ✅ ESTRUTURA MODULAR IMPLEMENTADA
