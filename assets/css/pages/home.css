@@ -1,0 +1,438 @@
+/* ========================================
+   QUEISE - HOME PAGE STYLES
+   ======================================== */
+
+/* === HERO SECTION === */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(176, 196, 222, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
+    padding: 8rem 5% 4rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-text p {
+    font-size: 1.3rem;
+    color: var(--text-light);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.logo-display {
+    width: 400px;
+    height: 400px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-strong);
+    animation: float 6s ease-in-out infinite;
+}
+
+.logo-display img {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+/* === FEATURED PRODUCTS SECTION === */
+.featured-products {
+    padding-top: 6rem;
+    padding-bottom: 8rem;
+    background: white;
+}
+
+.featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* === COLLECTIONS SECTION === */
+.collections-section {
+    padding-top: 6rem;
+    padding-bottom: 8rem;
+    background: linear-gradient(135deg, rgba(176, 196, 222, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
+}
+
+.collections-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 5%;
+}
+
+/* === PARA EMPRESAS SECTION === */
+.para-empresas {
+    padding: var(--section-padding);
+    background: var(--gradient-sophisticated);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.para-empresas::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(45deg,
+        transparent,
+        transparent 100px,
+        rgba(255, 255, 255, 0.03) 100px,
+        rgba(255, 255, 255, 0.03) 102px);
+    pointer-events: none;
+}
+
+.para-empresas-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.para-empresas-text .tagline {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.para-empresas-text h2 {
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+    color: white;
+}
+
+.para-empresas-text p {
+    font-size: 1.2rem;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+    opacity: 0.9;
+    color: white;
+}
+
+.para-empresas-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.empresa-feature {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1.5rem;
+    border-radius: 16px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: var(--transition-fast);
+}
+
+.empresa-feature:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-4px);
+}
+
+.empresa-feature h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.empresa-feature p {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    line-height: 1.5;
+    color: white;
+}
+
+.para-empresas-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.empresas-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    max-width: 400px;
+}
+
+.empresa-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: center;
+    transition: var(--transition-smooth);
+}
+
+.empresa-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-8px);
+}
+
+.empresa-icon {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-weight: bold;
+    color: white;
+    font-size: 1.2rem;
+    transition: var(--transition-smooth);
+}
+
+.empresa-card:hover .empresa-icon {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.empresa-card h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: white;
+}
+
+.empresa-card p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    color: white;
+}
+
+/* === ABOUT SECTION === */
+.about {
+    background: linear-gradient(135deg, rgba(176, 196, 222, 0.05) 0%, rgba(95, 158, 160, 0.03) 100%);
+    padding: var(--section-padding);
+    position: relative;
+    overflow: hidden;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(90deg,
+        transparent,
+        transparent 200px,
+        rgba(70, 130, 180, 0.01) 200px,
+        rgba(70, 130, 180, 0.01) 202px);
+    pointer-events: none;
+}
+
+.about-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+.about-text h2 {
+    font-size: 2.8rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-text p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.8;
+}
+
+.about-features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.about-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    transform: rotate(-5deg);
+}
+
+.showcase-grid .product-card {
+    width: 100%;
+    max-width: 240px;
+}
+
+.showcase-grid .product-card:nth-child(even) {
+    transform: translateY(30px);
+}
+
+/* === CONTACT SECTION === */
+.contact-section {
+    padding: var(--section-padding);
+    background: white;
+}
+
+/* === SECTION SPACING === */
+section {
+    margin-bottom: 0;
+}
+
+.hero,
+.featured-products,
+.collections-section,
+.para-empresas,
+.about,
+.contact-section {
+    margin-bottom: 0;
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 1024px) {
+    .hero-content,
+    .about-content,
+    .para-empresas-content {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+        text-align: center;
+    }
+    
+    .featured-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .para-empresas-features {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding-top: 6rem;
+    }
+    
+    .hero-text h1 {
+        font-size: 3rem;
+    }
+    
+    .hero-text p {
+        font-size: 1.2rem;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .section-header h2,
+    .about-text h2 {
+        font-size: 2.2rem;
+    }
+    
+    .about-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .para-empresas-features,
+    .empresas-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .showcase-grid {
+        grid-template-columns: 1fr;
+        transform: none;
+    }
+    
+    .product-card {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    
+    .logo-display {
+        width: 280px;
+        height: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero,
+    .featured-products,
+    .about,
+    .para-empresas {
+        padding-left: 4%;
+        padding-right: 4%;
+    }
+    
+    .hero-text h1 {
+        font-size: 2.5rem;
+    }
+    
+    .hero-text p {
+        font-size: 1.1rem;
+    }
+    
+    .para-empresas-text h2 {
+        font-size: 2rem;
+    }
+}

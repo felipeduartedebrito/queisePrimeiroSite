@@ -1,0 +1,102 @@
+/* ========================================
+   QUEISE - BUTTONS
+   ======================================== */
+
+/* === BOTÃO BASE === */
+.btn-primary,
+.btn-secondary,
+.btn-white,
+.cta-button {
+    display: inline-block;
+    padding: 1.2rem 3rem;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius: var(--border-radius-button);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    text-align: center;
+}
+
+/* === BOTÃO PRIMARY === */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* === BOTÃO SECONDARY === */
+.btn-secondary {
+    background: transparent;
+    color: var(--primary);
+    border: 2px solid var(--primary);
+}
+
+.btn-secondary:hover {
+    background: var(--primary);
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* === BOTÃO WHITE === */
+.btn-white {
+    background: rgba(255, 255, 255, 0.95);
+    color: var(--primary);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+.btn-white:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+/* === CTA BUTTON (usado no header) === */
+.cta-button {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow-soft);
+}
+
+.cta-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+/* === BOTÕES ESPECÍFICOS DO SISTEMA === */
+.btn-view-collection,
+.btn-submit,
+.load-more-btn,
+.checkout-btn,
+.add-to-cart-btn,
+.buy-now-btn,
+.btn-back,
+.btn-next,
+.btn-novo-produto,
+.btn-comprar {
+    border-radius: var(--border-radius-button);
+}
+
+/* === RESPONSIVIDADE === */
+@media (max-width: 768px) {
+    .btn-primary,
+    .btn-secondary,
+    .btn-white {
+        padding: 1rem 2rem;
+        font-size: 1rem;
+    }
+    
+    .cta-button {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.95rem;
+    }
+}

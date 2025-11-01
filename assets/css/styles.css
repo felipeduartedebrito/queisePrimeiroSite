@@ -1,0 +1,38 @@
+/* ========================================
+   QUEISE - MASTER STYLESHEET
+   Arquivo principal que importa todos os módulos CSS
+   ======================================== */
+
+/* === BASE === */
+@import url('assets/css/base/variables.css');
+@import url('assets/css/base/reset.css');
+@import url('assets/css/base/typography.css');
+
+/* === COMPONENTS === */
+@import url('assets/css/components/header.css');
+@import url('assets/css/components/buttons.css');
+@import url('assets/css/components/cards.css');
+@import url('assets/css/components/footer.css');
+@import url('assets/css/components/animations.css');
+
+/* === PAGES === */
+@import url('assets/css/pages/home.css');
+
+/* 
+  ✅ ESTRUTURA MODULAR IMPLEMENTADA
+  
+  📁 Organização:
+  - base/: Variables, Reset, Typography
+  - components/: Header, Buttons, Cards, Footer, Animations
+  - pages/: Home (estilos específicos da index.html)
+  
+  🎯 Benefícios:
+  - Fácil manutenção
+  - Código organizado por responsabilidade
+  - Reutilizável em outras páginas
+  - Performance otimizada
+  
+  📝 Próximos passos:
+  - Fase 2: Modularizar JavaScript
+  - Fase 3: Limpar HTML
+*/
