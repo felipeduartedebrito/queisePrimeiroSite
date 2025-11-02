@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 2 - Notificações</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        button {
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: scale(1.05); }
+        .btn-success { background: #28a745; color: white; }
+        .btn-error { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        .btn-multiple { background: #6c757d; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔔 Teste 2: Notificações</h1>
+        <p>Clique nos botões para testar cada tipo de notificação:</p>
+        
+        <button class="btn-success" onclick="testSuccess()">✅ Success</button>
+        <button class="btn-error" onclick="testError()">❌ Error</button>
+        <button class="btn-warning" onclick="testWarning()">⚠️ Warning</button>
+        <button class="btn-info" onclick="testInfo()">ℹ️ Info</button>
+        
+        <hr style="margin: 2rem 0;">
+        
+        <button class="btn-multiple" onclick="testMultiple()">
+            🔄 Testar Múltiplas (3x)
+        </button>
+        
+        <hr style="margin: 2rem 0;">
+        
+        <h3>✅ Checklist:</h3>
+        <ul>
+            <li>Notificação aparece no canto superior direito?</li>
+            <li>Tem animação de entrada?</li>
+            <li>Tem ícone correto?</li>
+            <li>Cor está correta?</li>
+            <li>Botão X fecha a notificação?</li>
+            <li>Fecha sozinha após 4 segundos?</li>
+            <li>Múltiplas notificações empilham?</li>
+        </ul>
+    </div>
+
+    <script type="module">
+        import { Notification, notificationManager } from './assets/js/components/Notification.js';
+
+        window.testSuccess = () => {
+            Notification.success('✅ Operação realizada com sucesso!');
+        };
+
+        window.testError = () => {
+            Notification.error('❌ Ocorreu um erro ao processar a solicitação');
+        };
+
+        window.testWarning = () => {
+            Notification.warning('⚠️ Atenção! Esta ação não pode ser desfeita');
+        };
+
+        window.testInfo = () => {
+            Notification.info('ℹ️ Informação importante para o usuário');
+        };
+
+        window.testMultiple = () => {
+            notificationManager.success('Primeira notificação');
+            setTimeout(() => notificationManager.info('Segunda notificação'), 500);
+            setTimeout(() => notificationManager.warning('Terceira notificação'), 1000);
+        };
+
+        console.log('✅ Notification.js carregado com sucesso!');
+    </script>
+</body>
+</html>

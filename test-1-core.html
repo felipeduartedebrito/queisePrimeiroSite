@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 1 - Core Modules</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        .result { margin: 1rem 0; padding: 1rem; border-radius: 8px; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        button { padding: 0.5rem 1rem; margin: 0.5rem; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Teste 1: Core Modules</h1>
+    <p>Testando: config.js, storage.js, utils.js, api.js</p>
+    
+    <div id="results"></div>
+    
+    <button onclick="runTests()">▶️ Executar Testes</button>
+
+    <script type="module">
+        import { STORAGE_KEYS, debugLog, CART_CONFIG } from './assets/js/core/config.js';
+        import { Storage, CartStorage } from './assets/js/core/storage.js';
+        import { formatPrice, isValidEmail, debounce } from './assets/js/core/utils.js';
+        import { api } from './assets/js/core/api.js';
+
+        const results = document.getElementById('results');
+
+        function addResult(test, passed, message) {
+            const div = document.createElement('div');
+            div.className = `result ${passed ? 'success' : 'error'}`;
+            div.innerHTML = `<strong>${passed ? '✅' : '❌'} ${test}</strong><br>${message}`;
+            results.appendChild(div);
+        }
+
+        window.runTests = async function() {
+            results.innerHTML = '<h3>Executando testes...</h3>';
+
+            // TESTE 1: Config
+            try {
+                const hasStorageKeys = STORAGE_KEYS && STORAGE_KEYS.cart;
+                const hasCartConfig = CART_CONFIG && CART_CONFIG.maxQuantity;
+                addResult(
+                    'Config.js', 
+                    hasStorageKeys && hasCartConfig,
+                    `STORAGE_KEYS.cart = ${STORAGE_KEYS.cart}<br>CART_CONFIG.maxQuantity = ${CART_CONFIG.maxQuantity}`
+                );
+            } catch (error) {
+                addResult('Config.js', false, error.message);
+            }
+
+            // TESTE 2: Storage
+            try {
+                Storage.set('test', { value: 123 });
+                const retrieved = Storage.get('test');
+                const passed = retrieved && retrieved.value === 123;
+                addResult(
+                    'Storage.js',
+                    passed,
+                    `Salvou e recuperou: ${JSON.stringify(retrieved)}`
+                );
+                Storage.remove('test');
+            } catch (error) {
+                addResult('Storage.js', false, error.message);
+            }
+
+            // TESTE 3: CartStorage
+            try {
+                CartStorage.clear();
+                CartStorage.addItem({
+                    id: 'test-1',
+                    name: 'Produto Teste',
+                    basePrice: 10000,
+                    quantity: 1
+                });
+                const count = CartStorage.getCount();
+                const total = CartStorage.getTotal();
+                addResult(
+                    'CartStorage',
+                    count === 1 && total === 10000,
+                    `Count: ${count}, Total: R$ ${total/100}`
+                );
+                CartStorage.clear();
+            } catch (error) {
+                addResult('CartStorage', false, error.message);
+            }
+
+            // TESTE 4: Utils - formatPrice
+            try {
+                const formatted = formatPrice(16500);
+                const passed = formatted === 'R$ 165,00';
+                addResult(
+                    'Utils - formatPrice',
+                    passed,
+                    `16500 centavos = ${formatted}`
+                );
+            } catch (error) {
+                addResult('Utils - formatPrice', false, error.message);
+            }
+
+            // TESTE 5: Utils - isValidEmail
+            try {
+                const valid = isValidEmail('teste@email.com');
+                const invalid = !isValidEmail('email-invalido');
+                addResult(
+                    'Utils - isValidEmail',
+                    valid && invalid,
+                    `teste@email.com = ${valid}, email-invalido = ${!invalid}`
+                );
+            } catch (error) {
+                addResult('Utils - isValidEmail', false, error.message);
+            }
+
+            // TESTE 6: Utils - debounce
+            try {
+                let counter = 0;
+                const debounced = debounce(() => counter++, 100);
+                debounced();
+                debounced();
+                debounced();
+                setTimeout(() => {
+                    addResult(
+                        'Utils - debounce',
+                        counter === 1,
+                        `Chamou 3x mas executou ${counter}x (deve ser 1)`
+                    );
+                }, 200);
+            } catch (error) {
+                addResult('Utils - debounce', false, error.message);
+            }
+
+            // TESTE 7: API Mock
+            try {
+                const { product } = await api.getProduct('garrafa-stanley-1l');
+                const passed = product && product.title;
+                addResult(
+                    'API - getProduct',
+                    passed,
+                    `Produto: ${product?.title || 'não encontrado'}<br>Preço: ${formatPrice(product?.price || 0)}`
+                );
+            } catch (error) {
+                addResult('API - getProduct', false, error.message);
+            }
+
+            // TESTE 8: API - getProducts
+            try {
+                const { products } = await api.getProducts({ first: 5 });
+                const passed = products && products.length > 0;
+                addResult(
+                    'API - getProducts',
+                    passed,
+                    `Retornou ${products?.length || 0} produtos`
+                );
+            } catch (error) {
+                addResult('API - getProducts', false, error.message);
+            }
+
+            addResult('CONCLUÍDO', true, 'Todos os testes executados! Veja os resultados acima.');
+        };
+
+        // Auto-executar ao carregar
+        setTimeout(() => runTests(), 500);
+    </script>
+</body>
+</html>
