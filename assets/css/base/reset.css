@@ -13,9 +13,12 @@
 body {
     font-family: 'Inter', sans-serif;
     background-color: var(--bg);
-    color: var(--text-dark);
-    line-height: 1.6;
+    color: var(--text-primary);
+    line-height: 1.7;
     overflow-x: hidden;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* === SCROLL BEHAVIOR === */
@@ -34,6 +37,24 @@ img {
     max-width: 100%;
     height: auto;
     display: block;
+}
+
+/* === SELEÇÃO === */
+::selection {
+    background: rgba(47, 79, 111, 0.18);
+    color: var(--text-primary);
+}
+
+/* === FOCUS STATES === */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+    border-radius: 6px;
 }
 
 /* === LISTS === */

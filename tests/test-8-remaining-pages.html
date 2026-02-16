@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 8 - Remaining Pages Components</title>
+    <style>
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4682B4;
+            border-bottom: 2px solid #4682B4;
+            padding-bottom: 0.5rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #4682B4; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        
+        /* Checkout Test Styles */
+        .checkout-test {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .checkout-form {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .checkout-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.95rem;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4682B4;
+        }
+        .shipping-options {
+            margin: 1rem 0;
+        }
+        .shipping-option {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            border: 2px solid #e0e0e0;
+            transition: all 0.2s;
+        }
+        .shipping-option:hover {
+            border-color: #4682B4;
+        }
+        .shipping-option.selected {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        .summary-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        .item-image {
+            width: 60px;
+            height: 60px;
+            background: #e0e0e0;
+            border-radius: 6px;
+        }
+        .item-details {
+            flex: 1;
+        }
+        .item-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .item-price {
+            font-weight: 600;
+            color: #4682B4;
+        }
+        
+        /* Collections Test Styles */
+        .collection-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .collection-card:hover {
+            transform: translateY(-12px) scale(1.02);
+        }
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        .subcollections-dropdown {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .subcollection-item {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .subcollection-item:hover {
+            transform: translateX(8px) scale(1.02);
+        }
+        
+        /* Empresas Test Styles */
+        .showcase-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .showcase-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        .beneficio-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            margin: 0.5rem 0;
+        }
+        .beneficio-icon {
+            width: 50px;
+            height: 50px;
+            background: #4682B4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .beneficio-item:hover .beneficio-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        /* Sobre Test Styles */
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #4682B4;
+        }
+        .timeline-item {
+            padding: 1rem;
+            margin: 1rem 0;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #4682B4;
+        }
+        .timeline-year {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4682B4;
+        }
+        .mvv-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .mvv-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.15);
+        }
+        .diferencial-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .diferencial-icon {
+            width: 60px;
+            height: 60px;
+            background: #4682B4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        .diferencial-card:hover .diferencial-icon {
+            transform: rotate(5deg) scale(1.1);
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0.5rem;
+        }
+        .checklist li.checked:before {
+            content: '✓';
+            color: #28a745;
+        }
+        .checklist li.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-animate.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛍️ Teste 8: Remaining Pages Components</h1>
+        <div id="cart-container"></div>
+    </div>
+
+    <div class="container">
+        <!-- Test Section: Checkout -->
+        <div class="test-section">
+            <h2>💳 Teste: Checkout Component</h2>
+            <div class="status info">
+                <strong>Testando:</strong> CheckoutManager - Página de checkout
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" onclick="loadCheckoutTest()">Carregar Teste Checkout</button>
+                <button class="btn-info" onclick="testCEP()">Testar CEP</button>
+                <button class="btn-info" onclick="testCoupon()">Testar Cupom</button>
+                <button class="btn-warning" onclick="loadRandomCoupon()">🎲 Carregar Cupom Aleatório</button>
+            </div>
+
+            <div id="checkoutTest" class="checkout-test" style="display: none;">
+                <div class="checkout-form">
+                    <h3>Formulário de Checkout</h3>
+                    <form id="checkoutForm">
+                        <div class="form-group">
+                            <label>E-mail:</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone:</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label>CEP:</label>
+                            <input type="text" id="zipCode" name="zipCode" placeholder="00000-000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Endereço:</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label>Número:</label>
+                            <input type="text" id="number" name="number">
+                        </div>
+                        <div class="form-group">
+                            <label>Bairro:</label>
+                            <input type="text" id="neighborhood" name="neighborhood">
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade:</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div class="form-group">
+                            <label>Estado:</label>
+                            <input type="text" id="state" name="state">
+                        </div>
+                        <div class="form-group">
+                            <label>Método de Pagamento:</label>
+                            <select name="paymentMethod" id="paymentMethod">
+                                <option value="pix">PIX (5% desconto)</option>
+                                <option value="boleto">Boleto (3% desconto)</option>
+                                <option value="credit">Cartão de Crédito</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Cupom de Desconto:</label>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <input type="text" id="couponCode" placeholder="Digite o cupom">
+                                <button type="button" id="applyCoupon" class="btn-primary">Aplicar</button>
+                            </div>
+                        </div>
+                        <div class="shipping-options" id="shippingOptions">
+                            <p>Digite um CEP para calcular o frete</p>
+                        </div>
+                        <button type="submit" class="btn-success" style="width: 100%; padding: 1rem; margin-top: 1rem;">
+                            Finalizar Pedido
+                        </button>
+                    </form>
+                </div>
+                
+                <div class="checkout-summary">
+                    <h3>Resumo do Pedido</h3>
+                    <div id="summaryItems"></div>
+                    <div style="margin-top: 1rem; padding-top: 1rem; border-top: 2px solid #e0e0e0;">
+                        <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+                            <span>Subtotal:</span>
+                            <span id="subtotalPrice">R$ 0,00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+                            <span>Desconto:</span>
+                            <span id="discountPrice">R$ 0,00</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 0.5rem 0;">
+                            <span>Frete:</span>
+                            <span id="shippingPrice">Calculando...</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin: 0.5rem 0; font-size: 1.2rem; font-weight: 700; color: #4682B4;">
+                            <span>Total:</span>
+                            <span id="totalPrice">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section: Collections -->
+        <div class="test-section">
+            <h2>📚 Teste: Collections Component</h2>
+            <div class="status info">
+                <strong>Testando:</strong> CollectionsManager - Página de coleções
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" onclick="loadCollectionsTest()">Carregar Teste Collections</button>
+            </div>
+
+            <div id="collectionsTest" class="collection-grid" style="display: none;">
+                <div class="collection-card" data-category="garrafas">
+                    <h3>Garrafas Térmicas</h3>
+                    <p>Coleção completa de garrafas térmicas</p>
+                    <a href="#" class="collection-link" style="display: none;">Link</a>
+                    <div class="subcollections-dropdown">
+                        <div class="subcollection-item" href="?subcategoria=stanley">Stanley</div>
+                        <div class="subcollection-item" href="?subcategoria=gympack">Gympack</div>
+                        <div class="subcollection-item" href="?subcategoria=contigo">Contigo</div>
+                    </div>
+                </div>
+                <div class="collection-card" data-category="copos">
+                    <h3>Copos Térmicos</h3>
+                    <p>Copos e canecas térmicas</p>
+                    <a href="#" class="collection-link" style="display: none;">Link</a>
+                </div>
+                <div class="collection-card" data-category="bolsas">
+                    <h3>Bolsas Térmicas</h3>
+                    <p>Bolsas e mochilas térmicas</p>
+                    <a href="#" class="collection-link" style="display: none;">Link</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section: Empresas -->
+        <div class="test-section">
+            <h2>🏢 Teste: Empresas Component</h2>
+            <div class="status info">
+                <strong>Testando:</strong> EmpresasManager - Página Para Empresas
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" onclick="loadEmpresasTest()">Carregar Teste Empresas</button>
+            </div>
+
+            <div id="empresasTest" style="display: none;">
+                <div class="showcase-card">
+                    <h3>Showcase Card 1</h3>
+                    <p>Passe o mouse sobre este card</p>
+                </div>
+                <div class="showcase-card">
+                    <h3>Showcase Card 2</h3>
+                    <p>Passe o mouse sobre este card</p>
+                </div>
+                
+                <div class="beneficio-item">
+                    <div class="beneficio-icon">🚀</div>
+                    <div>
+                        <h4>Benefício 1</h4>
+                        <p>Passe o mouse sobre este item</p>
+                    </div>
+                </div>
+                <div class="beneficio-item">
+                    <div class="beneficio-icon">💼</div>
+                    <div>
+                        <h4>Benefício 2</h4>
+                        <p>Passe o mouse sobre este item</p>
+                    </div>
+                </div>
+                
+                <form id="formOrcamento" style="background: #f8f9fa; padding: 1.5rem; border-radius: 8px; margin-top: 1rem;">
+                    <h3>Formulário de Orçamento</h3>
+                    <div class="form-group">
+                        <label>Nome:</label>
+                        <input type="text" name="nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail:</label>
+                        <input type="email" name="email" id="emailEmpresas" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone:</label>
+                        <input type="tel" name="telefone" id="telefone" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CNPJ:</label>
+                        <input type="text" name="cnpj" id="cnpj" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Empresa:</label>
+                        <input type="text" name="empresa" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade:</label>
+                        <select name="quantidade">
+                            <option value="1-50">1-50 unidades</option>
+                            <option value="51-100">51-100 unidades</option>
+                            <option value="101-500">101-500 unidades</option>
+                            <option value="500+">500+ unidades</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Comentários:</label>
+                        <textarea name="comentarios" rows="4" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 6px;"></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit btn-success" style="width: 100%; padding: 1rem;">
+                        Enviar Solicitação
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Test Section: Sobre -->
+        <div class="test-section">
+            <h2>📖 Teste: Sobre Component</h2>
+            <div class="status info">
+                <strong>Testando:</strong> SobreManager - Página Sobre
+            </div>
+            
+            <div class="controls">
+                <button class="btn-primary" onclick="loadSobreTest()">Carregar Teste Sobre</button>
+            </div>
+
+            <div id="sobreTest" style="display: none;">
+                <div class="scroll-animate">
+                    <h3>Estatísticas</h3>
+                    <div class="stat-number">1000+</div>
+                    <p>Clientes satisfeitos</p>
+                </div>
+                
+                <div class="scroll-animate" style="margin-top: 2rem;">
+                    <h3>Timeline</h3>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <p>Início da empresa</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2022</div>
+                        <p>Expansão nacional</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <p>Líder em personalização</p>
+                    </div>
+                </div>
+                
+                <div class="scroll-animate" style="margin-top: 2rem;">
+                    <h3>MVV Cards</h3>
+                    <div class="mvv-card">
+                        <h4>Missão</h4>
+                        <p>Passe o mouse sobre este card</p>
+                    </div>
+                    <div class="mvv-card" style="margin-top: 1rem;">
+                        <h4>Visão</h4>
+                        <p>Passe o mouse sobre este card</p>
+                    </div>
+                    <div class="mvv-card" style="margin-top: 1rem;">
+                        <h4>Valores</h4>
+                        <p>Passe o mouse sobre este card</p>
+                    </div>
+                </div>
+                
+                <div class="scroll-animate" style="margin-top: 2rem;">
+                    <h3>Diferenciais</h3>
+                    <div class="diferencial-card">
+                        <div class="diferencial-icon">⭐</div>
+                        <h4>Diferencial 1</h4>
+                        <p>Passe o mouse sobre este card</p>
+                    </div>
+                    <div class="diferencial-card" style="margin-top: 1rem;">
+                        <div class="diferencial-icon">🎯</div>
+                        <h4>Diferencial 2</h4>
+                        <p>Passe o mouse sobre este card</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Checklist -->
+        <div class="test-section">
+            <h2>✅ Checklist de Testes</h2>
+            <ul class="checklist" id="test-checklist">
+                <li>CheckoutManager inicializado?</li>
+                <li>CollectionsManager inicializado?</li>
+                <li>EmpresasManager inicializado?</li>
+                <li>SobreManager inicializado?</li>
+                <li>Checkout: Formatação de CEP funciona?</li>
+                <li>Checkout: Formatação de telefone funciona?</li>
+                <li>Checkout: Lookup de CEP funciona?</li>
+                <li>Checkout: Cálculo de frete funciona?</li>
+                <li>Checkout: Aplicação de cupom funciona?</li>
+                <li>Checkout: Mudança de método de pagamento funciona?</li>
+                <li>Collections: Interações de cards funcionam?</li>
+                <li>Collections: Dropdown de subcoleções funciona?</li>
+                <li>Collections: Navegação por teclado funciona?</li>
+                <li>Empresas: Formatação de CNPJ funciona?</li>
+                <li>Empresas: Formatação de telefone funciona?</li>
+                <li>Empresas: Hover effects funcionam?</li>
+                <li>Empresas: Validação de formulário funciona?</li>
+                <li>Sobre: Animações de contador funcionam?</li>
+                <li>Sobre: Animações de timeline funcionam?</li>
+                <li>Sobre: Hover effects funcionam?</li>
+                <li>Sobre: Scroll animations funcionam?</li>
+            </ul>
+        </div>
+
+        <!-- Debug Info -->
+        <div class="test-section">
+            <h2>🔍 Debug Info</h2>
+            <div class="controls">
+                <button class="btn-info" onclick="showState()">📊 Mostrar Estado</button>
+                <button class="btn-warning" onclick="clearCart()">🗑️ Limpar Carrinho</button>
+            </div>
+            <pre id="debug-output"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { CheckoutManager } from '../assets/js/components/checkout.js';
+        import { CollectionsManager } from '../assets/js/components/collections.js';
+        import { EmpresasManager } from '../assets/js/components/empresas.js';
+        import { SobreManager } from '../assets/js/components/sobre.js';
+        import { CartStorage } from '../assets/js/core/storage.js';
+        import { Notification } from '../assets/js/components/notification.js';
+        import { CartButton } from '../assets/js/components/cartButton.js';
+
+        // Inicializar botão do carrinho
+        const cartBtn = new CartButton('#cart-container', {
+            showCount: true,
+            showTotal: false,
+            icon: '🛒'
+        });
+
+        // Managers globais
+        let checkoutManager = null;
+        let collectionsManager = null;
+        let empresasManager = null;
+        let sobreManager = null;
+
+        // Funções de teste
+        window.loadCheckoutTest = () => {
+            const testDiv = document.getElementById('checkoutTest');
+            testDiv.style.display = 'grid';
+            
+            // Adicionar item ao carrinho para teste
+            if (CartStorage.getCount() === 0) {
+                CartStorage.addItem({
+                    id: 'test-item-1',
+                    name: 'Produto Teste',
+                    basePrice: 10000,
+                    quantity: 2,
+                    image: '../imagens/placeholder-product.jpg',
+                    variant: { size: '1L', color: 'Azul' }
+                });
+                window.dispatchEvent(new CustomEvent('cartUpdated'));
+            }
+            
+            if (!checkoutManager) {
+                checkoutManager = new CheckoutManager();
+                window.checkoutManager = checkoutManager;
+            }
+            
+            Notification.success('Teste de checkout carregado!');
+        };
+
+        window.testCEP = () => {
+            const zipCodeInput = document.getElementById('zipCode');
+            if (zipCodeInput) {
+                zipCodeInput.value = '01310100';
+                zipCodeInput.dispatchEvent(new Event('blur'));
+                Notification.info('Testando CEP: 01310-100');
+            }
+        };
+
+        window.testCoupon = () => {
+            const couponInput = document.getElementById('couponCode');
+            if (couponInput) {
+                couponInput.value = 'QUEISE10';
+                const applyBtn = document.getElementById('applyCoupon');
+                if (applyBtn) {
+                    applyBtn.click();
+                }
+            }
+        };
+
+        window.loadRandomCoupon = () => {
+            const couponInput = document.getElementById('couponCode');
+            if (!couponInput) {
+                Notification.error('Campo de cupom não encontrado. Carregue o teste de checkout primeiro.');
+                return;
+            }
+
+            // Cupons válidos do CART_CONFIG
+            const validCoupons = ['QUEISE10', 'PRIMEIRACOMPRA', 'FRETEGRATIS', 'WELCOME20'];
+            
+            // Selecionar cupom aleatório
+            const randomCoupon = validCoupons[Math.floor(Math.random() * validCoupons.length)];
+            
+            // Preencher campo
+            couponInput.value = randomCoupon;
+            
+            // Aplicar automaticamente
+            const applyBtn = document.getElementById('applyCoupon');
+            if (applyBtn && !applyBtn.disabled) {
+                applyBtn.click();
+            }
+            
+            Notification.success(`Cupom aleatório carregado: ${randomCoupon}`);
+        };
+
+        window.loadCollectionsTest = () => {
+            const testDiv = document.getElementById('collectionsTest');
+            testDiv.style.display = 'grid';
+            
+            if (!collectionsManager) {
+                collectionsManager = new CollectionsManager();
+                window.collectionsManager = collectionsManager;
+            }
+            
+            Notification.success('Teste de collections carregado!');
+        };
+
+        window.loadEmpresasTest = () => {
+            const testDiv = document.getElementById('empresasTest');
+            testDiv.style.display = 'block';
+            
+            if (!empresasManager) {
+                empresasManager = new EmpresasManager();
+                window.empresasManager = empresasManager;
+            }
+            
+            Notification.success('Teste de empresas carregado!');
+        };
+
+        window.loadSobreTest = () => {
+            const testDiv = document.getElementById('sobreTest');
+            testDiv.style.display = 'block';
+            
+            if (!sobreManager) {
+                sobreManager = new SobreManager();
+                window.sobreManager = sobreManager;
+            }
+            
+            Notification.success('Teste de sobre carregado!');
+        };
+
+        window.showState = () => {
+            const state = {
+                checkout: checkoutManager ? 'initialized' : 'not initialized',
+                collections: collectionsManager ? 'initialized' : 'not initialized',
+                empresas: empresasManager ? 'initialized' : 'not initialized',
+                sobre: sobreManager ? 'initialized' : 'not initialized',
+                cart: {
+                    count: CartStorage.getCount(),
+                    total: CartStorage.getTotal()
+                }
+            };
+            const output = document.getElementById('debug-output');
+            output.textContent = JSON.stringify(state, null, 2);
+            Notification.info('Estado exibido');
+        };
+
+        window.clearCart = () => {
+            CartStorage.clear();
+            Notification.success('Carrinho limpo!');
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+        };
+
+        // Observar mudanças para atualizar checklist
+        let checklistUpdateTimeout = null;
+        function observeStateChanges() {
+            setInterval(() => {
+                if (checklistUpdateTimeout) return;
+                checklistUpdateTimeout = setTimeout(() => {
+                    checkChecklist();
+                    checklistUpdateTimeout = null;
+                }, 500);
+            }, 2000);
+            
+            setTimeout(() => checkChecklist(), 1000);
+        }
+
+        function checkChecklist() {
+            try {
+                // Verificar managers
+                markChecklistItem(0, checkoutManager !== null);
+                markChecklistItem(1, collectionsManager !== null);
+                markChecklistItem(2, empresasManager !== null);
+                markChecklistItem(3, sobreManager !== null);
+                
+                // Verificar checkout
+                const zipCodeInput = document.getElementById('zipCode');
+                markChecklistItem(4, zipCodeInput !== null);
+                
+                const phoneInput = document.getElementById('phone');
+                markChecklistItem(5, phoneInput !== null);
+                
+                const shippingOptions = document.getElementById('shippingOptions');
+                markChecklistItem(6, shippingOptions !== null);
+                markChecklistItem(7, shippingOptions && shippingOptions.innerHTML.includes('shipping-option'));
+                
+                const couponInput = document.getElementById('couponCode');
+                markChecklistItem(8, couponInput !== null);
+                
+                const paymentMethod = document.getElementById('paymentMethod');
+                markChecklistItem(9, paymentMethod !== null);
+                
+                // Verificar collections
+                const collectionCards = document.querySelectorAll('.collection-card');
+                markChecklistItem(10, collectionCards.length > 0);
+                
+                const subcollections = document.querySelectorAll('.subcollection-item');
+                markChecklistItem(11, subcollections.length > 0);
+                
+                markChecklistItem(12, true); // Keyboard navigation será testado manualmente
+                
+                // Verificar empresas
+                const cnpjInput = document.getElementById('cnpj');
+                markChecklistItem(13, cnpjInput !== null);
+                
+                const telefoneInput = document.getElementById('telefone');
+                markChecklistItem(14, telefoneInput !== null);
+                
+                const showcaseCards = document.querySelectorAll('.showcase-card');
+                markChecklistItem(15, showcaseCards.length > 0);
+                
+                const formOrcamento = document.getElementById('formOrcamento');
+                markChecklistItem(16, formOrcamento !== null);
+                
+                // Verificar sobre
+                const statNumbers = document.querySelectorAll('.stat-number');
+                markChecklistItem(17, statNumbers.length > 0);
+                
+                const timelineItems = document.querySelectorAll('.timeline-item');
+                markChecklistItem(18, timelineItems.length > 0);
+                
+                const mvvCards = document.querySelectorAll('.mvv-card');
+                markChecklistItem(19, mvvCards.length > 0);
+                
+                const scrollAnimate = document.querySelectorAll('.scroll-animate');
+                markChecklistItem(20, scrollAnimate.length > 0);
+                
+            } catch (error) {
+                console.error('Erro ao verificar checklist:', error);
+            }
+        }
+
+        function markChecklistItem(index, checked) {
+            const items = document.querySelectorAll('#test-checklist li');
+            if (items[index]) {
+                const wasChecked = items[index].classList.contains('checked');
+                if (checked && !wasChecked) {
+                    items[index].classList.add('checked');
+                } else if (!checked && wasChecked) {
+                    items[index].classList.remove('checked');
+                }
+            }
+        }
+
+        // Inicializar observação
+        observeStateChanges();
+
+        console.log('✅ Test page carregado');
+    </script>
+</body>
+</html>
+

@@ -278,6 +278,31 @@ export const CartStorage = {
             const itemTotal = (item.basePrice + (item.personalizationPrice || 0)) * item.quantity;
             return total + itemTotal;
         }, 0);
+    },
+
+    /**
+     * Salva ID do carrinho Shopify
+     * @param {string} cartId - ID do carrinho Shopify
+     * @returns {boolean}
+     */
+    saveCartId(cartId) {
+        return Storage.set('shopify_cart_id', cartId);
+    },
+
+    /**
+     * Obtém ID do carrinho Shopify
+     * @returns {string|null} ID do carrinho ou null
+     */
+    getCartId() {
+        return Storage.get('shopify_cart_id', null);
+    },
+
+    /**
+     * Remove ID do carrinho Shopify
+     * @returns {boolean}
+     */
+    clearCartId() {
+        return Storage.remove('shopify_cart_id');
     }
 };
 

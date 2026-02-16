@@ -8,7 +8,7 @@
     <meta name="description" content="Crie seu produto único com o sistema de personalização QUEISE. Escolha produtos, adicione textos e veja o resultado em tempo real.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/personalizar.css">
+    <link rel="stylesheet" href="../assets/css/pages/personalizar.css">
 </head>
 
 <body>
@@ -29,13 +29,13 @@
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="../paginas/produtos.html">Produtos</a></li>
-                <li><a href="../paginas/colecoes.html">Coleções</a></li>
-                <li><a href="../paginas/para-empresas.html">Para Empresas</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#contato">Contato</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li><a href="colecoes.html">Coleções</a></li>
+                <li><a href="para-empresas.html">Para Empresas</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
             </ul>
-            <a href="../paginas/carrinho.html" class="cta-button">Ver Carrinho</a>
+            <a href="carrinho.html" class="cta-button">Ver Carrinho</a>
         </nav>
     </header>
 
@@ -207,11 +207,6 @@
                                     <div class="personalization-text" id="previewText">SEU TEXTO</div>
                                 </div>
                             </div>
-                            <div class="preview-controls">
-                                <button class="preview-btn" data-view="front">Frente</button>
-                                <button class="preview-btn active" data-view="side">Lateral</button>
-                                <button class="preview-btn" data-view="back">Verso</button>
-                            </div>
                         </div>
                         
                         <div class="preview-info">
@@ -222,16 +217,6 @@
                     
                     <!-- Controles de Personalização -->
                     <div class="personalizacao-controls">
-                        
-                        <div class="control-group">
-                            <label>Tipo de Personalização</label>
-                            <div class="control-tabs">
-                                <button class="control-tab active" data-type="texto">Texto Livre</button>
-                                <button class="control-tab" data-type="nome">Nome/Inicial</button>
-                                <button class="control-tab" data-type="frase">Frase Motivacional</button>
-                            </div>
-                        </div>
-                        
                         <div class="control-group">
                             <label for="customText">Seu Texto</label>
                             <input type="text" id="customText" placeholder="Digite seu texto..." maxlength="20" value="SEU TEXTO">
@@ -259,43 +244,34 @@
                         </div>
                         
                         <div class="control-group">
-                            <label>Cor do Texto</label>
-                            <div class="color-options">
-                                <div class="color-option active" data-color="#FFFFFF" style="background: #FFFFFF;">
-                                    <span>Branco</span>
-                                </div>
-                                <div class="color-option" data-color="#000000" style="background: #000000;">
-                                    <span>Preto</span>
-                                </div>
-                                <div class="color-option" data-color="#FFD700" style="background: #FFD700;">
-                                    <span>Dourado</span>
-                                </div>
-                                <div class="color-option" data-color="#C0C0C0" style="background: #C0C0C0;">
-                                    <span>Prata</span>
-                                </div>
-                            </div>
+                            <label for="orientationSelect">Orientação</label>
+                            <select id="orientationSelect" class="orientation-select">
+                                <option value="texto-horizontal">Texto Horizontal</option>
+                                <option value="texto-vertical">Texto Vertical</option>
+                                <option value="icone-texto-horizontal">Ícone + Texto Horizontal</option>
+                                <option value="icone-texto-vertical">Ícone + Texto Vertical</option>
+                                <option value="icone">Ícone</option>
+                            </select>
                         </div>
-                        
+
                         <div class="control-group">
-                            <label>Posição</label>
-                            <div class="position-options">
-                                <div class="position-option active" data-position="center">
-                                    <div class="position-preview">
-                                        <div class="pos-text center">T</div>
-                                    </div>
-                                    <span>Centro</span>
+                            <label for="iconSelect" id="iconLabel" style="display: none;">Ícone</label>
+                            <div class="icon-options" id="iconSelect" style="display: none;">
+                                <div class="icon-option active" data-icon="icon-1" title="Sol & Ondas">
+                                    <img src="../imagens/icones/sol-ondas.png" alt="Sol e Ondas" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Sol &amp; Ondas</span>
                                 </div>
-                                <div class="position-option" data-position="bottom">
-                                    <div class="position-preview">
-                                        <div class="pos-text bottom">T</div>
-                                    </div>
-                                    <span>Inferior</span>
+                                <div class="icon-option" data-icon="icon-2" title="Olho da Paz">
+                                    <img src="../imagens/icones/olho-paz.png" alt="Olho da Paz" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Olho da Paz</span>
                                 </div>
-                                <div class="position-option" data-position="side">
-                                    <div class="position-preview">
-                                        <div class="pos-text side">T</div>
-                                    </div>
-                                    <span>Lateral</span>
+                                <div class="icon-option" data-icon="icon-3" title="Girassol">
+                                    <img src="../imagens/icones/girassol.png" alt="Girassol" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Girassol</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-4" title="Árvore">
+                                    <img src="../imagens/icones/arvore.png" alt="Árvore" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Árvore</span>
                                 </div>
                             </div>
                         </div>
@@ -359,8 +335,8 @@
                                     <span id="finalFont">Arial</span>
                                 </div>
                                 <div class="spec-item">
-                                    <span>Posição:</span>
-                                    <span id="finalPosition">Centro</span>
+                                    <span>Orientação:</span>
+                                    <span id="finalOrientation">Texto Horizontal</span>
                                 </div>
                             </div>
                         </div>
@@ -440,43 +416,59 @@
             <div class="footer-brand">
                 <h3>QUEISE</h3>
                 <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua história.</p>
-                <div class="tagline">Use Queise, Use Exclusividade!</div>
+                <p class="slogan">Use Queise, Use Exclusividade.</p>
             </div>
-            <div class="footer-section">
-                <h4>Personalização</h4>
-                <a href="../paginas/personalizar.html">Sistema de Personalização</a>
-                <a href="../paginas/produtos.html">Produtos Personalizáveis</a>
-                <a href="#">Guia de Personalização</a>
-                <a href="#">Templates Prontos</a>
-            </div>
-            <div class="footer-section">
-                <h4>Suporte</h4>
-                <a href="#">Central de Ajuda</a>
-                <a href="#">Como Personalizar</a>
-                <a href="#">Trocas e Devoluções</a>
-                <a href="#">Prazo de Entrega</a>
-                <a href="#contato">Contato</a>
-            </div>
-            <div class="footer-section">
-                <h4>Conecte-se</h4>
-                <a href="#">Instagram @usequeise</a>
-                <a href="#">Facebook</a>
-                <a href="#">WhatsApp</a>
-                <a href="#">E-mail</a>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Produtos</h4>
+                    <ul>
+                        <li><a href="produtos.html">Todos os Produtos</a></li>
+                        <li><a href="produtos.html?categoria=garrafas">Garrafas Térmicas</a></li>
+                        <li><a href="produtos.html?categoria=copos">Copos Térmicos</a></li>
+                        <li><a href="produtos.html?categoria=bolsas">Bolsas Térmicas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                        <li><a href="para-empresas.html">Para Empresas</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="#">Sustentabilidade</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Trocas e Devoluções</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>WhatsApp: (11) 99999-9999</li>
+                        <li>Email: contato@queise.com.br</li>
+                        <li>Segunda a Sexta: 9h às 18h</li>
+                        <li>Sábado: 9h às 14h</li>
+                    </ul>
+                </div>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
-            <div class="social-links">
-                <a href="#" class="social-link">IG</a>
-                <a href="#" class="social-link">FB</a>
-                <a href="#" class="social-link">WA</a>
-            </div>
+            <p>&copy; 2024 QUEISE. Todos os direitos reservados. CNPJ: 42.779.053/0001-22</p>
         </div>
     </footer>
 
-    <script src="../script.js"></script>
-    <script src="../js/personalizar.js"></script>
+    <script type="module" src="../assets/js/app.js"></script>
+    <script type="module" src="../assets/js/pages/personalizar.js"></script>
 </body>
 
 </html>

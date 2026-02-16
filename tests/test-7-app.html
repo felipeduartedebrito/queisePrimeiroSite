@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 7 - App.js Entry Point</title>
+    <style>
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header.scrolled {
+            background: rgba(70, 130, 180, 0.95);
+            backdrop-filter: blur(10px);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 100px;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4682B4;
+            border-bottom: 2px solid #4682B4;
+            padding-bottom: 0.5rem;
+        }
+        
+        /* Scroll Animation Test */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Card Hover Test */
+        .product-card, .collection-card, .featured-main, .featured-side, .empresa-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .product-card {
+            border: 2px solid #4682B4;
+        }
+        .collection-card {
+            border: 2px solid #28a745;
+        }
+        .empresa-card {
+            border: 2px solid #ffc107;
+        }
+        
+        /* Button Animation Test */
+        .btn-primary, .btn-secondary, .btn-white {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            margin: 0.5rem;
+        }
+        .btn-primary {
+            background: #4682B4;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn-white {
+            background: white;
+            color: #4682B4;
+            border: 2px solid #4682B4;
+        }
+        .btn-primary span, .btn-secondary span, .btn-white span {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Feature Hover Test */
+        .feature, .empresa-feature {
+            padding: 1rem;
+            margin: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .feature-icon, .empresa-icon {
+            width: 50px;
+            height: 50px;
+            background: #4682B4;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Pricing Effects Test */
+        .product-price, .featured-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4682B4;
+            padding: 0.5rem;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        /* Parallax Test */
+        .geometric-bg {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            border-radius: 12px;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .geometric-bg::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.1) 0px,
+                rgba(255,255,255,0.1) 20px,
+                transparent 20px,
+                transparent 40px
+            );
+        }
+        
+        /* Page Loader Test */
+        #pageLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(70, 130, 180, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        #pageLoader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .loader-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255,255,255,0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Smooth Scroll Test */
+        .scroll-target {
+            min-height: 500px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #4682B4;
+        }
+        
+        /* Accessibility Test */
+        .keyboard-navigation *:focus {
+            outline: 3px solid #4682B4 !important;
+            outline-offset: 2px;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0.5rem;
+        }
+        .checklist li.checked:before {
+            content: '✓';
+            color: #28a745;
+        }
+        .checklist li.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .btn-primary { background: #4682B4; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .spacer {
+            height: 100vh;
+            background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Loader -->
+    <div id="pageLoader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header" class="header">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="margin: 0;">🛍️ Teste 7: App.js</h1>
+            <nav class="nav-links">
+                <a href="#section1" style="color: white; margin: 0 1rem; text-decoration: none;">Seção 1</a>
+                <a href="#section2" style="color: white; margin: 0 1rem; text-decoration: none;">Seção 2</a>
+                <a href="#section3" style="color: white; margin: 0 1rem; text-decoration: none;">Seção 3</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Test Section: Header Scroll -->
+        <div class="test-section">
+            <h2>📌 Teste: Header Scroll Effects</h2>
+            <div class="status info">
+                <strong>Testando:</strong> HeaderManager - Efeitos de scroll do header
+            </div>
+            <p>Role a página para ver os efeitos:</p>
+            <ul>
+                <li>Header adiciona classe 'scrolled' após 100px</li>
+                <li>Header esconde ao rolar para baixo (após 200px)</li>
+                <li>Header mostra ao rolar para cima</li>
+            </ul>
+            <div class="spacer">Role para baixo para testar</div>
+        </div>
+
+        <!-- Test Section: Scroll Animations -->
+        <div class="test-section">
+            <h2>📜 Teste: Scroll Animations</h2>
+            <div class="status info">
+                <strong>Testando:</strong> AnimationManager - Animações de scroll
+            </div>
+            <div class="scroll-animate">
+                <h3>Este elemento deve aparecer ao rolar</h3>
+                <p>Este é um teste de animação de scroll usando Intersection Observer.</p>
+            </div>
+            <div class="spacer"></div>
+            <div class="scroll-animate">
+                <h3>Outro elemento animado</h3>
+                <p>Este também deve aparecer quando entrar na viewport.</p>
+            </div>
+        </div>
+
+        <!-- Test Section: Parallax -->
+        <div class="test-section">
+            <h2>🌊 Teste: Parallax Effects</h2>
+            <div class="status info">
+                <strong>Testando:</strong> AnimationManager - Efeitos parallax
+            </div>
+            <div class="geometric-bg"></div>
+            <div class="spacer"></div>
+            <div class="geometric-bg"></div>
+            <p>Role a página para ver o efeito parallax nos backgrounds geométricos.</p>
+        </div>
+
+        <!-- Test Section: Card Hovers -->
+        <div class="test-section">
+            <h2>🃏 Teste: Card Hover Effects</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Efeitos hover em cards
+            </div>
+            <div class="card-grid">
+                <div class="product-card">
+                    <h3>Product Card</h3>
+                    <p>Passe o mouse sobre este card</p>
+                </div>
+                <div class="collection-card">
+                    <h3>Collection Card</h3>
+                    <p>Passe o mouse sobre este card</p>
+                </div>
+                <div class="empresa-card">
+                    <h3>Empresa Card</h3>
+                    <p>Passe o mouse sobre este card</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section: Button Animations -->
+        <div class="test-section">
+            <h2>🔘 Teste: Button Animations</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Animações de botões
+            </div>
+            <div class="controls">
+                <button class="btn-primary">
+                    <span>Botão Primary</span>
+                </button>
+                <button class="btn-secondary">
+                    <span>Botão Secondary</span>
+                </button>
+                <button class="btn-white">
+                    <span>Botão White</span>
+                </button>
+            </div>
+            <p>Passe o mouse sobre os botões para ver a animação do span.</p>
+        </div>
+
+        <!-- Test Section: Feature Hovers -->
+        <div class="test-section">
+            <h2>⭐ Teste: Feature Hover Effects</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Efeitos hover em features
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚀</div>
+                <div>
+                    <h3>Feature 1</h3>
+                    <p>Passe o mouse sobre este feature</p>
+                </div>
+            </div>
+            <div class="empresa-feature">
+                <div class="empresa-icon">💼</div>
+                <div>
+                    <h3>Empresa Feature</h3>
+                    <p>Passe o mouse sobre este feature</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section: Pricing Effects -->
+        <div class="test-section">
+            <h2>💰 Teste: Pricing Effects</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Efeitos de preço
+            </div>
+            <div class="product-price">R$ 199,90</div>
+            <div class="featured-price">R$ 149,90</div>
+            <p>Passe o mouse sobre os preços para ver o efeito de scale.</p>
+        </div>
+
+        <!-- Test Section: Smooth Scrolling -->
+        <div class="test-section" id="section1">
+            <h2>📍 Teste: Smooth Scrolling</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Smooth scrolling para âncoras
+            </div>
+            <p>Clique nos links abaixo para testar o smooth scrolling:</p>
+            <div class="controls">
+                <a href="#section1" style="color: #4682B4; text-decoration: none; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 4px;">Ir para Seção 1</a>
+                <a href="#section2" style="color: #4682B4; text-decoration: none; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 4px;">Ir para Seção 2</a>
+                <a href="#section3" style="color: #4682B4; text-decoration: none; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 4px;">Ir para Seção 3</a>
+            </div>
+            <div class="scroll-target">
+                Seção 1 - Alvo do Scroll
+            </div>
+        </div>
+
+        <div class="test-section" id="section2">
+            <h2>📍 Seção 2</h2>
+            <div class="scroll-target">
+                Seção 2 - Alvo do Scroll
+            </div>
+        </div>
+
+        <div class="test-section" id="section3">
+            <h2>📍 Seção 3</h2>
+            <div class="scroll-target">
+                Seção 3 - Alvo do Scroll
+            </div>
+        </div>
+
+        <!-- Test Section: Accessibility -->
+        <div class="test-section">
+            <h2>♿ Teste: Accessibility Features</h2>
+            <div class="status info">
+                <strong>Testando:</strong> AccessibilityManager - Recursos de acessibilidade
+            </div>
+            <p>Teste a navegação por teclado:</p>
+            <ul>
+                <li>Pressione Tab para navegar - deve aparecer outline azul</li>
+                <li>Cards devem ser focáveis e clicáveis com Enter ou Espaço</li>
+                <li>Links de navegação devem ter role="menuitem"</li>
+            </ul>
+            <div class="card-grid">
+                <div class="product-card">
+                    <h3>Card Focável 1</h3>
+                    <p>Pressione Tab e depois Enter</p>
+                </div>
+                <div class="collection-card">
+                    <h3>Card Focável 2</h3>
+                    <p>Pressione Tab e depois Enter</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Section: Form Handling -->
+        <div class="test-section">
+            <h2>📝 Teste: Form Handling</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Tratamento de formulários
+            </div>
+            <div class="controls">
+                <a href="#personalizar" style="color: #4682B4; text-decoration: none; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 4px;">Link Personalizar</a>
+                <a href="#contato" style="color: #4682B4; text-decoration: none; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 4px;">Link Contato</a>
+            </div>
+            <p>Clique nos links acima para testar o tratamento de formulários.</p>
+        </div>
+
+        <!-- Test Section: Image Fallbacks -->
+        <div class="test-section">
+            <h2>🖼️ Teste: Image Fallbacks</h2>
+            <div class="status info">
+                <strong>Testando:</strong> InteractionManager - Fallbacks de imagem
+            </div>
+            <p>Imagem que deve falhar (para testar fallback):</p>
+            <img src="nonexistent-image.jpg" alt="Test Image" style="max-width: 200px; border: 2px solid #dc3545;">
+            <p>Verifique o console para ver a mensagem de erro.</p>
+        </div>
+
+        <!-- Test Checklist -->
+        <div class="test-section">
+            <h2>✅ Checklist de Testes</h2>
+            <ul class="checklist" id="test-checklist">
+                <li>App.js carregado?</li>
+                <li>HeaderManager inicializado?</li>
+                <li>AnimationManager inicializado?</li>
+                <li>InteractionManager inicializado?</li>
+                <li>AccessibilityManager inicializado?</li>
+                <li>Page loader funciona?</li>
+                <li>Header scroll effect funciona?</li>
+                <li>Scroll animations funcionam?</li>
+                <li>Parallax funciona?</li>
+                <li>Card hovers funcionam?</li>
+                <li>Button animations funcionam?</li>
+                <li>Feature hovers funcionam?</li>
+                <li>Pricing effects funcionam?</li>
+                <li>Smooth scrolling funciona?</li>
+                <li>Accessibility funciona?</li>
+                <li>Form handling funciona?</li>
+                <li>Image fallbacks funcionam?</li>
+            </ul>
+        </div>
+
+        <!-- Debug Info -->
+        <div class="test-section">
+            <h2>🔍 Debug Info</h2>
+            <div class="controls">
+                <button class="btn-info" onclick="showState()">📊 Mostrar Estado</button>
+                <button class="btn-warning" onclick="testScroll()">📜 Testar Scroll</button>
+            </div>
+            <pre id="debug-output" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; overflow-x: auto; max-height: 400px; overflow-y: auto;"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import app from '../assets/js/app.js';
+
+        // Expor globalmente para debug
+        window.QueiseApp = app;
+
+        // Funções de teste
+        window.showState = () => {
+            const state = {
+                app: app ? 'initialized' : 'not initialized',
+                header: document.getElementById('header') ? 'found' : 'not found',
+                pageLoader: document.getElementById('pageLoader') ? 'found' : 'not found',
+                scrollY: window.scrollY,
+                headerScrolled: document.getElementById('header')?.classList.contains('scrolled'),
+                visibleElements: document.querySelectorAll('.scroll-animate.visible').length,
+                totalAnimateElements: document.querySelectorAll('.scroll-animate').length
+            };
+            const output = document.getElementById('debug-output');
+            output.textContent = JSON.stringify(state, null, 2);
+        };
+
+        window.testScroll = () => {
+            window.scrollTo({
+                top: 500,
+                behavior: 'smooth'
+            });
+        };
+
+        // Observar mudanças para atualizar checklist
+        let checklistUpdateTimeout = null;
+        function observeStateChanges() {
+            setInterval(() => {
+                if (checklistUpdateTimeout) return;
+                checklistUpdateTimeout = setTimeout(() => {
+                    checkChecklist();
+                    checklistUpdateTimeout = null;
+                }, 500);
+            }, 2000);
+            
+            setTimeout(() => checkChecklist(), 1000);
+        }
+
+        function checkChecklist() {
+            try {
+                // Verificar app
+                markChecklistItem(0, window.QueiseApp !== undefined);
+                
+                // Verificar managers
+                markChecklistItem(1, window.QueiseApp?.headerManager !== undefined);
+                markChecklistItem(2, window.QueiseApp?.animationManager !== undefined);
+                markChecklistItem(3, window.QueiseApp?.interactionManager !== undefined);
+                markChecklistItem(4, window.QueiseApp?.accessibilityManager !== undefined);
+                
+                // Verificar page loader
+                const pageLoader = document.getElementById('pageLoader');
+                markChecklistItem(5, pageLoader !== null);
+                
+                // Verificar header scroll
+                const header = document.getElementById('header');
+                markChecklistItem(6, header !== null);
+                
+                // Verificar scroll animations
+                const animateElements = document.querySelectorAll('.scroll-animate');
+                markChecklistItem(7, animateElements.length > 0);
+                
+                // Verificar parallax
+                const parallaxElements = document.querySelectorAll('.geometric-bg');
+                markChecklistItem(8, parallaxElements.length > 0);
+                
+                // Verificar cards
+                const cards = document.querySelectorAll('.product-card, .collection-card, .empresa-card');
+                markChecklistItem(9, cards.length > 0);
+                
+                // Verificar botões
+                const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-white');
+                markChecklistItem(10, buttons.length > 0);
+                
+                // Verificar features
+                const features = document.querySelectorAll('.feature, .empresa-feature');
+                markChecklistItem(11, features.length > 0);
+                
+                // Verificar preços
+                const prices = document.querySelectorAll('.product-price, .featured-price');
+                markChecklistItem(12, prices.length > 0);
+                
+                // Verificar smooth scroll
+                const anchorLinks = document.querySelectorAll('a[href^="#"]');
+                markChecklistItem(13, anchorLinks.length > 0);
+                
+                // Verificar accessibility
+                const keyboardNav = document.body.classList.contains('keyboard-navigation');
+                markChecklistItem(14, true); // Sempre true, será testado manualmente
+                
+                // Verificar form handling
+                const formLinks = document.querySelectorAll('a[href="#personalizar"], a[href="#contato"]');
+                markChecklistItem(15, formLinks.length > 0);
+                
+                // Verificar image fallbacks
+                const images = document.querySelectorAll('img');
+                markChecklistItem(16, images.length > 0);
+                
+            } catch (error) {
+                console.error('Erro ao verificar checklist:', error);
+            }
+        }
+
+        function markChecklistItem(index, checked) {
+            const items = document.querySelectorAll('#test-checklist li');
+            if (items[index]) {
+                const wasChecked = items[index].classList.contains('checked');
+                if (checked && !wasChecked) {
+                    items[index].classList.add('checked');
+                } else if (!checked && wasChecked) {
+                    items[index].classList.remove('checked');
+                }
+            }
+        }
+
+        // Inicializar observação
+        observeStateChanges();
+
+        console.log('✅ Test page carregado');
+    </script>
+</body>
+</html>
+

@@ -19,9 +19,9 @@
  * isDevelopment: false = usa Shopify API real
  */
 export const ENVIRONMENT = {
-    isDevelopment: true,
+    isDevelopment: false,
     version: '1.0.0',
-    debugMode: true
+    debugMode: false
 };
 
 // ========================================
@@ -33,13 +33,19 @@ export const ENVIRONMENT = {
  * Usado apenas quando isDevelopment = false
  */
 export const SHOPIFY = {
-    domain: 'queise.myshopify.com',
-    storefrontAccessToken: 'your-storefront-access-token-here',
+    domain: 'jkws70-yw.myshopify.com',
+    storefrontAccessToken: '5d841f990665c317cdef27bbcdf88ab0',
     apiVersion: '2024-01',
     
     // Endpoints
     endpoints: {
         graphql: '/api/2024-01/graphql.json'
+    },
+    
+    // URLs
+    urls: {
+        api: 'https://jkws70-yw.myshopify.com/api/2024-01/graphql.json',
+        checkout: 'https://jkws70-yw.myshopify.com'
     }
 };
 
@@ -57,7 +63,8 @@ export const STORAGE_KEYS = {
     filters: 'queise_filters',
     savedDesigns: 'queise_saved_designs',
     userPreferences: 'queise_preferences',
-    recentlyViewed: 'queise_recently_viewed'
+    recentlyViewed: 'queise_recently_viewed',
+    shopifyCartId: 'shopify_cart_id'
 };
 
 // ========================================
@@ -78,41 +85,34 @@ export const CART_CONFIG = {
             value: 10, 
             description: '10% de desconto' 
         },
-        'BEMVINDO': { 
-            type: 'fixed', 
-            value: 2000, // R$ 20,00 em centavos
-            description: 'R$ 20 de desconto' 
+        'PRIMEIRACOMPRA': { 
+            type: 'percentage', 
+            value: 15, 
+            description: '15% de desconto primeira compra' 
         },
         'FRETEGRATIS': { 
-            type: 'shipping', 
+            type: 'free_shipping', 
             value: 0, 
             description: 'Frete grátis' 
+        },
+        'WELCOME20': { 
+            type: 'fixed', 
+            value: 2000, // R$ 20,00 em centavos
+            description: 'R$ 20,00 de desconto' 
         }
     },
     
     // Opções de frete (mock)
-    shippingMethods: [
-        { 
-            id: 'pac', 
-            name: 'PAC', 
-            time: '10-15 dias úteis', 
-            price: 1500 // R$ 15,00 em centavos
-        },
-        { 
-            id: 'sedex', 
-            name: 'SEDEX', 
-            time: '3-5 dias úteis', 
-            price: 2500 // R$ 25,00
-        },
-        { 
-            id: 'express', 
-            name: 'Expresso', 
-            time: '1-2 dias úteis', 
-            price: 3500 // R$ 35,00
-        }
-    ],
+    shipping: {
+        freeShippingLimit: 20000, // R$ 200,00 em centavos
+        defaultShippingMethods: [
+            { id: 'pac', name: 'PAC', time: '8 a 12 dias úteis', price: 1500 },
+            { id: 'sedex', name: 'SEDEX', time: '3 a 5 dias úteis', price: 2500 },
+            { id: 'sedex10', name: 'SEDEX 10', time: '1 dia útil', price: 4000 }
+        ]
+    },
     
-    // Valor mínimo para frete grátis
+    // Valor mínimo para frete grátis (alias para compatibilidade)
     freeShippingThreshold: 20000 // R$ 200,00 em centavos
 };
 
@@ -124,8 +124,17 @@ export const CART_CONFIG = {
  * Configurações do sistema de personalização
  */
 export const PERSONALIZATION_CONFIG = {
+    // Habilitar/desabilitar funcionalidade de personalização
+    enabled: true, // false = desabilitado (lançamento inicial), true = habilitado
+    
     // Preço adicional por personalização
     basePrice: 2000, // R$ 20,00 em centavos
+    
+    // Configuração de customização (alias para compatibilidade)
+    customization: {
+        basePrice: 2000,
+        currency: 'BRL'
+    },
     
     // Limite de caracteres
     maxChars: 30,

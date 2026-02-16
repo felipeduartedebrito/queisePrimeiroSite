@@ -3,35 +3,57 @@
    ======================================== */
 
 :root {
-    /* === CORES PRINCIPAIS === */
-    --primary: #4682B4;
-    --secondary: #5F9EA0;
-    --accent: #B0C4DE;
-    --bg: #FFFAFA;
-    --text-dark: #2C3E50;
-    --text-light: #7F8C8D;
-    
-    /* === GRADIENTES === */
-    --gradient-primary: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
-    --gradient-soft: linear-gradient(135deg, #B0C4DE 0%, #E6F3FF 100%);
-    --gradient-sophisticated: linear-gradient(135deg, rgba(70, 130, 180, 0.8) 0%, rgba(95, 158, 160, 0.9) 100%);
-    
-    /* === SOMBRAS === */
-    --shadow-soft: 0 8px 32px rgba(70, 130, 180, 0.1);
-    --shadow-medium: 0 16px 48px rgba(70, 130, 180, 0.15);
-    --shadow-strong: 0 24px 64px rgba(70, 130, 180, 0.2);
-    
+    /* === CORE PALETTE === */
+    --primary: #2F4F6F;
+    --secondary: #4F6D88;
+    --accent: #E2ECF5;
+    --accent-light: #FCFDFF;
+    --bg: #F6F8FB;
+    --surface: #FFFFFF;
+    --surface-alt: #F1F5F9;
+    --surface-muted: #E4ECF5;
+    --text-primary: #1F2A37;
+    --text-dark: #1F2A37;
+    --text-light: #6B7280;
+    --text-muted: rgba(31, 42, 55, 0.65);
+    --text-subtle: rgba(31, 42, 55, 0.45);
+
+    /* === GRADIENTS === */
+    --gradient-primary: linear-gradient(135deg, #2F4F6F 0%, #4F6D88 100%);
+    --gradient-soft: linear-gradient(135deg, #E2ECF5 0%, #F5FAFF 100%);
+    --gradient-sophisticated: linear-gradient(135deg, rgba(47, 79, 111, 0.88) 0%, rgba(79, 109, 136, 0.92) 100%);
+
+    /* === SHADOWS & OVERLAYS === */
+    --shadow-soft: 0 12px 30px rgba(32, 68, 101, 0.08);
+    --shadow-medium: 0 18px 40px rgba(32, 68, 101, 0.12);
+    --shadow-strong: 0 30px 64px rgba(32, 68, 101, 0.18);
+    --focus-ring: 0 0 0 3px rgba(79, 109, 136, 0.28);
+
     /* === BACKDROP === */
-    --backdrop: rgba(255, 255, 255, 0.85);
-    
-    /* === TRANSIÇÕES === */
+    --backdrop: rgba(255, 255, 255, 0.82);
+
+    /* === BORDERS === */
+    --border-subtle: rgba(31, 42, 55, 0.08);
+    --border-strong: rgba(31, 42, 55, 0.14);
+    --border-highlight: rgba(47, 79, 111, 0.22);
+
+    /* === LAYOUT TOKENS === */
+    --max-width-base: 1200px;
+    --max-width-wide: 1400px;
+    --content-gutter: clamp(1.5rem, 4vw, 3rem);
+    --section-spacing: clamp(4.5rem, 8vw, 7rem);
+    --section-spacing-tight: clamp(2.5rem, 6vw, 4.5rem);
+    --container-padding: clamp(1.5rem, 4vw, 3rem);
+    --header-height: 88px;
+
+    /* === MOTION === */
     --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    --transition-fast: all 0.3s ease;
-    
-    /* === ESPAÇAMENTOS === */
-    --section-padding: 8rem 5%;
-    
-    /* === BORDER RADIUS === */
+    --transition-fast: all 0.25s ease;
+
+    /* === RADII === */
     --border-radius-card: 24px;
     --border-radius-button: 6px;
+    --radius-lg: 28px;
+    --radius-xl: 36px;
+    --radius-pill: 999px;
 }

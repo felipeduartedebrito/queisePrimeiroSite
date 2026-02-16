@@ -1009,7 +1009,6 @@ body {
 /* Para Empresas Text */
 .para-empresas-text .tagline {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     letter-spacing: 3px;
     text-transform: uppercase;

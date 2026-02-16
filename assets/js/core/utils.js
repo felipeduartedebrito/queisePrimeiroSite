@@ -144,6 +144,68 @@ export function isValidCEP(cep) {
 }
 
 /**
+ * Alias para isValidCEP
+ */
+export const validateCEP = isValidCEP;
+
+/**
+ * Alias para isValidEmail
+ */
+export const validateEmail = isValidEmail;
+
+/**
+ * Alias para isValidPhone
+ */
+export const validatePhone = isValidPhone;
+
+/**
+ * Valida CNPJ brasileiro
+ * @param {string} cnpj - CNPJ a validar
+ * @returns {boolean}
+ */
+export function isValidCNPJ(cnpj) {
+    const cleaned = cnpj.replace(/\D/g, '');
+    
+    if (cleaned.length !== 14) return false;
+    if (/^(\d)\1+$/.test(cleaned)) return false; // Todos dígitos iguais
+    
+    // Validação dos dígitos verificadores
+    let length = cleaned.length - 2;
+    let numbers = cleaned.substring(0, length);
+    let digits = cleaned.substring(length);
+    let sum = 0;
+    let pos = length - 7;
+    
+    for (let i = length; i >= 1; i--) {
+        sum += numbers.charAt(length - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+    
+    let result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+    if (result !== parseInt(digits.charAt(0))) return false;
+    
+    length = length + 1;
+    numbers = cleaned.substring(0, length);
+    sum = 0;
+    pos = length - 7;
+    
+    for (let i = length; i >= 1; i--) {
+        sum += numbers.charAt(length - i) * pos--;
+        if (pos < 2) pos = 9;
+    }
+    
+    result = sum % 11 < 2 ? 0 : 11 - sum % 11;
+    if (result !== parseInt(digits.charAt(1))) return false;
+    
+    return true;
+}
+
+/**
+ * Alias para isValidCNPJ
+ */
+export const validateCNPJ = isValidCNPJ;
+
+/**
  * Valida CPF brasileiro
  * @param {string} cpf - CPF a validar
  * @returns {boolean}

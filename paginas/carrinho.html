@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="stylesheet" href="../assets/css/carrinho.css">
+    <link rel="stylesheet" href="../assets/css/pages/carrinho.css">
 </head>
 
 <body>
@@ -31,13 +31,13 @@
                 </div>
             </a>
             <ul class="nav-links">
-                <li><a href="../paginas/produtos.html">Produtos</a></li>
-                <li><a href="#colecoes">Coleções</a></li>
-                <li><a href="#para-empresas">Para Empresas</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#contato">Contato</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li><a href="colecoes.html">Coleções</a></li>
+                <li><a href="para-empresas.html">Para Empresas</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html">Contato</a></li>
             </ul>
-            <a href="#personalizar" class="cta-button">Personalizar Já</a>
+            <a href="personalizar.html" class="cta-button">Personalizar Já</a>
         </nav>
     </header>
 
@@ -274,46 +274,60 @@
         <div class="footer-content">
             <div class="footer-brand">
                 <h3>QUEISE</h3>
-                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua
-                    história. Nosso compromisso é com a excelência e a sofisticação em cada detalhe.</p>
-                <div class="tagline">Use Queise, Use Exclusividade!</div>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua história.</p>
+                <p class="slogan">Use Queise, Use Exclusividade.</p>
             </div>
-            <div class="footer-section">
-                <h4>Produtos</h4>
-                <a href="#">Garrafas & Copos</a>
-                <a href="#">Bolsas Térmicas</a>
-                <a href="#">Malas & Mochilas</a>
-                <a href="#">Para Empresas</a>
-                <a href="#">Imãs de Geladeira</a>
-            </div>
-            <div class="footer-section">
-                <h4>Suporte</h4>
-                <a href="#">Central de Ajuda</a>
-                <a href="#">Como Personalizar</a>
-                <a href="#">Trocas e Devoluções</a>
-                <a href="#">Prazo de Entrega</a>
-                <a href="#">Contato</a>
-            </div>
-            <div class="footer-section">
-                <h4>Conecte-se</h4>
-                <a href="#">Instagram @usequeise</a>
-                <a href="#">Facebook</a>
-                <a href="#">WhatsApp</a>
-                <a href="#">E-mail</a>
+            
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Produtos</h4>
+                    <ul>
+                        <li><a href="produtos.html">Todos os Produtos</a></li>
+                        <li><a href="produtos.html?categoria=garrafas">Garrafas Térmicas</a></li>
+                        <li><a href="produtos.html?categoria=copos">Copos Térmicos</a></li>
+                        <li><a href="produtos.html?categoria=bolsas">Bolsas Térmicas</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                        <li><a href="para-empresas.html">Para Empresas</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="#">Sustentabilidade</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="#">Central de Ajuda</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                        <li><a href="#">Trocas e Devoluções</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>WhatsApp: (11) 99999-9999</li>
+                        <li>Email: contato@queise.com.br</li>
+                        <li>Segunda a Sexta: 9h às 18h</li>
+                        <li>Sábado: 9h às 14h</li>
+                    </ul>
+                </div>
             </div>
         </div>
+        
         <div class="footer-bottom">
-            <p>&copy; 2025 QUEISE. Todos os direitos reservados. | CNPJ: 42.779.053/0001-22</p>
-            <div class="social-links">
-                <a href="#" class="social-link">IG</a>
-                <a href="#" class="social-link">FB</a>
-                <a href="#" class="social-link">WA</a>
-            </div>
+            <p>&copy; 2024 QUEISE. Todos os direitos reservados. CNPJ: 42.779.053/0001-22</p>
         </div>
     </footer>
 
-    <script src="../script.js"></script>
-    <script src="../js/carrinho.js"></script>
+    <script type="module" src="../assets/js/app.js"></script>
+    <script type="module" src="../assets/js/pages/carrinho.js"></script>
 </body>
 
 </html>

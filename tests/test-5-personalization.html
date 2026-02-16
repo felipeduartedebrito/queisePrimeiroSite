@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 5 - Personalization Component</title>
+    <style>
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4682B4;
+            border-bottom: 2px solid #4682B4;
+            padding-bottom: 0.5rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-primary { background: #4682B4; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        
+        /* Personalization Wizard Styles */
+        .wizard-container {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #4682B4;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+            width: 25%;
+        }
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            position: relative;
+        }
+        .progress-step.active {
+            color: #4682B4;
+            font-weight: 600;
+        }
+        .progress-step.completed {
+            color: #28a745;
+        }
+        
+        .wizard-step {
+            display: none;
+        }
+        .wizard-step.active {
+            display: block;
+        }
+        
+        /* Product Selection */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        .produto-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .produto-card:hover {
+            border-color: #4682B4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .produto-card.selected {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        .produto-card h3 {
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        .produto-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Variant Selection */
+        .variants-container {
+            display: flex;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .variant-group {
+            flex: 1;
+        }
+        .variant-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .variant-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .variacao-option, .variacao-color {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .variacao-option:hover, .variacao-color:hover {
+            border-color: #4682B4;
+        }
+        .variacao-option.active, .variacao-color.active {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        .variacao-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+        }
+        
+        /* Personalization Controls */
+        .personalization-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .control-group {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .control-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .font-options, .color-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .font-option, .color-option {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .font-option.active, .color-option.active {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        .color-option {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            padding: 0;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        .char-count {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        /* Preview */
+        .preview-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 1rem 0;
+            min-height: 300px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .product-shape {
+            width: 200px;
+            height: 300px;
+            background: #4682B4;
+            border-radius: 20px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+        #previewText {
+            position: absolute;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            white-space: nowrap;
+        }
+        #finalPreviewText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #000000;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .icon-option {
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .icon-option:hover {
+            border-color: #4682B4;
+        }
+        .icon-option.active {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        
+        /* Pricing */
+        .pricing-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .pricing-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+        }
+        .pricing-total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #4682B4;
+            border-top: 2px solid #e0e0e0;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        /* Navigation */
+        .wizard-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        .btn-next, .btn-back {
+            padding: 0.75rem 2rem;
+        }
+        .btn-next:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Final Actions */
+        .final-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0.5rem;
+        }
+        .checklist li.checked:before {
+            content: '✓';
+            color: #28a745;
+        }
+        .checklist li.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎨 Teste 5: Personalization Component</h1>
+        <div id="cart-container"></div>
+    </div>
+
+    <div class="container">
+        <!-- Test Section: Personalization Wizard -->
+        <div class="test-section">
+            <h2>🧙 Teste: Wizard de Personalização</h2>
+            <div class="status info">
+                <strong>Testando:</strong> PersonalizationManager - Wizard completo de personalização
+            </div>
+
+            <div class="wizard-container">
+                <!-- Progress Bar -->
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <div class="progress-steps">
+                    <div class="progress-step active">1. Produto</div>
+                    <div class="progress-step">2. Variantes</div>
+                    <div class="progress-step">3. Personalização</div>
+                    <div class="progress-step">4. Finalizar</div>
+                </div>
+
+                <!-- Step 1: Product Selection -->
+                <div class="wizard-step active" data-step="1">
+                    <h3>Escolha seu Produto</h3>
+                    <div class="products-grid">
+                        <div class="produto-card" data-product="garrafa-stanley-1l">
+                            <h3>Garrafa Stanley 1L</h3>
+                            <p>Garrafa térmica premium</p>
+                            <div class="pricing-row">
+                                <strong>R$ 165,00</strong>
+                            </div>
+                        </div>
+                        <div class="produto-card" data-product="copo-termico-500ml">
+                            <h3>Copo Térmico 500ml</h3>
+                            <p>Perfeito para café</p>
+                            <div class="pricing-row">
+                                <strong>R$ 80,00</strong>
+                            </div>
+                        </div>
+                        <div class="produto-card" data-product="caneca-ceramica">
+                            <h3>Caneca de Cerâmica</h3>
+                            <p>Caneca clássica</p>
+                            <div class="pricing-row">
+                                <strong>R$ 45,00</strong>
+                            </div>
+                        </div>
+                        <div class="produto-card" data-product="azulejo-decorativo">
+                            <h3>Azulejo Decorativo</h3>
+                            <p>Transforme qualquer ambiente</p>
+                            <div class="pricing-row">
+                                <strong>R$ 35,00</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="btn-back" style="visibility: hidden;">← Voltar</button>
+                        <button class="btn-next" disabled>Próximo →</button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Variant Selection -->
+                <div class="wizard-step" data-step="2">
+                    <h3>Escolha as Variantes</h3>
+                    <div class="variants-container">
+                        <div class="variant-group">
+                            <label>Tamanho:</label>
+                            <div class="variant-options" id="tamanho-options">
+                                <!-- Será preenchido dinamicamente -->
+                            </div>
+                        </div>
+                        <div class="variant-group">
+                            <label>Cor:</label>
+                            <div class="variant-options" id="cor-options">
+                                <!-- Será preenchido dinamicamente -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="btn-back">← Voltar</button>
+                        <button class="btn-next">Próximo →</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Personalization -->
+                <div class="wizard-step" data-step="3">
+                    <h3>Personalize seu Produto</h3>
+                    <div class="personalization-controls">
+                        <div class="control-group">
+                            <label>Seu Texto:</label>
+                            <input type="text" id="customText" value="SEU TEXTO" maxlength="20">
+                            <div class="char-count">
+                                <span id="charCount">0</span>/20 caracteres
+                            </div>
+                            
+                            <label style="margin-top: 1rem;">Fonte:</label>
+                            <div class="font-options">
+                                <div class="font-option active" data-font="Arial">Arial</div>
+                                <div class="font-option" data-font="Times">Times</div>
+                                <div class="font-option" data-font="Script">Script</div>
+                                <div class="font-option" data-font="Bold">Bold</div>
+                            </div>
+                            
+                            <label style="margin-top: 1rem;">Orientação:</label>
+                            <select id="orientationSelect" style="width: 100%; padding: 0.75rem; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 0.95rem; margin-bottom: 1rem;">
+                                <option value="texto-horizontal">Texto Horizontal</option>
+                                <option value="texto-vertical">Texto Vertical</option>
+                                <option value="icone-texto-horizontal">Ícone + Texto Horizontal</option>
+                                <option value="icone-texto-vertical">Ícone + Texto Vertical</option>
+                                <option value="icone">Ícone</option>
+                            </select>
+                            
+                            <label style="margin-top: 1rem; display: none;" id="iconLabel">Ícone:</label>
+                            <div class="icon-options" style="display: none;">
+                                <div class="icon-option active" data-icon="icon-1" title="Sol & Ondas">
+                                    <img src="../imagens/icones/sol-ondas.png" alt="Sol e Ondas" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <span style="display: none;">Sol &amp; Ondas</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-2" title="Olho da Paz">
+                                    <img src="../imagens/icones/olho-paz.png" alt="Olho da Paz" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <span style="display: none;">Olho da Paz</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-3" title="Girassol">
+                                    <img src="../imagens/icones/girassol.png" alt="Girassol" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <span style="display: none;">Girassol</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-4" title="Árvore">
+                                    <img src="../imagens/icones/arvore.png" alt="Árvore" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <span style="display: none;">Árvore</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label>Preview:</label>
+                            <div class="preview-container">
+                                <div class="product-shape">
+                                    <div id="previewText">SEU TEXTO</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="btn-back">← Voltar</button>
+                        <button class="btn-next">Próximo →</button>
+                    </div>
+                </div>
+
+                <!-- Step 4: Finalization -->
+                <div class="wizard-step" data-step="4">
+                    <h3>Finalizar Personalização</h3>
+                    <div class="preview-container">
+                        <div class="product-shape">
+                            <div id="finalPreviewText">SEU TEXTO</div>
+                        </div>
+                    </div>
+                    <div class="pricing-summary">
+                        <h4>Resumo:</h4>
+                        <div class="pricing-row">
+                            <span>Produto:</span>
+                            <span id="summaryProduct">-</span>
+                        </div>
+                        <div class="pricing-row">
+                            <span>Personalização:</span>
+                            <span id="summaryPersonalization">-</span>
+                        </div>
+                        <div class="pricing-row pricing-total">
+                            <span>Total:</span>
+                            <span id="summaryTotal">-</span>
+                        </div>
+                    </div>
+                    <div class="final-actions">
+                        <button class="btn-success btn-carrinho">🛒 Adicionar ao Carrinho</button>
+                        <button class="btn-primary btn-comprar">💳 Comprar Agora</button>
+                        <button class="btn-info btn-salvar">💾 Salvar Design</button>
+                        <button class="btn-warning btn-novo-produto">🔄 Novo Produto</button>
+                    </div>
+                    <div class="wizard-nav">
+                        <button class="btn-back">← Voltar</button>
+                        <div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Checklist -->
+        <div class="test-section">
+            <h2>✅ Checklist de Testes</h2>
+            <ul class="checklist" id="test-checklist">
+                <li>PersonalizationManager inicializado?</li>
+                <li>Produtos aparecem no Step 1?</li>
+                <li>Seleção de produto funciona?</li>
+                <li>Botão "Próximo" habilita após seleção?</li>
+                <li>Variantes aparecem no Step 2?</li>
+                <li>Seleção de variantes funciona?</li>
+                <li>Preview atualiza com variantes?</li>
+                <li>Controles de personalização funcionam?</li>
+                <li>Input de texto atualiza preview?</li>
+                <li>Contador de caracteres funciona?</li>
+                <li>Mudança de fonte atualiza preview?</li>
+                <li>Mudança de orientação atualiza preview?</li>
+                <li>Navegação entre steps funciona?</li>
+                <li>Barra de progresso atualiza?</li>
+                <li>Preços calculam corretamente?</li>
+                <li>Adicionar ao carrinho funciona?</li>
+                <li>Estado persiste no localStorage?</li>
+                <li>Estado restaura ao recarregar?</li>
+            </ul>
+        </div>
+
+        <!-- Debug Info -->
+        <div class="test-section">
+            <h2>🔍 Debug Info</h2>
+            <div class="controls">
+                <button class="btn-info" onclick="showState()">📊 Mostrar Estado</button>
+                <button class="btn-warning" onclick="clearState()">🗑️ Limpar Estado</button>
+                <button class="btn-primary" onclick="testCart()">🛒 Testar Carrinho</button>
+            </div>
+            <pre id="debug-output" style="background: #f8f9fa; padding: 1rem; border-radius: 8px; overflow-x: auto;"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { PersonalizationManager } from '../assets/js/components/personalization.js';
+        import { CartButton } from '../assets/js/components/cartButton.js';
+        import { CartStorage } from '../assets/js/core/storage.js';
+        import { Notification } from '../assets/js/components/notification.js';
+
+        // Inicializar botão do carrinho
+        const cartBtn = new CartButton('#cart-container', {
+            showCount: true,
+            showTotal: false,
+            icon: '🛒'
+        });
+
+        // Inicializar PersonalizationManager
+        let personalizationManager = null;
+        const PERSONALIZABLE_PRODUCTS = {
+            'garrafa-stanley-1l': {
+                variants: { tamanho: ['500ml', '1L', '1.2L'], cor: ['azul', 'preto', 'branco', 'verde'] }
+            },
+            'copo-termico-500ml': {
+                variants: { tamanho: ['350ml', '500ml'], cor: ['azul', 'preto', 'branco'] }
+            },
+            'caneca-ceramica': {
+                variants: { tamanho: ['300ml', '400ml'], cor: ['branco', 'preto', 'azul'] }
+            },
+            'azulejo-decorativo': {
+                variants: { tamanho: ['10x10cm', '15x15cm', '20x20cm'], cor: ['branco', 'bege'] }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            personalizationManager = new PersonalizationManager({
+                storageKey: 'queise_personalization_state',
+                maxSteps: 4
+            });
+            
+            console.log('✅ PersonalizationManager inicializado');
+            
+            // Expor globalmente para debug
+            window.personalizationManager = personalizationManager;
+            
+            // Observar mudanças de produto para atualizar variantes
+            observeProductSelection();
+            
+            // Marcar checklist inicial
+            markChecklistItem(0, true);
+            
+            // Observar mudanças de estado para atualizar checklist
+            observeStateChanges();
+        });
+
+        // Observar seleção de produto e atualizar variantes
+        function observeProductSelection() {
+            // Usar event delegation para evitar múltiplos listeners
+            document.addEventListener('click', (e) => {
+                const card = e.target.closest('.produto-card');
+                if (card) {
+                    const productId = card.dataset.product;
+                    // Delay para garantir que PersonalizationManager processou primeiro
+                    setTimeout(() => {
+                        updateVariantOptions(productId);
+                    }, 100);
+                }
+            });
+        }
+
+        // Atualizar opções de variantes baseado no produto selecionado
+        function updateVariantOptions(productId) {
+            const product = PERSONALIZABLE_PRODUCTS[productId];
+            if (!product) return;
+
+            // Atualizar tamanhos
+            const tamanhoContainer = document.getElementById('tamanho-options');
+            if (tamanhoContainer && product.variants.tamanho) {
+                tamanhoContainer.innerHTML = '';
+                product.variants.tamanho.forEach(tamanho => {
+                    const option = document.createElement('div');
+                    option.className = 'variacao-option';
+                    option.dataset.variant = 'tamanho';
+                    option.dataset.value = tamanho;
+                    option.textContent = tamanho;
+                    tamanhoContainer.appendChild(option);
+                });
+            }
+
+            // Atualizar cores
+            const corContainer = document.getElementById('cor-options');
+            if (corContainer && product.variants.cor) {
+                corContainer.innerHTML = '';
+                const colorMap = {
+                    'azul': '#4682B4',
+                    'preto': '#2C3E50',
+                    'branco': '#FFFFFF',
+                    'verde': '#27AE60',
+                    'bege': '#F5E6D3'
+                };
+                product.variants.cor.forEach(cor => {
+                    const option = document.createElement('div');
+                    option.className = 'variacao-color';
+                    option.dataset.variant = 'cor';
+                    option.dataset.value = cor;
+                    option.style.background = colorMap[cor] || '#ccc';
+                    if (cor === 'branco' || cor === 'bege') {
+                        option.style.border = '1px solid #ccc';
+                    }
+                    corContainer.appendChild(option);
+                });
+            }
+
+            // Reconfigurar event listeners para novas variantes
+            setTimeout(() => {
+                if (personalizationManager) {
+                    const variantOptions = document.querySelectorAll('.variacao-option, .variacao-color');
+                    variantOptions.forEach(option => {
+                        option.addEventListener('click', () => personalizationManager.handleVariantSelection(option));
+                    });
+                }
+            }, 100);
+        }
+
+        // Funções de teste
+        window.showState = () => {
+            const state = personalizationManager?.state || {};
+            const output = document.getElementById('debug-output');
+            output.textContent = JSON.stringify(state, null, 2);
+            Notification.info('Estado exibido no console e abaixo');
+        };
+
+        window.clearState = () => {
+            localStorage.removeItem('queise_personalization_state');
+            Notification.success('Estado limpo! Recarregue a página.');
+        };
+
+        window.testCart = () => {
+            const cart = CartStorage.get();
+            const output = document.getElementById('debug-output');
+            output.textContent = `Carrinho:\n${JSON.stringify(cart, null, 2)}`;
+            Notification.info('Carrinho exibido');
+        };
+
+        // Observar mudanças de estado
+        let checklistUpdateTimeout = null;
+        function observeStateChanges() {
+            // Verificar periodicamente (com debounce para evitar loops)
+            setInterval(() => {
+                if (checklistUpdateTimeout) return;
+                checklistUpdateTimeout = setTimeout(() => {
+                    checkChecklist();
+                    checklistUpdateTimeout = null;
+                }, 500);
+            }, 2000); // Verificar a cada 2 segundos
+            
+            // Verificar inicialmente após um delay
+            setTimeout(() => checkChecklist(), 1000);
+        }
+
+        function checkChecklist() {
+            try {
+                if (!personalizationManager) {
+                    markChecklistItem(0, false);
+                    return;
+                }
+                
+                const state = personalizationManager.state || {};
+                const elements = personalizationManager.elements || {};
+                
+                // Verificar inicialização
+                markChecklistItem(0, personalizationManager !== null);
+                
+                // Verificar produtos
+                markChecklistItem(1, elements.produtoCards && elements.produtoCards.length > 0);
+                
+                // Verificar seleção de produto
+                markChecklistItem(2, state.selectedProduct !== null);
+                
+                // Verificar botão próximo
+                const nextBtn = document.querySelector('[data-step="1"] .btn-next');
+                markChecklistItem(3, nextBtn && !nextBtn.disabled && state.selectedProduct !== null);
+                
+                // Verificar variantes
+                markChecklistItem(4, state.variants && (state.variants.tamanho !== null || state.variants.cor !== null));
+                
+                // Verificar seleção de variantes
+                markChecklistItem(5, state.variants && state.variants.tamanho !== null && state.variants.cor !== null);
+                
+                // Verificar preview
+                markChecklistItem(6, elements.previewText !== null);
+                
+                // Verificar controles
+                markChecklistItem(7, elements.customTextInput !== null);
+                
+                // Verificar input de texto
+                markChecklistItem(8, elements.customTextInput && elements.customTextInput.value && elements.customTextInput.value.length > 0);
+                
+                // Verificar contador
+                markChecklistItem(9, elements.charCount !== null);
+                
+                // Verificar fonte
+                markChecklistItem(10, state.personalization && state.personalization.font !== null);
+                
+                // Cor removida - não é mais selecionável
+                
+                // Verificar orientação
+                markChecklistItem(12, state.personalization && state.personalization.orientation !== null);
+                
+                // Verificar navegação
+                markChecklistItem(13, state.currentStep > 1);
+                
+                // Verificar progresso
+                markChecklistItem(14, state.currentStep > 0);
+                
+                // Verificar preços
+                markChecklistItem(15, state.pricing && state.pricing.total > 0);
+            } catch (error) {
+                console.error('Erro ao verificar checklist:', error);
+            }
+        }
+
+        function markChecklistItem(index, checked) {
+            const items = document.querySelectorAll('#test-checklist li');
+            if (items[index]) {
+                const wasChecked = items[index].classList.contains('checked');
+                if (checked && !wasChecked) {
+                    items[index].classList.add('checked');
+                } else if (!checked && wasChecked) {
+                    items[index].classList.remove('checked');
+                }
+            }
+        }
+
+        // Listener para atualização do carrinho
+        window.addEventListener('cartUpdated', () => {
+            Notification.success('Carrinho atualizado!');
+            markChecklistItem(16, true);
+        });
+
+        console.log('✅ Test page carregado');
+    </script>
+</body>
+</html>
+

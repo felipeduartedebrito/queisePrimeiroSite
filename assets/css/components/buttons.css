@@ -7,10 +7,13 @@
 .btn-secondary,
 .btn-white,
 .cta-button {
-    display: inline-block;
-    padding: 1.2rem 3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: clamp(0.9rem, 2.5vw, 1.15rem) clamp(1.75rem, 4vw, 2.8rem);
     font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     text-decoration: none;
     border: none;
@@ -18,6 +21,15 @@
     cursor: pointer;
     transition: var(--transition-smooth);
     text-align: center;
+    line-height: 1;
+    position: relative;
+}
+
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-white:focus-visible,
+.cta-button:focus-visible {
+    box-shadow: var(--focus-ring);
 }
 
 /* === BOTÃO PRIMARY === */
@@ -28,29 +40,34 @@
 }
 
 .btn-primary:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-medium);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
 }
 
 /* === BOTÃO SECONDARY === */
 .btn-secondary {
-    background: transparent;
+    background: rgba(47, 79, 111, 0.08);
     color: var(--primary);
-    border: 2px solid var(--primary);
+    border: 1px solid var(--border-highlight);
 }
 
 .btn-secondary:hover {
     background: var(--primary);
     color: white;
     transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
 }
 
 /* === BOTÃO WHITE === */
 .btn-white {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.92);
     color: var(--primary);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(14px);
 }
 
 .btn-white:hover {
@@ -63,13 +80,17 @@
 .cta-button {
     background: var(--gradient-primary);
     color: white;
-    padding: 1rem 2rem;
+    padding: 0.85rem 2rem;
     box-shadow: var(--shadow-soft);
 }
 
 .cta-button:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-medium);
+}
+
+.cta-button:active {
+    transform: translateY(-1px);
 }
 
 /* === BOTÕES ESPECÍFICOS DO SISTEMA === */
@@ -86,17 +107,25 @@
     border-radius: var(--border-radius-button);
 }
 
+.btn-primary span,
+.btn-secondary span,
+.btn-white span,
+.cta-button span {
+    display: inline-flex;
+    align-items: center;
+}
+
 /* === RESPONSIVIDADE === */
 @media (max-width: 768px) {
     .btn-primary,
     .btn-secondary,
     .btn-white {
-        padding: 1rem 2rem;
-        font-size: 1rem;
+        padding: 0.85rem 2rem;
+        font-size: 0.95rem;
     }
     
     .cta-button {
         padding: 0.8rem 1.5rem;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
     }
 }

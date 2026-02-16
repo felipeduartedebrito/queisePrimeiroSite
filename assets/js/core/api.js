@@ -12,6 +12,20 @@
 
 import { ENVIRONMENT, SHOPIFY, debugLog } from './config.js';
 import { delay } from './utils.js';
+import { shopifyFetch, buildProductQuery, getThumbnailUrl, getResponsiveImageUrl } from './shopify-client.js';
+import { 
+    PRODUCT_QUERY, 
+    PRODUCTS_QUERY, 
+    COLLECTION_QUERY,
+    COLLECTIONS_QUERY,
+    CART_CREATE_MUTATION,
+    CART_QUERY,
+    CART_LINES_ADD_MUTATION,
+    CART_LINES_UPDATE_MUTATION,
+    CART_LINES_REMOVE_MUTATION
+} from '../config/shopify.config.js';
+import { cache, SimpleCache } from './cache.js';
+import { CartStorage } from './storage.js';
 
 // ========================================
 // MOCK DATABASE
@@ -49,14 +63,50 @@ const MOCK_DATABASE = {
             variants: [
                 {
                     id: 'variant-1',
-                    title: '1L / Azul',
+                    title: '1L / Azul Marinho',
                     price: 16500,
                     compareAtPrice: 19900,
                     availableForSale: true,
-                    quantityAvailable: 50,
+                    quantityAvailable: 15,
                     selectedOptions: [
                         { name: 'Tamanho', value: '1L' },
-                        { name: 'Cor', value: 'Azul' }
+                        { name: 'Cor', value: 'Azul Marinho' }
+                    ]
+                },
+                {
+                    id: 'variant-2',
+                    title: '1L / Verde Militar',
+                    price: 16500,
+                    compareAtPrice: 19900,
+                    availableForSale: true,
+                    quantityAvailable: 12,
+                    selectedOptions: [
+                        { name: 'Tamanho', value: '1L' },
+                        { name: 'Cor', value: 'Verde Militar' }
+                    ]
+                },
+                {
+                    id: 'variant-3',
+                    title: '1L / Preto Fosco',
+                    price: 16500,
+                    compareAtPrice: 19900,
+                    availableForSale: true,
+                    quantityAvailable: 8,
+                    selectedOptions: [
+                        { name: 'Tamanho', value: '1L' },
+                        { name: 'Cor', value: 'Preto Fosco' }
+                    ]
+                },
+                {
+                    id: 'variant-4',
+                    title: '1L / Cinza Grafite',
+                    price: 16500,
+                    compareAtPrice: 19900,
+                    availableForSale: false,
+                    quantityAvailable: 0,
+                    selectedOptions: [
+                        { name: 'Tamanho', value: '1L' },
+                        { name: 'Cor', value: 'Cinza Grafite' }
                     ]
                 }
             ],
@@ -68,7 +118,7 @@ const MOCK_DATABASE = {
                 },
                 {
                     name: 'Cor',
-                    values: ['Azul', 'Preto', 'Verde']
+                    values: ['Azul Marinho', 'Verde Militar', 'Preto Fosco', 'Cinza Grafite']
                 }
             ],
             
@@ -122,11 +172,36 @@ const MOCK_DATABASE = {
                     id: 'variant-1',
                     title: '500ml / Preto',
                     price: 8000,
+                    compareAtPrice: 9500,
                     availableForSale: true,
-                    quantityAvailable: 100,
+                    quantityAvailable: 10,
                     selectedOptions: [
                         { name: 'Tamanho', value: '500ml' },
                         { name: 'Cor', value: 'Preto' }
+                    ]
+                },
+                {
+                    id: 'variant-2',
+                    title: '500ml / Branco',
+                    price: 8000,
+                    compareAtPrice: 9500,
+                    availableForSale: true,
+                    quantityAvailable: 15,
+                    selectedOptions: [
+                        { name: 'Tamanho', value: '500ml' },
+                        { name: 'Cor', value: 'Branco' }
+                    ]
+                },
+                {
+                    id: 'variant-3',
+                    title: '500ml / Azul',
+                    price: 8000,
+                    compareAtPrice: 9500,
+                    availableForSale: true,
+                    quantityAvailable: 5,
+                    selectedOptions: [
+                        { name: 'Tamanho', value: '500ml' },
+                        { name: 'Cor', value: 'Azul' }
                     ]
                 }
             ],
@@ -138,7 +213,7 @@ const MOCK_DATABASE = {
                 },
                 {
                     name: 'Cor',
-                    values: ['Preto', 'Branco']
+                    values: ['Preto', 'Branco', 'Azul']
                 }
             ],
             
@@ -328,42 +403,7 @@ class MockAPI {
  */
 class ShopifyAPI {
     constructor() {
-        this.endpoint = `https://${SHOPIFY.domain}${SHOPIFY.endpoints.graphql}`;
-        this.headers = {
-            'Content-Type': 'application/json',
-            'X-Shopify-Storefront-Access-Token': SHOPIFY.storefrontAccessToken
-        };
-    }
-
-    /**
-     * Executa query GraphQL
-     * @param {string} query - Query GraphQL
-     * @param {Object} variables - Variáveis da query
-     * @returns {Promise<Object>}
-     */
-    async _query(query, variables = {}) {
-        try {
-            const response = await fetch(this.endpoint, {
-                method: 'POST',
-                headers: this.headers,
-                body: JSON.stringify({ query, variables })
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.errors) {
-                throw new Error(data.errors[0].message);
-            }
-
-            return data.data;
-        } catch (error) {
-            console.error('Erro na query Shopify:', error);
-            throw error;
-        }
+        this.cache = cache;
     }
 
     /**
@@ -372,93 +412,29 @@ class ShopifyAPI {
      * @returns {Promise<Object>}
      */
     async getProduct(handle) {
-        const query = `
-            query getProduct($handle: String!) {
-                product(handle: $handle) {
-                    id
-                    handle
-                    title
-                    vendor
-                    productType
-                    description
-                    descriptionHtml
-                    availableForSale
-                    totalInventory
-                    tags
-                    
-                    priceRange {
-                        minVariantPrice {
-                            amount
-                            currencyCode
-                        }
-                        maxVariantPrice {
-                            amount
-                            currencyCode
-                        }
-                    }
-                    
-                    compareAtPriceRange {
-                        minVariantPrice {
-                            amount
-                            currencyCode
-                        }
-                    }
-                    
-                    images(first: 10) {
-                        edges {
-                            node {
-                                id
-                                url
-                                altText
-                            }
-                        }
-                    }
-                    
-                    variants(first: 50) {
-                        edges {
-                            node {
-                                id
-                                title
-                                availableForSale
-                                quantityAvailable
-                                price {
-                                    amount
-                                    currencyCode
-                                }
-                                compareAtPrice {
-                                    amount
-                                    currencyCode
-                                }
-                                selectedOptions {
-                                    name
-                                    value
-                                }
-                            }
-                        }
-                    }
-                    
-                    options {
-                        name
-                        values
-                    }
-                    
-                    metafields(identifiers: [
-                        {namespace: "custom", key: "personalization"}
-                        {namespace: "custom", key: "specifications"}
-                    ]) {
-                        namespace
-                        key
-                        value
-                        type
-                    }
-                }
-            }
-        `;
+        // Verificar cache
+        const cacheKey = SimpleCache.productKey(handle);
+        const cached = this.cache.get(cacheKey);
+        if (cached) {
+            debugLog('Product cache HIT:', handle);
+            return { product: cached };
+        }
 
-        const data = await this._query(query, { handle });
+        debugLog('Product cache MISS, fetching from Shopify:', handle);
+
+        const data = await shopifyFetch(PRODUCT_QUERY, { handle });
         
+        if (!data.product) {
+            throw new Error(`Produto não encontrado: ${handle}`);
+        }
+
         // Transformar dados do Shopify para formato interno
-        return this._transformProduct(data.product);
+        const transformed = this._transformProduct(data.product);
+        
+        // Cachear resultado
+        this.cache.set(cacheKey, transformed);
+        
+        return { product: transformed };
     }
 
     /**
@@ -467,67 +443,64 @@ class ShopifyAPI {
      * @returns {Promise<Object>}
      */
     async getProducts(filters = {}) {
-        const { collection, tag, query, first = 10 } = filters;
+        const { collection, tag, query, first = 10, after } = filters;
         
-        let graphqlQuery = `
-            query getProducts($first: Int!, $query: String) {
-                products(first: $first, query: $query) {
-                    edges {
-                        node {
-                            id
-                            handle
-                            title
-                            vendor
-                            productType
-                            description
-                            availableForSale
-                            
-                            priceRange {
-                                minVariantPrice {
-                                    amount
-                                    currencyCode
-                                }
-                            }
-                            
-                            images(first: 1) {
-                                edges {
-                                    node {
-                                        url
-                                        altText
-                                    }
-                                }
-                            }
-                            
-                            tags
-                        }
-                    }
-                    pageInfo {
-                        hasNextPage
-                        hasPreviousPage
-                    }
-                }
-            }
-        `;
+        // Verificar cache
+        const cacheKey = SimpleCache.productsKey(filters);
+        const cached = this.cache.get(cacheKey);
+        if (cached && !after) { // Não cachear paginação
+            debugLog('Products cache HIT:', filters);
+            return cached;
+        }
+
+        debugLog('Products cache MISS, fetching from Shopify:', filters);
 
         const variables = { first };
         
-        // Construir query string
+        // Construir query string usando helper
         if (query) {
             variables.query = query;
-        } else if (collection) {
-            variables.query = `collection:${collection}`;
-        } else if (tag) {
-            variables.query = `tag:${tag}`;
+        } else {
+            variables.query = buildProductQuery(filters);
         }
 
-        const data = await this._query(graphqlQuery, variables);
+        if (after) {
+            variables.after = after;
+        }
+
+        const data = await shopifyFetch(PRODUCTS_QUERY, variables);
         
-        return {
-            products: data.products.edges.map(edge => 
-                this._transformProduct(edge.node)
-            ),
+        // Debug: verificar dados brutos do Shopify
+        if (data.products?.edges?.length > 0) {
+            const firstNode = data.products.edges[0].node;
+            debugLog('📦 Primeiro produto RAW do Shopify:', {
+                handle: firstNode.handle,
+                id: firstNode.id,
+                title: firstNode.title
+            });
+        }
+        
+        const result = {
+            products: data.products.edges.map(edge => {
+                const transformed = this._transformProduct(edge.node);
+                // Debug: verificar se handle foi preservado
+                if (!transformed.handle) {
+                    debugLog('⚠️ Handle perdido na transformação:', {
+                        original: edge.node.handle,
+                        transformed: transformed
+                    });
+                }
+                return transformed;
+            }),
             pageInfo: data.products.pageInfo
         };
+
+        // Cachear apenas primeira página
+        if (!after) {
+            this.cache.set(cacheKey, result);
+        }
+        
+        return result;
     }
 
     /**
@@ -536,47 +509,23 @@ class ShopifyAPI {
      * @returns {Promise<Object>}
      */
     async getCollection(handle) {
-        const query = `
-            query getCollection($handle: String!) {
-                collection(handle: $handle) {
-                    id
-                    handle
-                    title
-                    description
-                    
-                    products(first: 50) {
-                        edges {
-                            node {
-                                id
-                                handle
-                                title
-                                vendor
-                                
-                                priceRange {
-                                    minVariantPrice {
-                                        amount
-                                        currencyCode
-                                    }
-                                }
-                                
-                                images(first: 1) {
-                                    edges {
-                                        node {
-                                            url
-                                            altText
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        `;
+        // Verificar cache
+        const cacheKey = SimpleCache.collectionKey(handle);
+        const cached = this.cache.get(cacheKey);
+        if (cached) {
+            debugLog('Collection cache HIT:', handle);
+            return cached;
+        }
 
-        const data = await this._query(query, { handle });
+        debugLog('Collection cache MISS, fetching from Shopify:', handle);
+
+        const data = await shopifyFetch(COLLECTION_QUERY, { handle });
         
-        return {
+        if (!data.collection) {
+            throw new Error(`Coleção não encontrada: ${handle}`);
+        }
+
+        const result = {
             collection: {
                 ...data.collection,
                 products: data.collection.products.edges.map(edge => 
@@ -584,59 +533,318 @@ class ShopifyAPI {
                 )
             }
         };
+
+        // Cachear resultado
+        this.cache.set(cacheKey, result);
+        
+        return result;
     }
 
     /**
-     * Cria checkout
-     * @param {Array} lineItems - Itens do carrinho
+     * Busca todas as coleções
      * @returns {Promise<Object>}
      */
-    async createCheckout(lineItems) {
-        const query = `
-            mutation checkoutCreate($input: CheckoutCreateInput!) {
-                checkoutCreate(input: $input) {
-                    checkout {
-                        id
-                        webUrl
-                        lineItems(first: 250) {
-                            edges {
-                                node {
-                                    id
-                                    title
-                                    quantity
-                                }
-                            }
-                        }
-                        subtotalPrice {
-                            amount
-                            currencyCode
-                        }
-                    }
-                    checkoutUserErrors {
-                        message
-                        field
-                    }
-                }
-            }
-        `;
+    async getCollections() {
+        // Verificar cache
+        const cacheKey = SimpleCache.collectionsKey();
+        const cached = this.cache.get(cacheKey);
+        if (cached) {
+            debugLog('Collections cache HIT');
+            return cached;
+        }
 
+        debugLog('Collections cache MISS, fetching from Shopify');
+
+        const data = await shopifyFetch(COLLECTIONS_QUERY, { first: 50 });
+        
+        const result = {
+            collections: data.collections.edges.map(edge => edge.node)
+        };
+
+        // Cachear resultado
+        this.cache.set(cacheKey, result);
+        
+        return result;
+    }
+
+    // ========================================
+    // CART API METHODS
+    // ========================================
+
+    /**
+     * Cria um novo carrinho
+     * @param {Array} lines - Linhas do carrinho (opcional)
+     * @returns {Promise<Object>} Carrinho criado
+     */
+    async createCart(lines = []) {
         const variables = {
             input: {
-                lineItems: lineItems.map(item => ({
-                    variantId: item.variantId,
-                    quantity: item.quantity,
-                    customAttributes: item.customAttributes || []
-                }))
+                lines: lines
             }
         };
 
-        const data = await this._query(query, variables);
+        const data = await shopifyFetch(CART_CREATE_MUTATION, variables);
         
-        if (data.checkoutCreate.checkoutUserErrors.length > 0) {
-            throw new Error(data.checkoutCreate.checkoutUserErrors[0].message);
+        if (data.cartCreate.userErrors && data.cartCreate.userErrors.length > 0) {
+            throw new Error(data.cartCreate.userErrors[0].message);
         }
 
-        return data.checkoutCreate;
+        const cart = data.cartCreate.cart;
+        
+        // Salvar cart ID
+        CartStorage.saveCartId(cart.id);
+        
+        return this._transformCart(cart);
+    }
+
+    /**
+     * Busca carrinho por ID
+     * @param {string} cartId - ID do carrinho
+     * @returns {Promise<Object>} Carrinho
+     */
+    async getCart(cartId) {
+        if (!cartId) {
+            throw new Error('Cart ID é obrigatório');
+        }
+
+        const data = await shopifyFetch(CART_QUERY, { id: cartId });
+        
+        if (!data.cart) {
+            // Carrinho não encontrado, limpar ID salvo
+            CartStorage.clearCartId();
+            throw new Error('Carrinho não encontrado');
+        }
+
+        return this._transformCart(data.cart);
+    }
+
+    /**
+     * Obtém ou cria carrinho
+     * @returns {Promise<Object>} Carrinho
+     */
+    async getOrCreateCart() {
+        let cartId = CartStorage.getCartId();
+        
+        if (cartId) {
+            try {
+                return await this.getCart(cartId);
+            } catch (error) {
+                debugLog('Cart not found, creating new one:', error);
+                // Continuar para criar novo carrinho
+            }
+        }
+
+        return await this.createCart();
+    }
+
+    /**
+     * Adiciona itens ao carrinho
+     * @param {string} cartId - ID do carrinho
+     * @param {Array} lines - Linhas a adicionar [{merchandiseId, quantity, attributes?}]
+     * @returns {Promise<Object>} Carrinho atualizado
+     */
+    async addToCart(cartId, lines) {
+        if (!cartId) {
+            throw new Error('Cart ID é obrigatório');
+        }
+
+        const variables = {
+            cartId: cartId,
+            lines: lines
+        };
+
+        const data = await shopifyFetch(CART_LINES_ADD_MUTATION, variables);
+        
+        if (data.cartLinesAdd.userErrors && data.cartLinesAdd.userErrors.length > 0) {
+            throw new Error(data.cartLinesAdd.userErrors[0].message);
+        }
+
+        return this._transformCart(data.cartLinesAdd.cart);
+    }
+
+    /**
+     * Atualiza quantidade de itens no carrinho
+     * @param {string} cartId - ID do carrinho
+     * @param {Array} lines - Linhas a atualizar [{id, quantity}]
+     * @returns {Promise<Object>} Carrinho atualizado
+     */
+    async updateCartLine(cartId, lines) {
+        if (!cartId) {
+            throw new Error('Cart ID é obrigatório');
+        }
+
+        const variables = {
+            cartId: cartId,
+            lines: lines
+        };
+
+        const data = await shopifyFetch(CART_LINES_UPDATE_MUTATION, variables);
+        
+        if (data.cartLinesUpdate.userErrors && data.cartLinesUpdate.userErrors.length > 0) {
+            throw new Error(data.cartLinesUpdate.userErrors[0].message);
+        }
+
+        return this._transformCart(data.cartLinesUpdate.cart);
+    }
+
+    /**
+     * Remove itens do carrinho
+     * @param {string} cartId - ID do carrinho
+     * @param {Array} lineIds - IDs das linhas a remover
+     * @returns {Promise<Object>} Carrinho atualizado
+     */
+    async removeCartLine(cartId, lineIds) {
+        if (!cartId) {
+            throw new Error('Cart ID é obrigatório');
+        }
+
+        const variables = {
+            cartId: cartId,
+            lineIds: lineIds
+        };
+
+        const data = await shopifyFetch(CART_LINES_REMOVE_MUTATION, variables);
+        
+        if (data.cartLinesRemove.userErrors && data.cartLinesRemove.userErrors.length > 0) {
+            throw new Error(data.cartLinesRemove.userErrors[0].message);
+        }
+
+        return this._transformCart(data.cartLinesRemove.cart);
+    }
+
+    /**
+     * Gera URL de checkout
+     * @param {string} cartId - ID do carrinho
+     * @returns {string} URL de checkout
+     */
+    getCheckoutUrl(cartId) {
+        if (!cartId) {
+            throw new Error('Cart ID é obrigatório');
+        }
+        return `${SHOPIFY.urls.checkout}/cart/${cartId}`;
+    }
+
+    /**
+     * Constrói customAttributes a partir de objeto de personalização
+     * @param {Object} personalization - Objeto de personalização
+     * @returns {Array} Array de customAttributes
+     */
+    _buildCustomAttributes(personalization) {
+        if (!personalization || !personalization.text) {
+            return [];
+        }
+
+        const attributes = [];
+
+        // Tipo de texto
+        if (personalization.textType) {
+            attributes.push({
+                key: 'Tipo de Texto',
+                value: personalization.textType
+            });
+        } else {
+            // Detectar tipo automaticamente
+            const text = personalization.text.trim();
+            if (text.length === 1) {
+                attributes.push({ key: 'Tipo de Texto', value: 'inicial' });
+            } else if (text.split(' ').length === 1) {
+                attributes.push({ key: 'Tipo de Texto', value: 'nome' });
+            } else {
+                attributes.push({ key: 'Tipo de Texto', value: 'livre' });
+            }
+        }
+
+        // Texto personalizado
+        attributes.push({
+            key: 'Texto Personalizado',
+            value: personalization.text
+        });
+
+        // Fonte
+        if (personalization.font) {
+            attributes.push({
+                key: 'Fonte',
+                value: personalization.font
+            });
+        }
+
+        // Cor
+        if (personalization.color || personalization.orientation) {
+            const colorMap = {
+                '#FFFFFF': 'Branco',
+                '#000000': 'Preto',
+                '#FFD700': 'Dourado',
+                '#C0C0C0': 'Prata'
+            };
+            const color = personalization.color || '#000000';
+            attributes.push({
+                key: 'Cor',
+                value: colorMap[color] || 'Preto'
+            });
+        }
+
+        // Posição
+        if (personalization.orientation || personalization.position) {
+            const positionMap = {
+                'center': 'Centro',
+                'bottom': 'Parte Inferior',
+                'side': 'Lateral'
+            };
+            const pos = personalization.orientation || personalization.position || 'center';
+            attributes.push({
+                key: 'Posição',
+                value: positionMap[pos] || 'Centro'
+            });
+        }
+
+        return attributes;
+    }
+
+    /**
+     * Sincroniza carrinho local com Shopify
+     * @returns {Promise<Object>} Carrinho Shopify
+     */
+    async syncLocalCartToShopify() {
+        const localCart = CartStorage.get();
+        
+        if (!localCart.items || localCart.items.length === 0) {
+            return await this.getOrCreateCart();
+        }
+
+        // Criar novo carrinho
+        const lines = localCart.items.map(item => ({
+            merchandiseId: item.variantId,
+            quantity: item.quantity,
+            attributes: item.personalization ? this._buildCustomAttributes(item.personalization) : []
+        }));
+
+        return await this.createCart(lines);
+    }
+
+    /**
+     * Cria checkout (DEPRECATED - usar Cart API)
+     * @param {Array} lineItems - Itens do carrinho
+     * @returns {Promise<Object>}
+     * @deprecated Use Cart API instead
+     */
+    async createCheckout(lineItems) {
+        // Criar carrinho e retornar checkout URL
+        const lines = lineItems.map(item => ({
+            merchandiseId: item.variantId,
+            quantity: item.quantity,
+            attributes: item.customAttributes || []
+        }));
+
+        const cart = await this.createCart(lines);
+        
+        return {
+            checkout: {
+                id: cart.id,
+                webUrl: cart.checkoutUrl,
+                lineItems: cart.items,
+                subtotalPrice: cart.subtotal
+            }
+        };
     }
 
     /**
@@ -652,6 +860,23 @@ class ShopifyAPI {
             parseFloat(shopifyProduct.priceRange?.minVariantPrice?.amount || 0) * 100
         );
 
+        const compareAtPriceInCents = shopifyProduct.compareAtPriceRange?.minVariantPrice?.amount
+            ? Math.round(parseFloat(shopifyProduct.compareAtPriceRange.minVariantPrice.amount) * 100)
+            : null;
+
+        // Processar imagens com otimização
+        const images = shopifyProduct.images?.edges?.map(e => {
+            const originalUrl = e.node.url;
+            return {
+                id: e.node.id,
+                url: originalUrl,
+                altText: e.node.altText || shopifyProduct.title,
+                thumbnail: getThumbnailUrl(originalUrl),
+                mobile: getResponsiveImageUrl(originalUrl, 'mobile'),
+                desktop: getResponsiveImageUrl(originalUrl, 'desktop')
+            };
+        }) || [];
+
         return {
             id: shopifyProduct.handle,
             handle: shopifyProduct.handle,
@@ -661,24 +886,104 @@ class ShopifyAPI {
             description: shopifyProduct.description,
             descriptionHtml: shopifyProduct.descriptionHtml,
             price: priceInCents,
+            compareAtPrice: compareAtPriceInCents,
             availableForSale: shopifyProduct.availableForSale,
-            totalInventory: shopifyProduct.totalInventory,
-            images: shopifyProduct.images?.edges?.map(e => ({
-                id: e.node.id,
-                url: e.node.url,
-                altText: e.node.altText
-            })) || [],
-            variants: shopifyProduct.variants?.edges?.map(e => ({
-                id: e.node.id,
-                title: e.node.title,
-                price: Math.round(parseFloat(e.node.price.amount) * 100),
-                availableForSale: e.node.availableForSale,
-                quantityAvailable: e.node.quantityAvailable,
-                selectedOptions: e.node.selectedOptions
-            })) || [],
+            // totalInventory não está disponível no Storefront API sem permissão especial
+            // Usar quantityAvailable das variantes se necessário
+            images: images,
+            variants: shopifyProduct.variants?.edges?.map(e => {
+                const variantPrice = Math.round(parseFloat(e.node.price?.amount || 0) * 100);
+                const variantCompareAtPrice = e.node.compareAtPrice?.amount
+                    ? Math.round(parseFloat(e.node.compareAtPrice.amount) * 100)
+                    : null;
+
+                return {
+                    id: e.node.id,
+                    title: e.node.title,
+                    price: variantPrice,
+                    compareAtPrice: variantCompareAtPrice,
+                    availableForSale: e.node.availableForSale,
+                    // quantityAvailable não está disponível no Storefront API sem permissão especial
+                    // Usar null e tratar no código que consome
+                    quantityAvailable: null,
+                    selectedOptions: e.node.selectedOptions || [],
+                    image: e.node.image ? {
+                        url: e.node.image.url,
+                        altText: e.node.image.altText
+                    } : null
+                };
+            }) || [],
             options: shopifyProduct.options || [],
             tags: shopifyProduct.tags || [],
-            metafields: this._parseMetafields(shopifyProduct.metafields)
+            metafields: this._parseMetafields(shopifyProduct.metafields),
+            collections: shopifyProduct.collections?.edges?.map(e => e.node.handle) || []
+        };
+    }
+
+    /**
+     * Transforma carrinho do Shopify para formato interno
+     * @param {Object} shopifyCart - Carrinho do Shopify
+     * @returns {Object}
+     */
+    _transformCart(shopifyCart) {
+        if (!shopifyCart) return null;
+
+        const items = shopifyCart.lines?.edges?.map(edge => {
+            const line = edge.node;
+            const variant = line.merchandise;
+            const product = variant.product;
+
+            // Extrair personalização de customAttributes
+            const personalization = {};
+            if (line.attributes && line.attributes.length > 0) {
+                line.attributes.forEach(attr => {
+                    if (attr.key === 'Texto Personalizado') {
+                        personalization.text = attr.value;
+                    } else if (attr.key === 'Fonte') {
+                        personalization.font = attr.value;
+                    } else if (attr.key === 'Cor') {
+                        personalization.color = attr.value;
+                    } else if (attr.key === 'Posição') {
+                        personalization.position = attr.value;
+                    }
+                });
+            }
+
+            const price = Math.round(parseFloat(variant.price?.amount || 0) * 100);
+            const hasPersonalization = personalization.text && personalization.text.trim().length > 0;
+            const personalizationPrice = hasPersonalization ? 2000 : 0; // R$ 20,00
+
+            return {
+                id: line.id,
+                lineId: line.id,
+                productId: product.id,
+                handle: product.handle,
+                variantId: variant.id,
+                name: product.title,
+                variantTitle: variant.title,
+                basePrice: price,
+                personalizationPrice: personalizationPrice,
+                totalPrice: price + personalizationPrice,
+                quantity: line.quantity,
+                image: product.images?.edges?.[0]?.node?.url || null,
+                variant: {
+                    id: variant.id,
+                    title: variant.title
+                },
+                personalization: hasPersonalization ? personalization : null
+            };
+        }) || [];
+
+        const subtotal = Math.round(parseFloat(shopifyCart.cost?.subtotalAmount?.amount || 0) * 100);
+        const total = Math.round(parseFloat(shopifyCart.cost?.totalAmount?.amount || 0) * 100);
+
+        return {
+            id: shopifyCart.id,
+            checkoutUrl: shopifyCart.checkoutUrl,
+            items: items,
+            itemCount: shopifyCart.totalQuantity || 0,
+            subtotal: subtotal,
+            total: total
         };
     }
 
@@ -688,17 +993,22 @@ class ShopifyAPI {
      * @returns {Object}
      */
     _parseMetafields(metafields) {
-        if (!metafields) return {};
+        if (!metafields || !Array.isArray(metafields)) return {};
 
         const parsed = {};
         metafields.forEach(field => {
+            // Verificar se field existe e tem as propriedades necessárias
+            if (!field || !field.namespace || !field.key) {
+                return; // Pular campos inválidos
+            }
+            
             if (!parsed[field.namespace]) {
                 parsed[field.namespace] = {};
             }
             try {
-                parsed[field.namespace][field.key] = JSON.parse(field.value);
+                parsed[field.namespace][field.key] = field.value ? JSON.parse(field.value) : null;
             } catch {
-                parsed[field.namespace][field.key] = field.value;
+                parsed[field.namespace][field.key] = field.value || null;
             }
         });
 

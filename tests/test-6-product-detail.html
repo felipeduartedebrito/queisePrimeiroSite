@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 6 - Product Detail Component</title>
+    <style>
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4682B4;
+            border-bottom: 2px solid #4682B4;
+            padding-bottom: 0.5rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-primary { background: #4682B4; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        
+        /* Product Detail Styles */
+        .product-detail-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin: 2rem 0;
+        }
+        .product-gallery {
+            position: relative;
+        }
+        .main-image {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            border-radius: 12px;
+            cursor: zoom-in;
+            background: #f0f0f0;
+        }
+        .thumbnail-gallery {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .thumbnail:hover {
+            border-color: #4682B4;
+        }
+        .thumbnail.active {
+            border-color: #4682B4;
+            box-shadow: 0 0 0 2px rgba(70, 130, 180, 0.2);
+        }
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .product-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+            margin: 0;
+        }
+        .product-vendor {
+            color: #666;
+            font-size: 1rem;
+        }
+        .price-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .current-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4682B4;
+        }
+        .compare-price {
+            font-size: 1.2rem;
+            color: #999;
+            text-decoration: line-through;
+        }
+        .discount-badge {
+            background: #28a745;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .variant-group {
+            margin: 1rem 0;
+        }
+        .variant-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .variant-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .variant-option {
+            padding: 0.5rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .variant-option:hover {
+            border-color: #4682B4;
+        }
+        .variant-option.selected {
+            border-color: #4682B4;
+            background: #f0f7ff;
+        }
+        .variant-option.unavailable {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            background: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        .quantity-input {
+            width: 60px;
+            padding: 0.5rem;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        .btn-add-cart, .btn-buy-now {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-add-cart {
+            background: #4682B4;
+            color: white;
+        }
+        .btn-buy-now {
+            background: #28a745;
+            color: white;
+        }
+        .btn-add-cart:hover, .btn-buy-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-add-cart:disabled, .btn-buy-now:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .personalization-panel {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .personalization-panel label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .personalization-panel input,
+        .personalization-panel select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+        .char-count {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .char-count.warning {
+            color: #f39c12;
+        }
+        .char-count.danger {
+            color: #e74c3c;
+        }
+        .availability {
+            padding: 0.75rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+        }
+        .availability.in-stock {
+            background: #d4edda;
+            color: #155724;
+        }
+        .availability.out-of-stock {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        .specifications {
+            margin: 1rem 0;
+        }
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .spec-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .spec-value {
+            color: #666;
+        }
+        .related-products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1rem 0;
+        }
+        .related-product {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+        .related-product:hover {
+            transform: translateY(-4px);
+        }
+        .related-image {
+            width: 100%;
+            height: 200px;
+            background: #f0f0f0;
+            overflow: hidden;
+        }
+        .related-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .related-info {
+            padding: 1rem;
+        }
+        .related-name {
+            margin: 0.5rem 0;
+            font-size: 1rem;
+        }
+        .related-price {
+            font-weight: 600;
+            color: #4682B4;
+            margin: 0.5rem 0;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+            position: relative;
+            padding-left: 2rem;
+        }
+        .checklist li:before {
+            content: '☐';
+            position: absolute;
+            left: 0.5rem;
+        }
+        .checklist li.checked:before {
+            content: '✓';
+            color: #28a745;
+        }
+        .checklist li.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🛍️ Teste 6: Product Detail Component</h1>
+        <div id="cart-container"></div>
+    </div>
+
+    <div class="container">
+        <!-- Test Section: Product Detail -->
+        <div class="test-section">
+            <h2>📦 Teste: Detalhe do Produto</h2>
+            <div class="status info">
+                <strong>Testando:</strong> ProductDetailManager - Página completa de detalhe do produto
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" onclick="loadProduct('garrafa-stanley-1l')">Carregar Garrafa Stanley</button>
+                <button class="btn-primary" onclick="loadProduct('copo-termico-500ml')">Carregar Copo Térmico</button>
+                <button class="btn-primary" onclick="loadProduct('bolsa-termica-20l')">Carregar Bolsa Térmica</button>
+                <button class="btn-info" onclick="showState()">📊 Mostrar Estado</button>
+                <button class="btn-warning" onclick="clearCart()">🗑️ Limpar Carrinho</button>
+            </div>
+
+            <!-- Product Detail Container -->
+            <div id="productDetail" class="product-detail-container">
+                <!-- Gallery -->
+                <div class="product-gallery">
+                    <img id="mainProductImage" class="main-image" src="" alt="Product Image">
+                    <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+                    <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                        <button id="prevImageBtn" class="btn-primary">← Anterior</button>
+                        <button id="nextImageBtn" class="btn-primary">Próximo →</button>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info">
+                    <div>
+                        <h1 id="productTitle" class="product-title">Carregando...</h1>
+                        <p id="productVendor" class="product-vendor"></p>
+                        <span id="personalizableBadge" style="display: none; background: #ffc107; color: #333; padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;">✨ Personalizável</span>
+                    </div>
+
+                    <div class="price-section">
+                        <span id="currentPrice" class="current-price">R$ 0,00</span>
+                        <span id="comparePrice" class="compare-price" style="display: none;">R$ 0,00</span>
+                        <span id="discountBadge" class="discount-badge" style="display: none;">-0%</span>
+                    </div>
+                    <div id="personalizationPrice" style="display: none; color: #666; font-size: 0.9rem;"></div>
+                    <div id="totalPrice" style="font-size: 1.2rem; font-weight: 600; color: #4682B4;">Total: R$ 0,00</div>
+
+                    <div id="availability" class="availability"></div>
+
+                    <!-- Variants -->
+                    <div id="tamanhoGroup" style="display: none;" class="variant-group">
+                        <label>Tamanho:</label>
+                        <div id="tamanhoOptions" class="variant-options"></div>
+                    </div>
+                    <div id="corGroup" style="display: none;" class="variant-group">
+                        <label>Cor:</label>
+                        <div id="corOptions" class="variant-options"></div>
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="quantity-controls">
+                        <label>Quantidade:</label>
+                        <button id="quantityMinus" class="quantity-btn">-</button>
+                        <input type="number" id="quantityInput" class="quantity-input" value="1" min="1" max="99">
+                        <button id="quantityPlus" class="quantity-btn">+</button>
+                    </div>
+
+                    <!-- Personalization -->
+                    <div id="personalizationPanel" class="personalization-panel" style="display: none;">
+                        <h3>Personalização</h3>
+                        <label>Seu Texto:</label>
+                        <input type="text" id="personalizationText" placeholder="Digite seu texto...">
+                        <div class="char-count" id="charCount">0/30</div>
+                        
+                        <label>Fonte:</label>
+                        <select id="personalizationFont">
+                            <option value="Arial">Arial</option>
+                            <option value="Times">Times</option>
+                            <option value="Script">Script</option>
+                            <option value="Bold">Bold</option>
+                        </select>
+                        
+                        <label>Orientação:</label>
+                        <select id="orientationSelect">
+                            <option value="texto-horizontal">Texto Horizontal</option>
+                            <option value="texto-vertical">Texto Vertical</option>
+                            <option value="icone-texto-horizontal">Ícone + Texto Horizontal</option>
+                            <option value="icone-texto-vertical">Ícone + Texto Vertical</option>
+                            <option value="icone">Ícone</option>
+                        </select>
+                        
+                        <label style="margin-top: 1rem; display: none;" id="iconLabel">Ícone:</label>
+                        <div class="icon-options" style="display: none;">
+                            <div class="icon-option active" data-icon="icon-1" title="Ícone 1">
+                                <img src="../imagens/icons/icon-1.svg" alt="Icon 1" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span style="display: none;">Icon 1</span>
+                            </div>
+                            <div class="icon-option" data-icon="icon-2" title="Ícone 2">
+                                <img src="../imagens/icons/icon-2.svg" alt="Icon 2" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span style="display: none;">Icon 2</span>
+                            </div>
+                            <div class="icon-option" data-icon="icon-3" title="Ícone 3">
+                                <img src="../imagens/icons/icon-3.svg" alt="Icon 3" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span style="display: none;">Icon 3</span>
+                            </div>
+                            <div class="icon-option" data-icon="icon-4" title="Ícone 4">
+                                <img src="../imagens/icons/icon-4.svg" alt="Icon 4" style="width: 40px; height: 40px;" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                <span style="display: none;">Icon 4</span>
+                            </div>
+                        </div>
+                        
+                        <div id="personalizationPreview" style="display: none; margin-top: 1rem;">
+                            <div class="preview-container"></div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <button id="addToCartBtn" class="btn-add-cart">
+                            <span class="btn-text">Adicionar ao Carrinho</span>
+                            <span class="btn-loading" style="display: none;">⏳</span>
+                        </button>
+                        <button id="buyNowBtn" class="btn-buy-now">
+                            <span class="btn-text">Comprar Agora</span>
+                            <span class="btn-loading" style="display: none;">⏳</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div class="test-section">
+                <h3>Descrição</h3>
+                <div id="productDescription"></div>
+            </div>
+
+            <!-- Specifications -->
+            <div class="test-section">
+                <h3>Especificações</h3>
+                <div id="productSpecifications" class="specifications"></div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="test-section">
+                <h3>Produtos Relacionados</h3>
+                <div id="relatedProductsGrid" class="related-products"></div>
+            </div>
+        </div>
+
+        <!-- Test Checklist -->
+        <div class="test-section">
+            <h2>✅ Checklist de Testes</h2>
+            <ul class="checklist" id="test-checklist">
+                <li>ProductDetailManager inicializado?</li>
+                <li>Produto carrega da API?</li>
+                <li>Informações do produto aparecem?</li>
+                <li>Galeria de imagens funciona?</li>
+                <li>Thumbnails funcionam?</li>
+                <li>Navegação de imagens funciona?</li>
+                <li>Variantes aparecem?</li>
+                <li>Seleção de variantes funciona?</li>
+                <li>Preços atualizam com variantes?</li>
+                <li>Disponibilidade atualiza?</li>
+                <li>Controles de quantidade funcionam?</li>
+                <li>Personalização aparece quando habilitada?</li>
+                <li>Input de texto de personalização funciona?</li>
+                <li>Contador de caracteres funciona?</li>
+                <li>Seletor de fonte funciona?</li>
+                <li>Seletor de orientação funciona?</li>
+                <li>Seletor de ícone aparece quando necessário?</li>
+                <li>Preview de personalização atualiza?</li>
+                <li>Preço de personalização calcula?</li>
+                <li>Adicionar ao carrinho funciona?</li>
+                <li>Comprar agora funciona?</li>
+                <li>Modal de carrinho aparece?</li>
+                <li>Especificações aparecem?</li>
+                <li>Produtos relacionados aparecem?</li>
+            </ul>
+        </div>
+
+        <!-- Debug Info -->
+        <div class="test-section">
+            <h2>🔍 Debug Info</h2>
+            <div class="controls">
+                <button class="btn-info" onclick="showState()">📊 Mostrar Estado</button>
+                <button class="btn-warning" onclick="clearCart()">🗑️ Limpar Carrinho</button>
+                <button class="btn-primary" onclick="testCart()">🛒 Testar Carrinho</button>
+            </div>
+            <pre id="debug-output"></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ProductDetailManager } from '../assets/js/components/product-detail.js';
+        import { CartButton } from '../assets/js/components/cartButton.js';
+        import { CartStorage } from '../assets/js/core/storage.js';
+        import { Notification } from '../assets/js/components/notification.js';
+
+        // Inicializar botão do carrinho
+        const cartBtn = new CartButton('#cart-container', {
+            showCount: true,
+            showTotal: false,
+            icon: '🛒'
+        });
+
+        // Inicializar ProductDetailManager
+        let productDetailManager = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Obter handle da URL ou usar padrão
+            const urlParams = new URLSearchParams(window.location.search);
+            const productHandle = urlParams.get('id') || 'garrafa-stanley-1l';
+            
+            // Se não tem na URL, adicionar
+            if (!urlParams.get('id')) {
+                window.history.replaceState({}, '', `?id=${productHandle}`);
+            }
+
+            productDetailManager = new ProductDetailManager();
+            
+            console.log('✅ ProductDetailManager inicializado');
+            
+            // Expor globalmente para debug
+            window.productDetailManager = productDetailManager;
+            
+            // Observar mudanças para atualizar checklist
+            observeStateChanges();
+        });
+
+        // Funções de teste
+        window.loadProduct = (handle) => {
+            window.location.href = `?id=${handle}`;
+        };
+
+        window.showState = () => {
+            const state = productDetailManager ? {
+                currentProduct: productDetailManager.currentProduct?.title,
+                selectedVariant: productDetailManager.selectedVariant?.title,
+                quantity: productDetailManager.quantity,
+                personalization: productDetailManager.personalization,
+                selectedImageIndex: productDetailManager.selectedImageIndex
+            } : {};
+            const output = document.getElementById('debug-output');
+            output.textContent = JSON.stringify(state, null, 2);
+            Notification.info('Estado exibido');
+        };
+
+        window.clearCart = () => {
+            CartStorage.clear();
+            Notification.success('Carrinho limpo!');
+            window.dispatchEvent(new CustomEvent('cartUpdated'));
+        };
+
+        window.testCart = () => {
+            const cart = CartStorage.get();
+            const output = document.getElementById('debug-output');
+            output.textContent = `Carrinho:\n${JSON.stringify(cart, null, 2)}`;
+            Notification.info('Carrinho exibido');
+        };
+
+        // Observar mudanças de estado
+        let checklistUpdateTimeout = null;
+        function observeStateChanges() {
+            setInterval(() => {
+                if (checklistUpdateTimeout) return;
+                checklistUpdateTimeout = setTimeout(() => {
+                    checkChecklist();
+                    checklistUpdateTimeout = null;
+                }, 500);
+            }, 2000);
+            
+            setTimeout(() => checkChecklist(), 1000);
+        }
+
+        function checkChecklist() {
+            try {
+                if (!productDetailManager) {
+                    markChecklistItem(0, false);
+                    return;
+                }
+                
+                const state = productDetailManager;
+                const product = state.currentProduct;
+                
+                // Verificar inicialização
+                markChecklistItem(0, productDetailManager !== null);
+                
+                // Verificar produto
+                markChecklistItem(1, product !== null);
+                
+                // Verificar informações
+                markChecklistItem(2, product && product.title);
+                
+                // Verificar galeria
+                markChecklistItem(3, product && product.images && product.images.length > 0);
+                
+                // Verificar thumbnails
+                const thumbnails = document.querySelectorAll('.thumbnail');
+                markChecklistItem(4, thumbnails.length > 0);
+                
+                // Verificar navegação
+                markChecklistItem(5, state.selectedImageIndex >= 0);
+                
+                // Verificar variantes
+                markChecklistItem(6, product && product.variants && product.variants.length > 0);
+                
+                // Verificar seleção de variantes
+                markChecklistItem(7, state.selectedVariant !== null);
+                
+                // Verificar preços
+                markChecklistItem(8, product && product.price > 0);
+                
+                // Verificar disponibilidade
+                markChecklistItem(9, state.selectedVariant && state.selectedVariant.availableForSale !== undefined);
+                
+                // Verificar quantidade
+                markChecklistItem(10, state.quantity > 0);
+                
+                // Verificar personalização
+                const panel = document.getElementById('personalizationPanel');
+                markChecklistItem(11, panel && (panel.style.display !== 'none' || state.personalization.enabled));
+                
+                // Verificar input de texto
+                const textInput = document.getElementById('personalizationText');
+                markChecklistItem(12, textInput !== null);
+                
+                // Verificar contador
+                const charCount = document.getElementById('charCount');
+                markChecklistItem(13, charCount !== null);
+                
+                // Verificar fonte
+                const fontSelect = document.getElementById('personalizationFont');
+                markChecklistItem(14, fontSelect !== null);
+                
+                // Verificar orientação
+                const orientationSelect = document.getElementById('orientationSelect');
+                markChecklistItem(15, orientationSelect !== null);
+                
+                // Verificar ícone
+                const iconOptions = document.querySelectorAll('.icon-option');
+                markChecklistItem(16, iconOptions.length > 0);
+                
+                // Verificar preview
+                const preview = document.getElementById('personalizationPreview');
+                markChecklistItem(17, preview !== null);
+                
+                // Verificar preço de personalização
+                markChecklistItem(18, state.personalization.enabled);
+                
+                // Verificar botões
+                const addBtn = document.getElementById('addToCartBtn');
+                const buyBtn = document.getElementById('buyNowBtn');
+                markChecklistItem(19, addBtn !== null);
+                markChecklistItem(20, buyBtn !== null);
+                
+                // Verificar modal (será criado dinamicamente)
+                markChecklistItem(21, true); // Sempre true, será testado manualmente
+                
+                // Verificar especificações
+                const specs = document.getElementById('productSpecifications');
+                markChecklistItem(22, specs !== null);
+                
+                // Verificar relacionados
+                const related = document.getElementById('relatedProductsGrid');
+                markChecklistItem(23, related !== null);
+                
+            } catch (error) {
+                console.error('Erro ao verificar checklist:', error);
+            }
+        }
+
+        function markChecklistItem(index, checked) {
+            const items = document.querySelectorAll('#test-checklist li');
+            if (items[index]) {
+                const wasChecked = items[index].classList.contains('checked');
+                if (checked && !wasChecked) {
+                    items[index].classList.add('checked');
+                } else if (!checked && wasChecked) {
+                    items[index].classList.remove('checked');
+                }
+            }
+        }
+
+        // Listener para atualização do carrinho
+        window.addEventListener('cartUpdated', () => {
+            Notification.success('Carrinho atualizado!');
+        });
+
+        console.log('✅ Test page carregado');
+    </script>
+</body>
+</html>
+

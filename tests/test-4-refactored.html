@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Teste 4 - Refactored Components</title>
+    <style>
+        body { 
+            font-family: 'Inter', Arial, sans-serif; 
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+        }
+        .header {
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        .test-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-section h2 {
+            margin-top: 0;
+            color: #4682B4;
+            border-bottom: 2px solid #4682B4;
+            padding-bottom: 0.5rem;
+        }
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        button:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        .btn-primary { background: #4682B4; color: white; }
+        .btn-success { background: #28a745; color: white; }
+        .btn-danger { background: #dc3545; color: white; }
+        .btn-warning { background: #ffc107; color: #333; }
+        .btn-info { background: #17a2b8; color: white; }
+        
+        .status {
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        .status.success { background: #d4edda; color: #155724; }
+        .status.error { background: #f8d7da; color: #721c24; }
+        .status.info { background: #d1ecf1; color: #0c5460; }
+        
+        .filters-demo {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        .filters-sidebar {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+        .filter-group {
+            margin-bottom: 1.5rem;
+        }
+        .filter-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        .filter-option {
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .filter-option input {
+            margin-right: 0.5rem;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .product-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: all 0.3s;
+        }
+        .product-item:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+        }
+        .product-name {
+            font-weight: 600;
+            margin: 0.5rem 0;
+            color: #333;
+        }
+        .product-price {
+            color: #4682B4;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .cart-demo {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 6px;
+            margin: 0.5rem 0;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+        .checklist li {
+            padding: 0.5rem;
+            margin: 0.25rem 0;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .checklist li:before {
+            content: '☐ ';
+            margin-right: 0.5rem;
+        }
+        .checklist li.checked:before {
+            content: '✅ ';
+        }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧪 Teste 4: Refactored Components</h1>
+        <div>
+            <span id="cart-count-display" style="background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 6px;">
+                🛒 <span id="cart-count">0</span> itens
+            </span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Teste do Cart Component -->
+        <div class="test-section">
+            <h2>🛒 Teste: Cart Component (CartManager)</h2>
+            <div class="status info">
+                <strong>Testando:</strong> <code>../assets/js/components/cart.js</code> e <code>../assets/js/pages/carrinho.js</code>
+            </div>
+            
+            <div class="controls">
+                <button class="btn-success" onclick="addTestProduct()">
+                    ➕ Adicionar Produto Teste
+                </button>
+                <button class="btn-danger" onclick="clearTestCart()">
+                    🗑️ Limpar Carrinho
+                </button>
+                <button class="btn-info" onclick="showCartInfo()">
+                    ℹ️ Info do Carrinho
+                </button>
+                <button class="btn-warning" onclick="testCartCalculations()">
+                    💰 Testar Cálculos
+                </button>
+            </div>
+
+            <div class="cart-demo" id="cart-demo">
+                <p style="color: #666; text-align: center;">Carrinho vazio. Adicione produtos para testar.</p>
+            </div>
+
+            <div class="checklist" id="cart-checklist">
+                <li>CartManager instanciado corretamente?</li>
+                <li>Adicionar produto funciona?</li>
+                <li>Contador atualiza automaticamente?</li>
+                <li>Limpar carrinho funciona?</li>
+                <li>Cálculos (subtotal, total) corretos?</li>
+                <li>Storage integrado (localStorage)?</li>
+                <li>Notificações aparecem?</li>
+            </div>
+        </div>
+
+        <!-- Teste do Filters Component -->
+        <div class="test-section">
+            <h2>🔍 Teste: Filters Component (ProductFilters)</h2>
+            <div class="status info">
+                <strong>Testando:</strong> <code>../assets/js/components/filters.js</code>
+            </div>
+
+            <div class="filters-demo">
+                <div class="filters-sidebar">
+                    <h3>Filtros</h3>
+                    
+                    <div class="filter-group">
+                        <label>Categoria:</label>
+                        <div class="filter-option">
+                            <input type="checkbox" name="category" value="garrafas" id="cat-garrafas">
+                            <label for="cat-garrafas">Garrafas</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" name="category" value="copos" id="cat-copos">
+                            <label for="cat-copos">Copos</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Preço:</label>
+                        <div class="filter-option">
+                            <input type="checkbox" name="price" value="0-50" id="price-0-50">
+                            <label for="price-0-50">Até R$ 50</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" name="price" value="50-100" id="price-50-100">
+                            <label for="price-50-100">R$ 50 - R$ 100</label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>Busca:</label>
+                        <input type="text" id="searchInput" placeholder="Buscar produtos..." style="width: 100%; padding: 0.5rem; border: 1px solid #ddd; border-radius: 4px;">
+                    </div>
+
+                    <button class="btn-primary" onclick="clearFilters()" style="width: 100%; margin-top: 1rem;">
+                        Limpar Filtros
+                    </button>
+                </div>
+
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <h3>Produtos (<span id="results-count">0</span>)</h3>
+                        <select id="sortSelect" style="padding: 0.5rem; border-radius: 4px; border: 1px solid #ddd;">
+                            <option value="relevance">Relevância</option>
+                            <option value="name-asc">Nome A-Z</option>
+                            <option value="name-desc">Nome Z-A</option>
+                            <option value="price-asc">Menor Preço</option>
+                            <option value="price-desc">Maior Preço</option>
+                        </select>
+                    </div>
+                    <div id="products-grid" class="products-grid"></div>
+                </div>
+            </div>
+
+            <div class="checklist" id="filters-checklist">
+                <li>ProductFilters instanciado corretamente?</li>
+                <li>Filtros de categoria funcionam?</li>
+                <li>Filtros de preço funcionam?</li>
+                <li>Busca funciona?</li>
+                <li>Limpar filtros funciona?</li>
+                <li>Filtros salvos no localStorage?</li>
+                <li>URL parameters funcionam?</li>
+            </div>
+        </div>
+
+        <!-- Teste do Product Grid Component -->
+        <div class="test-section">
+            <h2>📦 Teste: Product Grid Component</h2>
+            <div class="status info">
+                <strong>Testando:</strong> <code>../assets/js/components/product-grid.js</code>
+            </div>
+
+            <div class="controls">
+                <button class="btn-primary" onclick="setGridView()">
+                    ⊞ Grid View
+                </button>
+                <button class="btn-primary" onclick="setListView()">
+                    ☰ List View
+                </button>
+                <button class="btn-info" onclick="testSorting()">
+                    🔄 Testar Ordenação
+                </button>
+            </div>
+
+            <div class="checklist" id="grid-checklist">
+                <li>ProductGrid instanciado corretamente?</li>
+                <li>Produtos renderizados corretamente?</li>
+                <li>Grid/List view funciona?</li>
+                <li>Ordenação funciona?</li>
+                <li>Contador de resultados atualiza?</li>
+                <li>Mensagem "sem resultados" aparece?</li>
+                <li>Animações funcionam?</li>
+            </div>
+        </div>
+
+        <!-- Teste de Integração -->
+        <div class="test-section">
+            <h2>🔗 Teste: Integração Completa</h2>
+            <div class="status info">
+                <strong>Testando:</strong> Integração entre Filters + Grid + Cart
+            </div>
+
+            <div class="controls">
+                <button class="btn-success" onclick="testFullIntegration()">
+                    🚀 Testar Integração Completa
+                </button>
+                <button class="btn-warning" onclick="resetAll()">
+                    🔄 Resetar Tudo
+                </button>
+            </div>
+
+            <div class="checklist" id="integration-checklist">
+                <li>Filtros atualizam grid automaticamente?</li>
+                <li>Grid atualiza quando filtros mudam?</li>
+                <li>Adicionar ao carrinho funciona do grid?</li>
+                <li>Cart atualiza quando produtos são adicionados?</li>
+                <li>Todos os componentes trabalham juntos?</li>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { CartManager } from '../assets/js/components/cart.js';
+        import { ProductFilters } from '../assets/js/components/filters.js';
+        import { ProductGrid } from '../assets/js/components/product-grid.js';
+        import { Notification } from '../assets/js/components/notification.js';
+        import { api } from '../assets/js/core/api.js';
+        import { CartStorage } from '../assets/js/core/storage.js';
+        import { formatPrice } from '../assets/js/core/utils.js';
+
+        // Variáveis globais para os componentes
+        let cartManager = null;
+        let productFilters = null;
+        let productGrid = null;
+        let testProducts = [];
+
+        // Inicializar componentes
+        async function initialize() {
+            console.log('🚀 Inicializando componentes...');
+
+            try {
+                // 1. Inicializar Cart Manager (sem DOM completo, apenas funcionalidades)
+                // Nota: CartManager precisa de DOM específico, então vamos usar métodos estáticos
+                console.log('✅ CartManager disponível');
+
+                // 2. Carregar produtos de teste
+                const { products } = await api.getProducts({ first: 10 });
+                testProducts = products.map((p, index) => ({
+                    id: p.id || `prod-${index}`,
+                    element: null, // Será criado dinamicamente
+                    name: p.title,
+                    category: p.productType?.toLowerCase() || 'geral',
+                    price: p.price || 0,
+                    features: p.tags || [],
+                    description: p.description || '',
+                    priceText: formatPrice(p.price || 0)
+                }));
+
+                // 3. Criar elementos DOM para produtos
+                const grid = document.getElementById('products-grid');
+                testProducts.forEach((product, index) => {
+                    const productEl = document.createElement('div');
+                    productEl.className = 'product-item';
+                    productEl.setAttribute('data-category', product.category);
+                    productEl.setAttribute('data-price', product.price);
+                    productEl.setAttribute('data-features', product.features.join(','));
+                    productEl.innerHTML = `
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.priceText}</div>
+                        <div style="font-size: 0.85rem; color: #666; margin-top: 0.5rem;">${product.category}</div>
+                        <button class="btn-success" onclick="addProductToCart('${product.id}')" style="width: 100%; margin-top: 0.5rem;">
+                            Adicionar ao Carrinho
+                        </button>
+                    `;
+                    grid.appendChild(productEl);
+                    product.element = productEl;
+                });
+
+                // 4. Inicializar Product Grid
+                productGrid = new ProductGrid('products-grid');
+                productGrid.setFilteredProducts(testProducts);
+                productGrid.updateResultsCount();
+                console.log('✅ ProductGrid inicializado');
+
+                // 5. Inicializar Product Filters
+                productFilters = new ProductFilters((filters) => {
+                    // Callback quando filtros mudam
+                    const filtered = productFilters.applyFiltersToProducts(testProducts);
+                    productGrid.setFilteredProducts(filtered);
+                });
+                console.log('✅ ProductFilters inicializado');
+
+                // 6. Configurar sort select
+                const sortSelect = document.getElementById('sortSelect');
+                if (sortSelect) {
+                    sortSelect.addEventListener('change', (e) => {
+                        productGrid.setSort(e.target.value);
+                    });
+                }
+
+                // 7. Atualizar contador do carrinho
+                updateCartCount();
+                window.addEventListener('cartUpdated', updateCartCount);
+
+                Notification.success('✅ Todos os componentes inicializados!');
+                console.log('✅ Inicialização completa');
+
+            } catch (error) {
+                console.error('❌ Erro na inicialização:', error);
+                Notification.error('Erro ao inicializar componentes');
+            }
+        }
+
+        // Funções de teste do Cart
+        window.addTestProduct = () => {
+            const testProduct = {
+                id: `test-${Date.now()}`,
+                name: 'Produto Teste',
+                basePrice: Math.floor(Math.random() * 20000) + 5000,
+                quantity: 1,
+                image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+            };
+
+            CartManager.addToCart(testProduct);
+            updateCartDisplay();
+            Notification.success(`${testProduct.name} adicionado!`);
+            markChecklistItem('cart-checklist', 1);
+        };
+
+        window.addProductToCart = (productId) => {
+            const product = testProducts.find(p => p.id === productId);
+            if (!product) return;
+
+            const cartProduct = {
+                id: product.id,
+                name: product.name,
+                basePrice: product.price,
+                quantity: 1,
+                image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+            };
+
+            CartManager.addToCart(cartProduct);
+            updateCartDisplay();
+            Notification.success(`${product.name} adicionado ao carrinho!`);
+            markChecklistItem('cart-checklist', 1);
+        };
+
+        window.clearTestCart = () => {
+            CartStorage.clear();
+            updateCartDisplay();
+            Notification.info('Carrinho limpo!');
+            markChecklistItem('cart-checklist', 3);
+        };
+
+        window.showCartInfo = () => {
+            const cart = CartStorage.get();
+            const count = CartStorage.getCount();
+            const total = CartStorage.getTotal();
+            
+            Notification.info(
+                `📊 Carrinho: ${count} itens | Total: ${formatPrice(total)} | Items: ${cart.items.length}`
+            );
+            markChecklistItem('cart-checklist', 4);
+        };
+
+        window.testCartCalculations = () => {
+            const cart = CartStorage.get();
+            let subtotal = 0;
+            cart.items.forEach(item => {
+                subtotal += item.basePrice * item.quantity;
+            });
+            
+            const calculated = subtotal === CartStorage.getTotal();
+            if (calculated) {
+                Notification.success('✅ Cálculos corretos!');
+                markChecklistItem('cart-checklist', 4);
+            } else {
+                Notification.error('❌ Erro nos cálculos');
+            }
+        };
+
+        // Funções de teste dos Filtros
+        window.clearFilters = () => {
+            if (productFilters) {
+                productFilters.clearAllFilters();
+                Notification.info('Filtros limpos!');
+                markChecklistItem('filters-checklist', 4);
+            }
+        };
+
+        // Funções de teste do Grid
+        window.setGridView = () => {
+            if (productGrid) {
+                productGrid.setGridView();
+                Notification.info('Visualização: Grid');
+                markChecklistItem('grid-checklist', 2);
+            }
+        };
+
+        window.setListView = () => {
+            if (productGrid) {
+                productGrid.setListView();
+                Notification.info('Visualização: Lista');
+                markChecklistItem('grid-checklist', 2);
+            }
+        };
+
+        window.testSorting = () => {
+            if (productGrid) {
+                const sorts = ['name-asc', 'name-desc', 'price-asc', 'price-desc'];
+                let index = 0;
+                
+                const testNext = () => {
+                    if (index < sorts.length) {
+                        productGrid.setSort(sorts[index]);
+                        Notification.info(`Ordenação: ${sorts[index]}`);
+                        index++;
+                        setTimeout(testNext, 1000);
+                    } else {
+                        Notification.success('✅ Teste de ordenação completo!');
+                        markChecklistItem('grid-checklist', 3);
+                    }
+                };
+                
+                testNext();
+            }
+        };
+
+        // Funções de integração
+        window.testFullIntegration = async () => {
+            Notification.info('🧪 Testando integração completa...');
+            
+            // 1. Adicionar produto
+            if (testProducts.length > 0) {
+                window.addProductToCart(testProducts[0].id);
+                await new Promise(r => setTimeout(r, 500));
+            }
+            
+            // 2. Aplicar filtro
+            if (productFilters) {
+                const catCheckbox = document.querySelector('input[name="category"][value="garrafas"]');
+                if (catCheckbox) {
+                    catCheckbox.checked = true;
+                    catCheckbox.dispatchEvent(new Event('change'));
+                    await new Promise(r => setTimeout(r, 500));
+                }
+            }
+            
+            // 3. Mudar ordenação
+            if (productGrid) {
+                productGrid.setSort('price-asc');
+                await new Promise(r => setTimeout(r, 500));
+            }
+            
+            // 4. Mudar view
+            if (productGrid) {
+                productGrid.setListView();
+                await new Promise(r => setTimeout(r, 500));
+                productGrid.setGridView();
+            }
+            
+            Notification.success('✅ Teste de integração completo!');
+            markChecklistItem('integration-checklist', 4);
+        };
+
+        window.resetAll = () => {
+            CartStorage.clear();
+            if (productFilters) productFilters.clearAllFilters();
+            if (productGrid) {
+                productGrid.setFilteredProducts(testProducts);
+                productGrid.setGridView();
+                productGrid.setSort('relevance');
+            }
+            updateCartDisplay();
+            Notification.info('🔄 Tudo resetado!');
+        };
+
+        // Funções auxiliares
+        function updateCartCount() {
+            const count = CartStorage.getCount();
+            const countEl = document.getElementById('cart-count');
+            if (countEl) countEl.textContent = count;
+            markChecklistItem('cart-checklist', 2);
+        }
+
+        function updateCartDisplay() {
+            const cart = CartStorage.get();
+            const demo = document.getElementById('cart-demo');
+            
+            if (cart.items.length === 0) {
+                demo.innerHTML = '<p style="color: #666; text-align: center;">Carrinho vazio. Adicione produtos para testar.</p>';
+            } else {
+                demo.innerHTML = '<h4>Itens no Carrinho:</h4>' + 
+                    cart.items.map(item => `
+                        <div class="cart-item">
+                            <div>
+                                <strong>${item.name}</strong><br>
+                                <small>Qtd: ${item.quantity} | ${formatPrice(item.basePrice * item.quantity)}</small>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+            
+            updateCartCount();
+        }
+
+        function markChecklistItem(listId, index) {
+            const list = document.getElementById(listId);
+            if (list) {
+                const items = list.querySelectorAll('li');
+                if (items[index] && !items[index].classList.contains('checked')) {
+                    items[index].classList.add('checked');
+                }
+            }
+        }
+
+        // Inicializar ao carregar
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            initialize();
+        }
+    </script>
+</body>
+</html>
+

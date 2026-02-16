@@ -1,14 +1,24 @@
-/* ========================================
-   CHECKOUT PAGE JAVASCRIPT - QUEISE
-   ======================================== */
+/**
+ * ============================================
+ * CHECKOUT.JS - Checkout Page Component
+ * ============================================
+ * 
+ * Componente para gerenciar a página de checkout
+ * 
+ * @module components/Checkout
+ */
 
-// ========================================
-// CLASSE PRINCIPAL DO CHECKOUT
-// ========================================
+import { CartStorage } from '../core/storage.js';
+import { formatPrice, validateEmail, validatePhone, validateCEP, delay } from '../core/utils.js';
+import { Notification } from './notification.js';
+import { CART_CONFIG } from '../core/config.js';
 
-class CheckoutManager {
+/**
+ * Classe para gerenciar checkout
+ */
+export class CheckoutManager {
     constructor() {
-        this.cart = this.loadCart();
+        this.cart = CartStorage.get();
         this.shipping = null;
         this.paymentMethod = 'pix';
         this.discount = 0.05; // 5% desconto PIX
@@ -23,7 +33,7 @@ class CheckoutManager {
             this.loadOrderSummary();
             this.hideLoader();
             
-            console.log('Checkout inicializado com sucesso');
+            console.log('✅ Checkout inicializado com sucesso');
         } catch (error) {
             console.error('Erro na inicialização do checkout:', error);
         }
@@ -33,35 +43,15 @@ class CheckoutManager {
     // GERENCIAMENTO DO CARRINHO
     // ========================================
 
-    loadCart() {
-        try {
-            const cartData = localStorage.getItem('queise_cart');
-            if (!cartData) {
-                return { 
-                    items: [
-                        {
-                            id: 'garrafa-stanley-1l',
-                            name: 'Garrafa Stanley 1L',
-                            variant: { size: '1L', color: 'Azul' },
-                            personalization: { text: 'JOÃO SILVA' },
-                            quantity: 2,
-                            price: 18500, // R$ 185,00 em centavos
-                            image: '../imagens/placeholder-product.jpg'
-                        }
-                    ], 
-                    total: 37000 
-                };
-            }
-            return JSON.parse(cartData);
-        } catch (error) {
-            console.error('Erro ao carregar carrinho:', error);
-            return { items: [], total: 0 };
-        }
-    }
-
     loadOrderSummary() {
         const container = document.getElementById('summaryItems');
-        if (!container || this.cart.items.length === 0) return;
+        if (!container || !this.cart.items || this.cart.items.length === 0) {
+            // Redirecionar para carrinho se vazio
+            if (!this.cart.items || this.cart.items.length === 0) {
+                window.location.href = '../paginas/carrinho.html';
+            }
+            return;
+        }
 
         container.innerHTML = this.cart.items.map(item => `
             <div class="summary-item">
@@ -82,7 +72,7 @@ class CheckoutManager {
                     <div class="item-quantity">Qtd: ${item.quantity}</div>
                 </div>
                 <div class="item-price">
-                    ${this.formatPrice(item.price * item.quantity)}
+                    ${formatPrice((item.basePrice + (item.personalizationPrice || 0)) * item.quantity)}
                 </div>
             </div>
         `).join('');
@@ -91,8 +81,10 @@ class CheckoutManager {
     }
 
     updatePriceSummary() {
-        const subtotal = this.cart.items.reduce((sum, item) => 
-            sum + (item.price * item.quantity), 0);
+        const subtotal = this.cart.items.reduce((sum, item) => {
+            const itemPrice = (item.basePrice + (item.personalizationPrice || 0)) * item.quantity;
+            return sum + itemPrice;
+        }, 0);
         
         const discountAmount = Math.round(subtotal * this.discount);
         const shippingCost = this.shipping?.price || 0;
@@ -102,15 +94,16 @@ class CheckoutManager {
         this.updatePriceElement('subtotalPrice', subtotal);
         this.updatePriceElement('totalPrice', total);
         this.updatePriceElement('shippingPrice', shippingCost);
+        this.updatePriceElement('discountPrice', discountAmount);
     }
 
     updatePriceElement(elementId, price) {
         const element = document.getElementById(elementId);
         if (element) {
-            if (elementId === 'shippingPrice' && price === 0) {
+            if (elementId === 'shippingPrice' && price === 0 && !this.shipping) {
                 element.textContent = 'Calculando...';
             } else {
-                element.textContent = this.formatPrice(price);
+                element.textContent = formatPrice(price);
             }
         }
     }
@@ -187,14 +180,24 @@ class CheckoutManager {
     async lookupZipCode(zipCode) {
         const cleanZipCode = zipCode.replace(/\D/g, '');
         
-        if (cleanZipCode.length !== 8) return;
+        if (cleanZipCode.length !== 8) {
+            if (cleanZipCode.length > 0) {
+                Notification.error('CEP deve ter 8 dígitos');
+            }
+            return;
+        }
+
+        if (!validateCEP(cleanZipCode)) {
+            Notification.error('CEP inválido');
+            return;
+        }
 
         try {
             const response = await fetch(`https://viacep.com.br/ws/${cleanZipCode}/json/`);
             const data = await response.json();
 
             if (data.erro) {
-                this.showError('CEP não encontrado');
+                Notification.error('CEP não encontrado');
                 return;
             }
 
@@ -206,7 +209,7 @@ class CheckoutManager {
 
         } catch (error) {
             console.error('Erro ao buscar CEP:', error);
-            this.showError('Erro ao buscar CEP. Verifique sua conexão.');
+            Notification.error('Erro ao buscar CEP. Verifique sua conexão.');
         }
     }
 
@@ -250,28 +253,30 @@ class CheckoutManager {
             `;
 
             // Simular cálculo de frete
-            await new Promise(resolve => setTimeout(resolve, 2000));
+            await delay(2000);
 
-            const subtotal = this.cart.items.reduce((sum, item) => 
-                sum + (item.price * item.quantity), 0);
+            const subtotal = this.cart.items.reduce((sum, item) => {
+                const itemPrice = (item.basePrice + (item.personalizationPrice || 0)) * item.quantity;
+                return sum + itemPrice;
+            }, 0);
 
-            let shippingOptions = [
+            let shippingOptions = CART_CONFIG.shipping?.defaultShippingMethods || [
                 {
                     id: 'sedex',
                     name: 'SEDEX',
                     description: 'Entrega em 2-3 dias úteis',
-                    price: 1500
+                    price: 2500
                 },
                 {
                     id: 'pac',
                     name: 'PAC',
                     description: 'Entrega em 5-8 dias úteis',
-                    price: 1000
+                    price: 1500
                 }
             ];
 
-            // Frete grátis acima de R$ 200
-            if (subtotal >= 20000) {
+            // Frete grátis acima do limite
+            if (subtotal >= CART_CONFIG.shipping?.freeShippingLimit) {
                 shippingOptions.unshift({
                     id: 'free',
                     name: 'Frete Grátis',
@@ -305,7 +310,7 @@ class CheckoutManager {
                     <p>${option.description}</p>
                 </div>
                 <div class="shipping-price">
-                    ${option.price === 0 ? 'Grátis' : this.formatPrice(option.price)}
+                    ${option.price === 0 ? 'Grátis' : formatPrice(option.price)}
                 </div>
             </div>
         `).join('');
@@ -367,37 +372,46 @@ class CheckoutManager {
         const couponCode = couponInput.value.trim().toUpperCase();
         
         if (!couponCode) {
-            this.showError('Digite um código de cupom');
+            Notification.error('Digite um código de cupom');
             return;
         }
 
         try {
-            // Simular validação de cupom
-            const isValid = await this.validateCoupon(couponCode);
+            // Validar cupom usando CART_CONFIG
+            const validCoupons = CART_CONFIG.validCoupons || {};
+            const coupon = validCoupons[couponCode];
             
-            if (isValid) {
+            if (coupon) {
                 this.couponCode = couponCode;
-                this.discount += 0.10; // 10% adicional
+                
+                // Aplicar desconto do cupom
+                if (coupon.type === 'percentage') {
+                    this.discount += coupon.value / 100;
+                } else if (coupon.type === 'fixed') {
+                    // Desconto fixo será aplicado no cálculo final
+                    this.couponDiscount = coupon.value;
+                } else if (coupon.type === 'free_shipping') {
+                    // Frete grátis
+                    if (this.shipping) {
+                        this.shipping.price = 0;
+                    }
+                }
+                
                 this.updatePriceSummary();
-                this.showSuccess('Cupom aplicado com sucesso!');
+                Notification.success(`Cupom "${couponCode}" aplicado com sucesso!`);
                 couponInput.disabled = true;
-                document.getElementById('applyCoupon').textContent = 'Aplicado';
+                const applyBtn = document.getElementById('applyCoupon');
+                if (applyBtn) {
+                    applyBtn.textContent = 'Aplicado';
+                    applyBtn.disabled = true;
+                }
             } else {
-                this.showError('Cupom inválido ou expirado');
+                Notification.error('Cupom inválido ou expirado');
             }
         } catch (error) {
             console.error('Erro ao validar cupom:', error);
-            this.showError('Erro ao validar cupom');
+            Notification.error('Erro ao validar cupom');
         }
-    }
-
-    async validateCoupon(code) {
-        // Simular chamada à API
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Cupons válidos para demonstração
-        const validCoupons = ['PRIMEIRA10', 'QUEISE15', 'FRETE20'];
-        return validCoupons.includes(code);
     }
 
     // ========================================
@@ -408,12 +422,20 @@ class CheckoutManager {
         e.preventDefault();
         
         try {
+            // Validar formulário
+            if (!this.validateForm()) {
+                return;
+            }
+            
             // Coletar dados do formulário
             const formData = new FormData(e.target);
             const orderData = this.collectFormData(formData);
             
             // Simular processamento
-            this.showSuccess('Pedido processado com sucesso!');
+            Notification.success('Pedido processado com sucesso!');
+            
+            // Limpar carrinho
+            CartStorage.clear();
             
             // Redirecionar após delay
             setTimeout(() => {
@@ -422,8 +444,31 @@ class CheckoutManager {
 
         } catch (error) {
             console.error('Erro ao processar pedido:', error);
-            this.showError('Erro ao processar pedido. Tente novamente.');
+            Notification.error('Erro ao processar pedido. Tente novamente.');
         }
+    }
+
+    validateForm() {
+        const email = document.getElementById('email')?.value;
+        const phone = document.getElementById('phone')?.value;
+        const zipCode = document.getElementById('zipCode')?.value;
+        
+        if (email && !validateEmail(email)) {
+            Notification.error('E-mail inválido');
+            return false;
+        }
+        
+        if (phone && !validatePhone(phone)) {
+            Notification.error('Telefone inválido');
+            return false;
+        }
+        
+        if (zipCode && !validateCEP(zipCode.replace(/\D/g, ''))) {
+            Notification.error('CEP inválido');
+            return false;
+        }
+        
+        return true;
     }
 
     collectFormData(formData) {
@@ -457,13 +502,6 @@ class CheckoutManager {
     // UTILITÁRIOS
     // ========================================
 
-    formatPrice(priceInCents) {
-        return (priceInCents / 100).toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL'
-        });
-    }
-
     hideLoader() {
         const loader = document.getElementById('pageLoader');
         if (loader) {
@@ -473,68 +511,5 @@ class CheckoutManager {
             }, 500);
         }
     }
-
-    showError(message) {
-        this.showNotification(message, 'error');
-    }
-
-    showSuccess(message) {
-        this.showNotification(message, 'success');
-    }
-
-    showNotification(message, type = 'info') {
-        // Criar notificação toast
-        const notification = document.createElement('div');
-        notification.className = `checkout-notification notification-${type}`;
-        notification.innerHTML = `
-            <div class="notification-content">
-                <span class="notification-message">${message}</span>
-                <button class="notification-close" onclick="this.parentElement.parentElement.remove()">×</button>
-            </div>
-        `;
-
-        // Estilos da notificação
-        Object.assign(notification.style, {
-            position: 'fixed',
-            top: '100px',
-            right: '20px',
-            padding: '1rem 1.5rem',
-            background: type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8',
-            color: 'white',
-            borderRadius: '12px',
-            boxShadow: '0 8px 25px rgba(0,0,0,0.2)',
-            zIndex: '1001',
-            maxWidth: '400px',
-            fontFamily: 'Inter, sans-serif',
-            fontSize: '0.9rem',
-            fontWeight: '500'
-        });
-
-        document.body.appendChild(notification);
-
-        // Remover automaticamente após 3 segundos
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.style.opacity = '0';
-                setTimeout(() => notification.remove(), 300);
-            }
-        }, 3000);
-    }
 }
 
-// ========================================
-// INICIALIZAÇÃO
-// ========================================
-
-let checkoutManager;
-
-document.addEventListener('DOMContentLoaded', () => {
-    try {
-        checkoutManager = new CheckoutManager();
-        window.checkoutManager = checkoutManager; // Para debugging
-        
-        console.log('Checkout system initialized successfully');
-    } catch (error) {
-        console.error('Failed to initialize checkout:', error);
-    }
-});
