@@ -90,7 +90,7 @@ export class ProductCard {
 
         // Imagem
         const img = createElement('img', {
-            src: this.product.images?.[0]?.url || '../imagens/placeholder-product.jpg',
+            src: this.product.images?.[0]?.url || '../imagens/placeholder-product.svg',
             alt: this.product.title,
             loading: 'lazy'
         }, 'product-image');

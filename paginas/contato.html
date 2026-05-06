@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - QUEISE | Use Exclusividade</title>
+    <meta name="description" content="Entre em contato com a QUEISE. Estamos aqui para ajudar com seu pedido, orçamento corporativo ou dúvidas sobre personalização.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="icon" type="image/png" href="../imagens/logoQbonito.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: #ffffff;
+        }
+
+        :root {
+            --primary: #4682B4;
+            --secondary: #5F9EA0;
+            --accent: #B0C4DE;
+            --background: #f8f9fa;
+            --text-primary: #2c3e50;
+            --text-secondary: #6c757d;
+            --white: #ffffff;
+        }
+
+        /* HEADER */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(70,130,180,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+        .logo-img { height: 40px; width: auto; }
+        .logo-text { height: 25px; width: auto; }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        .nav-links a:hover,
+        .nav-links a.active { color: var(--primary); }
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .cart-icon {
+            position: relative;
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: var(--text-primary);
+        }
+        .cart-count {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 50%;
+            min-width: 18px;
+            text-align: center;
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* HERO */
+        .hero-contato {
+            min-height: 50vh;
+            background: linear-gradient(135deg, #4682B4 0%, #5F9EA0 100%);
+            display: flex;
+            align-items: center;
+            padding: 120px 5% 80px;
+        }
+        .hero-contato-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            color: white;
+        }
+        .tagline {
+            display: inline-block;
+            background: white;
+            color: var(--primary);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+        }
+        .hero-contato-content h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .hero-contato-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* SECTION */
+        .section {
+            padding: 80px 5%;
+        }
+        .section-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* CONTATO GRID */
+        .contato-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        /* INFORMAÇÕES */
+        .contato-info h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .contato-info > p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 40px;
+        }
+        .info-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .info-card {
+            background: var(--background);
+            border-radius: 15px;
+            padding: 20px 25px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        .info-card:hover {
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transform: translateX(5px);
+        }
+        .info-card-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 6px;
+        }
+        .info-card-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .info-card-sub {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-top: 3px;
+        }
+
+        /* FORMULÁRIO */
+        .contato-form-container {
+            background: white;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            border: 1px solid rgba(70,130,180,0.1);
+        }
+        .contato-form-container h3 {
+            font-size: 1.6rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        .contato-form-container > p {
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .form-group:last-child { margin-bottom: 0; }
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            border: 1px solid #dde3ea;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--background);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(70,130,180,0.1);
+        }
+        .form-group textarea { resize: vertical; min-height: 130px; }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(70,130,180,0.35);
+        }
+        .form-success {
+            display: none;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            color: #155724;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-top: 20px;
+        }
+
+        /* MAPA / HORÁRIOS */
+        .horarios-section {
+            background: var(--background);
+        }
+        .horarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        .horario-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            border: 1px solid rgba(70,130,180,0.1);
+            transition: all 0.3s ease;
+        }
+        .horario-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+        .horario-icon {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .horario-card h4 {
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .horario-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .section-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 550px;
+            margin: 0 auto;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: #455A6E;
+            color: white;
+            padding: 60px 5% 20px;
+        }
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            gap: 60px;
+        }
+        .footer-brand h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 20px; }
+        .footer-brand p { line-height: 1.6; margin-bottom: 15px; opacity: 0.8; }
+        .slogan { color: var(--accent); font-weight: 600; }
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+        }
+        .footer-column h4 { font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; }
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 10px; }
+        .footer-column a { color: white; text-decoration: none; opacity: 0.8; transition: opacity 0.3s; }
+        .footer-column a:hover { opacity: 1; color: var(--accent); }
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 40px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            opacity: 0.7;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .contato-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .form-row { grid-template-columns: 1fr; }
+            .contato-form-container { padding: 25px; }
+            .hero-contato-content h1 { font-size: 2rem; }
+            .nav-links {
+                position: fixed;
+                top: 100%; left: 0; right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px 5%;
+                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+            .nav-links.active { transform: translateY(0); opacity: 1; visibility: visible; }
+            .menu-toggle { display: block; }
+            .footer-content { grid-template-columns: 1fr; gap: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <a href="../index.html" class="logo">
+                <img src="../imagens/logoQbonito2.png" alt="QUEISE" class="logo-img">
+                <img src="../imagens/logoescrita2.png" alt="QUEISE" class="logo-text">
+            </a>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="produtos.html">Produtos</a></li>
+                <li><a href="colecoes.html">Coleções</a></li>
+                <li><a href="para-empresas.html">Para Empresas</a></li>
+                <li><a href="sobre.html">Sobre</a></li>
+                <li><a href="contato.html" class="active">Contato</a></li>
+            </ul>
+            <div class="nav-actions">
+                <a href="carrinho.html" class="cart-icon">
+                    <span class="cart-count">0</span>🛒
+                </a>
+                <button class="menu-toggle" aria-label="Menu">☰</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero-contato">
+        <div class="hero-contato-content">
+            <div class="tagline">Fale Conosco</div>
+            <h1>Estamos aqui para você</h1>
+            <p>Dúvidas, orçamentos ou simplesmente uma boa conversa — nossa equipe está pronta para atender.</p>
+        </div>
+    </section>
+
+    <!-- Contato Principal -->
+    <section class="section">
+        <div class="section-content">
+            <div class="contato-grid">
+
+                <!-- Informações de Contato -->
+                <div class="contato-info">
+                    <h2>Nossos canais</h2>
+                    <p>Escolha o canal que preferir. Respondemos em até 24h nos dias úteis.</p>
+                    <div class="info-cards">
+                        <div class="info-card">
+                            <div class="info-card-label">WhatsApp</div>
+                            <div class="info-card-value">(11) 99999-9999</div>
+                            <div class="info-card-sub">Resposta mais rápida</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">E-mail</div>
+                            <div class="info-card-value">contato@queise.com.br</div>
+                            <div class="info-card-sub">Para orçamentos e detalhes</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">Instagram</div>
+                            <div class="info-card-value">@queise.oficial</div>
+                            <div class="info-card-sub">Siga e envie uma DM</div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-card-label">CNPJ</div>
+                            <div class="info-card-value">42.779.053/0001-22</div>
+                            <div class="info-card-sub">Para emissão de notas fiscais</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulário -->
+                <div class="contato-form-container">
+                    <h3>Envie uma mensagem</h3>
+                    <p>Preencha o formulário abaixo e retornaremos em breve.</p>
+                    <form id="contatoForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome *</label>
+                                <input type="text" id="nome" name="nome" placeholder="Seu nome completo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" id="email" name="email" placeholder="seu@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefone">WhatsApp / Telefone</label>
+                                <input type="tel" id="telefone" name="telefone" placeholder="(11) 99999-9999">
+                            </div>
+                            <div class="form-group">
+                                <label for="assunto">Assunto *</label>
+                                <select id="assunto" name="assunto" required>
+                                    <option value="">Selecione...</option>
+                                    <option value="pedido">Dúvida sobre pedido</option>
+                                    <option value="orcamento">Orçamento corporativo</option>
+                                    <option value="personalizacao">Personalização</option>
+                                    <option value="troca">Troca ou devolução</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="mensagem">Mensagem *</label>
+                            <textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou pedido com detalhes..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit">Enviar Mensagem →</button>
+                        <div class="form-success" id="formSuccess">
+                            ✓ Mensagem enviada! Retornaremos em até 24h.
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Horários de Atendimento -->
+    <section class="horarios-section section">
+        <div class="section-content">
+            <div class="section-header">
+                <div class="tagline">Atendimento</div>
+                <h2>Quando estamos disponíveis</h2>
+                <p>Nossa equipe está pronta para atender você nos seguintes horários</p>
+            </div>
+            <div class="horarios-grid">
+                <div class="horario-card">
+                    <div class="horario-icon">💬</div>
+                    <h4>WhatsApp</h4>
+                    <p>Segunda a Sexta<br>9h às 18h<br>Sábado: 9h às 14h</p>
+                </div>
+                <div class="horario-card">
+                    <div class="horario-icon">📧</div>
+                    <h4>E-mail</h4>
+                    <p>Resposta em até 24h<br>dias úteis</p>
+                </div>
+                <div class="horario-card">
+                    <div class="horario-icon">🏢</div>
+                    <h4>Corporativo</h4>
+                    <p>Orçamentos B2B:<br>atendimento prioritário<br>com consultor dedicado</p>
+                </div>
+                <div class="horario-card">
+                    <div class="horario-icon">📦</div>
+                    <h4>Pós-venda</h4>
+                    <p>Trocas e devoluções:<br>até 7 dias após<br>o recebimento</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>QUEISE</h3>
+                <p>Transformamos ideias em produtos únicos e personalizados. Cada peça conta uma história, a sua história.</p>
+                <p class="slogan">Use Queise, Use Exclusividade.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>Produtos</h4>
+                    <ul>
+                        <li><a href="produtos.html">Todos os Produtos</a></li>
+                        <li><a href="produtos.html?categoria=garrafas">Garrafas Térmicas</a></li>
+                        <li><a href="produtos.html?categoria=copos">Copos Térmicos</a></li>
+                        <li><a href="produtos.html?categoria=bolsas">Bolsas Térmicas</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Empresa</h4>
+                    <ul>
+                        <li><a href="sobre.html">Sobre Nós</a></li>
+                        <li><a href="para-empresas.html">Para Empresas</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="sobre.html#sustentabilidade">Sustentabilidade</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Atendimento</h4>
+                    <ul>
+                        <li><a href="contato.html">Central de Ajuda</a></li>
+                        <li><a href="contato.html#privacidade">Política de Privacidade</a></li>
+                        <li><a href="contato.html#termos">Termos de Uso</a></li>
+                        <li><a href="contato.html#trocas">Trocas e Devoluções</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li>WhatsApp: (11) 99999-9999</li>
+                        <li>Email: contato@queise.com.br</li>
+                        <li>Segunda a Sexta: 9h às 18h</li>
+                        <li>Sábado: 9h às 14h</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 QUEISE. Todos os direitos reservados. CNPJ: 42.779.053/0001-22</p>
+        </div>
+    </footer>
+
+    <script type="module" src="../assets/js/app.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Menu mobile
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
+            }
+
+            // Header scroll
+            const header = document.querySelector('.header');
+            if (header) {
+                window.addEventListener('scroll', () => {
+                    header.style.boxShadow = window.scrollY > 100
+                        ? '0 2px 20px rgba(0,0,0,0.1)'
+                        : 'none';
+                });
+            }
+
+            // Formulário - feedback visual (sem backend ainda)
+            const form = document.getElementById('contatoForm');
+            const success = document.getElementById('formSuccess');
+            if (form) {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const nome = document.getElementById('nome').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const assunto = document.getElementById('assunto').value;
+                    const mensagem = document.getElementById('mensagem').value.trim();
+
+                    if (!nome || !email || !assunto || !mensagem) {
+                        alert('Por favor, preencha todos os campos obrigatórios.');
+                        return;
+                    }
+
+                    // Abre WhatsApp com mensagem pré-preenchida como alternativa
+                    const texto = encodeURIComponent(
+                        `Olá QUEISE! Me chamo ${nome}.\nAssunto: ${assunto}\n\n${mensagem}\n\nE-mail para retorno: ${email}`
+                    );
+                    window.open(`https://wa.me/5511999999999?text=${texto}`, '_blank');
+
+                    form.reset();
+                    if (success) {
+                        success.style.display = 'block';
+                        setTimeout(() => success.style.display = 'none', 5000);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

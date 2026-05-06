@@ -56,7 +56,7 @@ export class CheckoutManager {
         container.innerHTML = this.cart.items.map(item => `
             <div class="summary-item">
                 <div class="item-image">
-                    <img src="${item.image || '../imagens/placeholder-product.jpg'}" 
+                    <img src="${item.image || '../imagens/placeholder-product.svg'}" 
                          alt="${item.name}" loading="lazy">
                 </div>
                 <div class="item-details">

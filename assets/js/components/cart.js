@@ -449,7 +449,7 @@ export class CartManager {
             // Imagem
             const img = itemElement.querySelector('.item-image img');
             if (img) {
-                img.src = item.image || '../imagens/placeholder-product.jpg';
+                img.src = item.image || '../imagens/placeholder-product.svg';
                 img.alt = item.name;
             }
             

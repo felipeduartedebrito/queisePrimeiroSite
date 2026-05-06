@@ -155,7 +155,7 @@ function createProductElement(product) {
     article.setAttribute('data-product-handle', product.handle);
 
     // Imagem
-    const imageUrl = product.images?.[0]?.url || '../imagens/placeholder-product.jpg';
+    const imageUrl = product.images?.[0]?.url || '../imagens/placeholder-product.svg';
     const imageContainer = document.createElement('div');
     imageContainer.className = 'product-image-container';
     
@@ -171,7 +171,7 @@ function createProductElement(product) {
     // Tratar erro de imagem
     img.onerror = function() {
         console.warn('Erro ao carregar imagem:', imageUrl);
-        this.src = '../imagens/placeholder-product.jpg';
+        this.src = '../imagens/placeholder-product.svg';
     };
     
     imageDiv.appendChild(img);

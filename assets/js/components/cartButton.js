@@ -414,7 +414,7 @@ export class CartDrawer extends CartButton {
 
         // Imagem
         const img = createElement('img', {
-            src: item.image || '../imagens/placeholder-product.jpg',
+            src: item.image || '../imagens/placeholder-product.svg',
             alt: item.name
         });
         Object.assign(img.style, {
