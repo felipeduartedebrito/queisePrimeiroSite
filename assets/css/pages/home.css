@@ -26,15 +26,17 @@
     z-index: 1;
     max-width: var(--max-width-wide);
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(3rem, 6vw, 5rem);
-    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .hero-text {
     display: grid;
     gap: 1.75rem;
+    text-align: center;
+    align-items: center;
+    justify-items: center;
 }
 
 .hero-text .tagline {
