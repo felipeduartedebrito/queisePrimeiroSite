@@ -330,18 +330,6 @@ function setupEventListeners() {
         });
     }
     
-    // Botões de visualização
-    document.querySelectorAll('.view-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const view = e.target.dataset.view || e.target.closest('.view-btn')?.dataset.view;
-            if (view === 'grid') {
-                productGrid.setGridView();
-            } else if (view === 'list') {
-                productGrid.setListView();
-            }
-        });
-    });
-    
     // Event listener para limpar filtros
     window.addEventListener('clearAllFilters', () => {
         if (productFilters) {
@@ -388,24 +376,6 @@ function changePage(direction) {
     }
 }
 
-/**
- * Define view em grid (chamada do HTML)
- */
-function setGridView() {
-    if (productGrid) {
-        productGrid.setGridView();
-    }
-}
-
-/**
- * Define view em lista (chamada do HTML)
- */
-function setListView() {
-    if (productGrid) {
-        productGrid.setListView();
-    }
-}
-
 // ========================================
 // INICIALIZAÇÃO AUTOMÁTICA
 // ========================================
@@ -426,9 +396,6 @@ if (typeof window !== 'undefined') {
     window.clearAllFilters = clearAllFilters;
     window.loadMoreProducts = loadMoreProducts;
     window.changePage = changePage;
-    window.setGridView = setGridView;
-    window.setListView = setListView;
-    
     // Disponibilizar componentes para debug
     window.ProductsApp = {
         getFilters: () => productFilters,
