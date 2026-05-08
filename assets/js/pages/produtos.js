@@ -351,30 +351,6 @@ function clearAllFilters() {
     }
 }
 
-/**
- * Carrega mais produtos (chamada do HTML)
- */
-function loadMoreProducts() {
-    if (productGrid) {
-        productGrid.loadMoreProducts();
-    }
-}
-
-/**
- * Muda página (chamada do HTML)
- * @param {string|number} direction - 'prev', 'next' ou número da página
- */
-function changePage(direction) {
-    if (!productGrid) return;
-    
-    if (direction === 'prev') {
-        productGrid.prevPage();
-    } else if (direction === 'next') {
-        productGrid.nextPage();
-    } else if (typeof direction === 'number') {
-        productGrid.setPage(direction);
-    }
-}
 
 // ========================================
 // INICIALIZAÇÃO AUTOMÁTICA
@@ -394,8 +370,6 @@ if (document.readyState === 'loading') {
 // Disponibilizar funções globalmente para uso no HTML
 if (typeof window !== 'undefined') {
     window.clearAllFilters = clearAllFilters;
-    window.loadMoreProducts = loadMoreProducts;
-    window.changePage = changePage;
     // Disponibilizar componentes para debug
     window.ProductsApp = {
         getFilters: () => productFilters,
