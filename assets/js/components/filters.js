@@ -56,7 +56,10 @@ export class ProductFilters {
             priceRange: { min: '', max: '' },
             search: ''
         };
-        
+        // Teto do primeiro bucket de preço ("Até R$ X").
+        // Será ajustado em calibratePriceFilters() se necessário.
+        this.lowestBucketMax = 50;
+
         this.loadSavedFilters();
         this.loadURLFilters();
         this.initializeEventListeners();
@@ -347,6 +350,42 @@ export class ProductFilters {
     }
 
     /**
+     * Calibra os buckets de preço com base no catálogo real de produtos.
+     * Garante que o primeiro bucket ("Até R$ X") sempre inclui pelo menos
+     * o produto mais barato do catálogo.
+     * @param {Array} products - Produtos capturados do DOM
+     */
+    calibratePriceFilters(products) {
+        if (!products || products.length === 0) return;
+
+        // Coletar preços válidos (normalizar centavos → reais)
+        const prices = products
+            .map(p => {
+                let price = typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0;
+                if (price > 1000) price = price / 100;
+                return price;
+            })
+            .filter(p => p > 0);
+
+        if (prices.length === 0) return;
+
+        const minPrice = Math.min(...prices);
+
+        // Se o produto mais barato já cabe no bucket padrão, nada a fazer
+        if (minPrice <= this.lowestBucketMax) return;
+
+        // Arredondar para cima para o múltiplo de 10 acima do menor preço
+        const newMax = Math.ceil(minPrice / 10) * 10;
+        this.lowestBucketMax = newMax;
+
+        // Atualizar label no DOM
+        const label = document.querySelector('label[for="price1"]');
+        if (label) label.textContent = `Até R$ ${newMax}`;
+
+        console.log(`💰 Bucket de preço ajustado: "Até R$ ${newMax}" (menor produto: R$ ${minPrice})`);
+    }
+
+    /**
      * Verifica se preço está na faixa
      * @param {number} price - Preço do produto (pode estar em reais ou centavos)
      * @param {string} range - Faixa de preço (ex: '0-50')
@@ -355,30 +394,27 @@ export class ProductFilters {
     checkPriceInRange(price, range) {
         // Garantir que price é um número
         let priceNum = typeof price === 'number' ? price : parseFloat(price) || 0;
-        
+
         // Se price não for válido, não matcha
         if (isNaN(priceNum) || priceNum <= 0) {
             return false;
         }
-        
+
         // Detectar se price está em centavos (valores > 1000 provavelmente são centavos)
         // Converter para reais se necessário
         if (priceNum > 1000) {
             priceNum = priceNum / 100;
         }
-        
+
         switch(range) {
             case '0-50':
-                // Preços de 0 até 50 (inclusive)
-                return priceNum >= 0 && priceNum <= 50;
+                // Usa lowestBucketMax dinâmico (ajustado por calibratePriceFilters)
+                return priceNum >= 0 && priceNum <= this.lowestBucketMax;
             case '50-100':
-                // Preços de 50 até 100 (inclusive)
                 return priceNum >= 50 && priceNum <= 100;
             case '100-200':
-                // Preços de 100 até 200 (inclusive)
                 return priceNum >= 100 && priceNum <= 200;
             case '200+':
-                // Preços acima de 200
                 return priceNum > 200;
             default:
                 return true;

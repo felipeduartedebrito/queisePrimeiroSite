@@ -59,9 +59,12 @@ async function initializeProductsPage() {
     // Configurar event listeners adicionais
     setupEventListeners();
     
+    // Calibrar buckets de preço com base nos produtos reais do catálogo
+    productFilters.calibratePriceFilters(productGrid.getProducts());
+
     // Configurar animações iniciais
     productGrid.setupAnimations();
-    
+
     // Aplicar filtros iniciais
     const initialFiltered = productFilters.applyFiltersToProducts(productGrid.getProducts());
     productGrid.setFilteredProducts(initialFiltered);
