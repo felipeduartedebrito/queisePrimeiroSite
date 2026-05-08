@@ -153,6 +153,10 @@ async function loadProductsFromAPI() {
         
         console.log(`✅ ${products.length} produtos renderizados no DOM`);
 
+        // 🔍 Log de todos os productTypes presentes — útil para ajustar o CATEGORY_MAP
+        const uniqueTypes = [...new Set(products.map(p => p.productType || '(sem tipo)'))].sort();
+        console.log(`📋 ProductTypes únicos no catálogo (${uniqueTypes.length}):`, uniqueTypes);
+
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         container.innerHTML = `<div class="error">Erro ao carregar produtos: ${error.message}</div>`;

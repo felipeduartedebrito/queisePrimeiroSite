@@ -40,6 +40,79 @@ function flexibleIncludes(text, term) {
 }
 
 // ========================================
+// MAPEAMENTO DE CATEGORIAS
+// ========================================
+
+/**
+ * Mapa explícito: valor do checkbox → tipos de produto aceitos (normalizados).
+ * Usar correspondência EXATA para evitar falsos positivos (ex.: "bolsas de
+ * viagem" não deve aparecer no filtro "bolsas térmicas").
+ *
+ * Adicione aqui qualquer productType novo que apareça no Shopify — basta
+ * incluí-lo na lista correspondente.
+ */
+const CATEGORY_MAP = {
+    garrafas: [
+        'garrafa', 'garrafas',
+        'garrafa termica', 'garrafas termicas',
+        'garrafa de agua', 'garrafas de agua',
+        'squeeze', 'squeezes',
+    ],
+    copos: [
+        'copo', 'copos',
+        'copo termico', 'copos termicos',
+        'caneca', 'canecas',
+        'copo stanley', 'copos stanley',
+        'tumbler', 'tumblers',
+    ],
+    bolsas: [
+        'bolsa termica', 'bolsas termicas',
+        'bolsa refrigerada', 'bolsas refrigeradas',
+        'bolsa cooler', 'bolsas cooler',
+    ],
+    malas: [
+        'mala', 'malas',
+        'mochila', 'mochilas',
+        'mala de viagem', 'malas de viagem',
+        'bolsa de viagem', 'bolsas de viagem',
+        'mochila de viagem', 'mochilas de viagem',
+    ],
+    imas: [
+        'ima', 'imas',
+        'ima de geladeira', 'imas de geladeira',
+        'ima magnetico', 'imas magneticos',
+        'ima personalizado', 'imas personalizados',
+    ],
+};
+
+/**
+ * Verifica se um productType (normalizado) pertence a um filtro de categoria.
+ * Usa correspondência exata contra o CATEGORY_MAP para evitar falsos positivos.
+ *
+ * @param {string} productType - productType normalizado (sem acentos, minúsculas)
+ * @param {string} filterValue - valor do checkbox de categoria
+ * @returns {boolean}
+ */
+function matchesProductType(productType, filterValue) {
+    const accepted = CATEGORY_MAP[filterValue];
+
+    if (accepted) {
+        // Verificação exata: o productType deve ser EXATAMENTE um dos valores aceitos
+        if (accepted.includes(productType)) return true;
+
+        // Verificação adicional: o productType começa com algum dos termos aceitos
+        // (cobre plurais/variações não listadas, ex.: "garrafas sport" → "garrafas")
+        if (accepted.some(term => productType.startsWith(term + ' '))) return true;
+
+        return false;
+    }
+
+    // Filtro não mapeado: fallback conservador — prefere começar com o valor
+    // ao invés de simples includes, para reduzir falsos positivos
+    return productType === filterValue || productType.startsWith(filterValue + ' ');
+}
+
+// ========================================
 // CLASSE PRODUCT FILTERS
 // ========================================
 
@@ -198,64 +271,16 @@ export class ProductFilters {
      */
     applyFiltersToProducts(products) {
         let filtered = [...products];
-        
-        // Filtro por categoria (flexível - busca parcial e sem acentos)
+
+        // Filtro por categoria — baseado exclusivamente no productType da Shopify
         if (this.currentFilters.categories.length > 0) {
             filtered = filtered.filter(product => {
-                // Obter categoria do produto (pode vir de data-category ou inferir do nome)
-                const productCategory = normalizeText(product.category || '');
-                const productName = normalizeText(product.name || '');
-                
-                const matches = this.currentFilters.categories.some(filterCategory => {
-                    const normalizedFilter = normalizeText(filterCategory);
-                    
-                    // 1. Match exato da categoria
-                    if (productCategory && productCategory === normalizedFilter) {
-                        return true;
-                    }
-                    
-                    // 2. Match parcial da categoria
-                    if (productCategory && (productCategory.includes(normalizedFilter) || 
-                        normalizedFilter.includes(productCategory))) {
-                        return true;
-                    }
-                    
-                    // 3. Verifica no nome do produto (ex: "Garrafa Térmica" com filtro "garrafas")
-                    if (productName && flexibleIncludes(productName, normalizedFilter)) {
-                        return true;
-                    }
-                    
-                    // 4. Verifica palavras-chave comuns
-                    const categoryKeywords = {
-                        'garrafas': ['garrafa', 'garraf'],
-                        'copos': ['copo', 'caneca'],
-                        'bolsas': ['bolsa', 'bag'],
-                        'malas': ['mala', 'mochila', 'bagagem'],
-                        'imas': ['imã', 'ima', 'magnet']
-                    };
-                    
-                    if (categoryKeywords[filterCategory]) {
-                        const keywords = categoryKeywords[filterCategory];
-                        return keywords.some(keyword => 
-                            flexibleIncludes(productName, keyword) || 
-                            flexibleIncludes(productCategory, keyword)
-                        );
-                    }
-                    
-                    return false;
+                // productType da Shopify (normalizado: sem acentos, minúsculas)
+                const productType = normalizeText(product.category || '');
+
+                return this.currentFilters.categories.some(filterValue => {
+                    return matchesProductType(productType, filterValue);
                 });
-                
-                // Debug logging (apenas se não matchar)
-                if (!matches && productCategory) {
-                    console.debug('🔍 Produto não matchou:', {
-                        product: product.name,
-                        category: product.category,
-                        normalizedCategory: productCategory,
-                        filters: this.currentFilters.categories
-                    });
-                }
-                
-                return matches;
             });
         }
         
