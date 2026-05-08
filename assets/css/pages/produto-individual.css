@@ -520,7 +520,7 @@
     border: 1px solid var(--border-subtle);
 }
 
-.feature-item {
+.coming-soon-features .feature-item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -530,17 +530,17 @@
     transition: all 0.3s ease;
 }
 
-.feature-item:hover {
+.coming-soon-features .feature-item:hover {
     background: rgba(47, 79, 111, 0.08);
     transform: translateY(-2px);
 }
 
-.feature-icon {
+.coming-soon-features .feature-icon {
     font-size: 2rem;
     margin-bottom: 0.25rem;
 }
 
-.feature-item span:not(.feature-icon) {
+.coming-soon-features .feature-item span:not(.feature-icon) {
     color: var(--text-dark);
     font-weight: 500;
     font-size: 0.9rem;
