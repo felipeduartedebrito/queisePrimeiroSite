@@ -285,7 +285,7 @@
 /* Products Grid */
 .products-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: clamp(1.5rem, 3vw, 2rem);
 }
 
@@ -358,26 +358,25 @@
 }
 
 .product-info {
-    padding: clamp(1.5rem, 2.5vw, 1.8rem);
+    padding: 1rem 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 1.1rem;
+    gap: 0.65rem;
     flex: 1;
 }
 
 .product-category {
     color: var(--secondary);
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     font-weight: 500;
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 0.5rem;
     flex-shrink: 0;
 }
 
 .product-name {
     font-family: 'Playfair Display', serif;
-    font-size: 1.25rem;
+    font-size: 1rem;
     color: var(--text-dark);
     font-weight: 600;
     line-height: 1.3;
@@ -389,21 +388,20 @@
 
 .product-pricing {
     display: grid;
-    gap: 0.35rem;
+    gap: 0.2rem;
 }
 
 .price-main {
-    font-size: 1.3rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--primary);
     line-height: 1.2;
 }
 
 .price-personalization {
-    font-size: 0.85rem;
+    font-size: 0.78rem;
     color: var(--text-subtle);
     line-height: 1.2;
-    margin-top: 0.1rem;
 }
 
 .product-actions {
