@@ -90,9 +90,20 @@ async function loadProductsFromAPI() {
     container.innerHTML = '<div class="loading">Carregando produtos...</div>';
 
     try {
-        // Carregar produtos do Shopify
-        const { products } = await api.getProducts({ first: 50 });
-        
+        // Buscar TODOS os produtos paginando até não haver próxima página
+        let allProducts = [];
+        let after = null;
+        let hasMore = true;
+
+        while (hasMore) {
+            const { products: page, pageInfo } = await api.getProducts({ first: 250, after });
+            allProducts = allProducts.concat(page);
+            hasMore = pageInfo?.hasNextPage ?? false;
+            after   = pageInfo?.endCursor   ?? null;
+            console.log(`📦 Página carregada: ${page.length} produtos (total até agora: ${allProducts.length})`);
+        }
+
+        const products = allProducts;
         console.log(`✅ ${products.length} produtos carregados do Shopify`);
         
         // Debug: verificar primeiro produto
