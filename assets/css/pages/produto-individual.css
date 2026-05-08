@@ -959,22 +959,28 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.5rem 0.25rem;
-    background: transparent;
+    padding: 0.6rem 0.75rem;
+    background: var(--surface);
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    transition: box-shadow 0.25s ease;
 }
 
 .feature-item:hover {
-    background: transparent;
+    box-shadow: var(--shadow-soft);
 }
 
 .feature-icon {
     color: var(--primary);
     flex-shrink: 0;
-    opacity: 0.85;
     width: 36px;
     height: 36px;
     display: block;
     overflow: visible;
+    background: var(--surface);
+    border-radius: 6px;
+    padding: 4px;
+    box-sizing: border-box;
 }
 
 .feature-text {
