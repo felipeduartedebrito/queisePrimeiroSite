@@ -12,7 +12,7 @@
 
 .banner-topo img {
     width: 100%;
-    height: 420px;
+    height: 80vh;
     object-fit: cover;
     display: block;
 }
@@ -20,7 +20,7 @@
 /* Placeholder exibido enquanto o banner real não chega */
 .banner-topo-placeholder {
     width: 100%;
-    height: 420px;
+    height: 80vh;
     background: repeating-linear-gradient(
         -45deg,
         #f0ede8,
@@ -67,7 +67,7 @@
 @media (max-width: 768px) {
     .banner-topo img,
     .banner-topo-placeholder {
-        height: 260px;
+        height: 50vh;
     }
 
     .banner-topo-desktop { display: none; }
