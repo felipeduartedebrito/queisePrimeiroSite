@@ -139,6 +139,15 @@ export const PRODUCTS_QUERY = `
                     }
                     
                     tags
+
+                    collections(first: 5) {
+                        edges {
+                            node {
+                                handle
+                                title
+                            }
+                        }
+                    }
                 }
             }
             pageInfo {

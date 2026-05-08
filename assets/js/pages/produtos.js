@@ -48,7 +48,11 @@ async function initializeProductsPage() {
     
     // Criar instâncias dos componentes DEPOIS dos produtos serem renderizados
     productGrid = new ProductGrid('productsGrid');
-    
+
+    // Construir filtros de categoria com as categorias reais do catálogo
+    // (feito aqui, fora do try/catch de loadProductsFromAPI, para sempre rodar)
+    buildCategoryFilters(productGrid.getProducts());
+
     // Criar filtros com callback
     productFilters = new ProductFilters((filters) => {
         // Quando filtros mudam, aplicar aos produtos
@@ -106,21 +110,19 @@ async function loadProductsFromAPI() {
         const products = allProducts;
         console.log(`✅ ${products.length} produtos carregados do Shopify`);
         
-        // Debug: verificar primeiro produto
+        // Debug: verificar primeiro produto e diagnosticar fonte de categoria
         if (products.length > 0) {
-            console.log('📦 Primeiro produto (exemplo):', {
-                handle: products[0].handle,
-                id: products[0].id,
-                title: products[0].title,
-                productType: products[0].productType,
-                fullProduct: products[0] // Ver estrutura completa
+            const p0 = products[0];
+            console.log('📦 Primeiro produto (diagnóstico de categoria):', {
+                title:       p0.title,
+                productType: p0.productType || '(vazio)',
+                collections: p0.collections,
+                tags:        p0.tags,
             });
-            
-            // Verificar se handle existe em todos os produtos
-            const productsWithoutHandle = products.filter(p => !p.handle);
-            if (productsWithoutHandle.length > 0) {
-                console.warn(`⚠️ ${productsWithoutHandle.length} produtos sem handle:`, productsWithoutHandle);
-            }
+
+            const withType = products.filter(p => p.productType).length;
+            const withColl = products.filter(p => p.collections?.length).length;
+            console.log(`📊 Produtos com productType: ${withType}/${products.length} | com collections: ${withColl}/${products.length}`);
         }
 
         if (products.length === 0) {
@@ -153,9 +155,6 @@ async function loadProductsFromAPI() {
         
         console.log(`✅ ${products.length} produtos renderizados no DOM`);
 
-        // Construir filtros de categoria com os productTypes reais
-        buildCategoryFilters(products);
-
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         container.innerHTML = `<div class="error">Erro ao carregar produtos: ${error.message}</div>`;
@@ -164,39 +163,45 @@ async function loadProductsFromAPI() {
 
 /**
  * Constrói dinamicamente as opções de categoria do painel de filtros
- * usando os productTypes reais vindos do Shopify.
- * Isso garante que os filtros sempre espelham o catálogo real — sem
- * precisar de nenhum mapeamento manual.
+ * com base nas categorias reais capturadas dos produtos no DOM.
+ * Roda sempre — tanto em dev (produtos estáticos) quanto em prod (Shopify).
  *
- * @param {Array} products - Produtos carregados do Shopify
+ * @param {Array} products - Resultado de productGrid.getProducts()
  */
 function buildCategoryFilters(products) {
     const filterOptions = document.querySelector('.filter-group .filter-options');
-    if (!filterOptions) return;
-
-    // Coletar productTypes únicos e não-vazios, em ordem alfabética
-    const types = [...new Set(
-        products.map(p => p.productType).filter(Boolean)
-    )].sort((a, b) => a.localeCompare(b, 'pt-BR'));
-
-    if (types.length === 0) {
-        console.warn('⚠️ Nenhum productType encontrado nos produtos');
+    if (!filterOptions) {
+        console.warn('⚠️ Container de filtros de categoria não encontrado');
         return;
     }
 
-    console.log(`🏷️ Categorias do catálogo (${types.length}):`, types);
+    // Normalização idêntica à de filters.js
+    const normalizeText = t =>
+        t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
 
-    // Função local de normalização (igual à do filters.js)
-    const normalize = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    // Título amigável: primeira letra de cada palavra em maiúscula
+    const toLabel = s => s.replace(/\b\w/g, c => c.toUpperCase());
 
-    // Substituir checkboxes estáticos pelos dinâmicos
-    filterOptions.innerHTML = types.map(type => {
-        const value = normalize(type);
+    // Coletar categorias únicas (ignorar vazio e "outros")
+    const categories = [...new Set(
+        products.map(p => p.category).filter(c => c && c !== 'outros')
+    )].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+    if (categories.length === 0) {
+        console.warn('⚠️ Nenhuma categoria encontrada nos produtos');
+        return;
+    }
+
+    console.log(`🏷️ Categorias geradas (${categories.length}):`, categories);
+
+    filterOptions.innerHTML = categories.map(cat => {
+        const value = normalizeText(cat);           // sem acentos, minúsculas
+        const label = toLabel(cat);                 // "Garrafas Térmicas"
         const id    = 'cat-' + value.replace(/\s+/g, '-');
         return `
             <div class="filter-option">
                 <input type="checkbox" id="${id}" name="category" value="${value}">
-                <label for="${id}">${type}</label>
+                <label for="${id}">${label}</label>
                 <span class="filter-count">0</span>
             </div>`;
     }).join('');
@@ -206,10 +211,16 @@ function buildCategoryFilters(products) {
  * Cria elemento HTML para um produto
  */
 function createProductElement(product) {
+    // Determinar categoria: productType > primeira coleção > 'outros'
+    // (productType pode estar vazio no Shopify; collections são mais confiáveis)
+    const firstCollection = product.collections?.[0];
+    const categoryLabel = product.productType || firstCollection?.title || '';
+    const categoryValue = categoryLabel.toLowerCase();
+
     const article = document.createElement('article');
     article.className = 'product-item';
-    article.setAttribute('data-category', product.productType?.toLowerCase() || 'outros');
-    article.setAttribute('data-price', Math.round(product.price / 100)); // Converter centavos para reais
+    article.setAttribute('data-category', categoryValue || 'outros');
+    article.setAttribute('data-price', Math.round(product.price / 100));
     article.setAttribute('data-product-handle', product.handle);
 
     // Imagem
@@ -241,7 +252,7 @@ function createProductElement(product) {
     
     const category = document.createElement('div');
     category.className = 'product-category';
-    category.textContent = product.productType || 'Produto';
+    category.textContent = categoryLabel || 'Produto';
     
     const name = document.createElement('h3');
     name.className = 'product-name';

@@ -916,7 +916,10 @@ class ShopifyAPI {
             options: shopifyProduct.options || [],
             tags: shopifyProduct.tags || [],
             metafields: this._parseMetafields(shopifyProduct.metafields),
-            collections: shopifyProduct.collections?.edges?.map(e => e.node.handle) || []
+            collections: shopifyProduct.collections?.edges?.map(e => ({
+                handle: e.node.handle,
+                title:  e.node.title
+            })) || []
         };
     }
 
