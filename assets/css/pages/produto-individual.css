@@ -973,13 +973,13 @@
 .feature-icon {
     color: var(--primary);
     flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
     display: block;
     overflow: visible;
     background: var(--surface);
-    border-radius: 6px;
-    padding: 4px;
+    border-radius: 8px;
+    padding: 5px;
     box-sizing: border-box;
 }
 
