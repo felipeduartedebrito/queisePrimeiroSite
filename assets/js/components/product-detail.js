@@ -374,8 +374,7 @@ export class ProductDetailManager {
                 thumbnail.innerHTML = `<img src="${image.url}" alt="${image.altText}" loading="lazy">`;
                 
                 thumbnail.addEventListener('click', () => {
-                    this.selectedImageIndex = index;
-                    this.renderGallery();
+                    this.switchImage(index);
                 });
                 
                 this.elements.thumbnailGallery.appendChild(thumbnail);
@@ -383,6 +382,40 @@ export class ProductDetailManager {
         }
 
         // Atualizar navegação
+        this.updateGalleryNavigation();
+    }
+
+    /**
+     * Troca a imagem principal com transição de fade.
+     * Atualiza índice, src e thumbnail ativo sem re-renderizar tudo.
+     * @param {number} index - Índice da nova imagem
+     */
+    switchImage(index) {
+        const images = this.currentProduct?.images;
+        if (!images || index < 0 || index >= images.length) return;
+
+        this.selectedImageIndex = index;
+        const newImage = images[index];
+
+        // Fade out → troca src → fade in
+        const mainImg = this.elements.mainProductImage;
+        if (mainImg) {
+            mainImg.style.transition = 'opacity 0.2s ease';
+            mainImg.style.opacity = '0';
+            setTimeout(() => {
+                mainImg.src = newImage.url;
+                mainImg.alt = newImage.altText || this.currentProduct.title;
+                mainImg.style.opacity = '1';
+            }, 200);
+        }
+
+        // Atualizar thumbnail ativo
+        if (this.elements.thumbnailGallery) {
+            this.elements.thumbnailGallery
+                .querySelectorAll('.thumbnail')
+                .forEach((th, i) => th.classList.toggle('active', i === index));
+        }
+
         this.updateGalleryNavigation();
     }
 
@@ -530,6 +563,17 @@ export class ProductDetailManager {
 
         if (newVariant) {
             this.selectedVariant = newVariant;
+
+            // Trocar imagem principal se a variante tiver imagem própria
+            if (newVariant.image?.url) {
+                const imgIndex = this.currentProduct.images.findIndex(
+                    img => img.url === newVariant.image.url
+                );
+                if (imgIndex !== -1 && imgIndex !== this.selectedImageIndex) {
+                    this.switchImage(imgIndex);
+                }
+            }
+
             // Re-renderizar variantes para atualizar disponibilidade
             this.renderVariants();
             this.updatePricing();
@@ -1280,8 +1324,7 @@ export class ProductDetailManager {
         if (this.elements.prevImageBtn) {
             this.elements.prevImageBtn.addEventListener('click', () => {
                 if (this.selectedImageIndex > 0) {
-                    this.selectedImageIndex--;
-                    this.renderGallery();
+                    this.switchImage(this.selectedImageIndex - 1);
                 }
             });
         }
@@ -1290,8 +1333,7 @@ export class ProductDetailManager {
             this.elements.nextImageBtn.addEventListener('click', () => {
                 const maxIndex = (this.currentProduct?.images?.length || 1) - 1;
                 if (this.selectedImageIndex < maxIndex) {
-                    this.selectedImageIndex++;
-                    this.renderGallery();
+                    this.switchImage(this.selectedImageIndex + 1);
                 }
             });
         }
