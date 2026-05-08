@@ -62,123 +62,10 @@
     </section>
 
     <!-- Products Main -->
-    <!-- ESTRUTURA HTML LIMPA -->
-<!-- Products Main -->
-<!-- Backdrop mobile -->
-<div class="filter-backdrop" id="filterBackdrop" onclick="closeFilters()"></div>
-
 <main class="products-main">
-    <!-- Coluna Esquerda: Filtros -->
-    <aside class="filters-sidebar" id="filtersSidebar">
-        <div class="filters-header">
-            <h3>Filtros</h3>
-            <div class="filters-header-actions">
-                <button class="clear-filters" onclick="clearAllFilters()">Limpar</button>
-                <button class="mobile-filter-close" onclick="closeFilters()" aria-label="Fechar filtros">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-
-        <!-- Category Filter -->
-        <div class="filter-group">
-            <div class="filter-title">Categoria</div>
-            <div class="filter-options">
-                <div class="filter-option">
-                    <input type="checkbox" id="garrafas" name="category" value="garrafas">
-                    <label for="garrafas">Garrafas Térmicas</label>
-                    <span class="filter-count">12</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="copos" name="category" value="copos">
-                    <label for="copos">Copos Térmicos</label>
-                    <span class="filter-count">8</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="bolsas" name="category" value="bolsas">
-                    <label for="bolsas">Bolsas Térmicas</label>
-                    <span class="filter-count">6</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="malas" name="category" value="malas">
-                    <label for="malas">Malas & Mochilas</label>
-                    <span class="filter-count">10</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="imas" name="category" value="imas">
-                    <label for="imas">Imãs de Geladeira</label>
-                    <span class="filter-count">15</span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Price Filter -->
-        <div class="filter-group">
-            <div class="filter-title">Faixa de Preço</div>
-            <div class="filter-options">
-                <div class="filter-option">
-                    <input type="checkbox" id="price1" name="price" value="0-50">
-                    <label for="price1">Até R$ 50</label>
-                    <span class="filter-count">8</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="price2" name="price" value="50-100">
-                    <label for="price2">R$ 50 - R$ 100</label>
-                    <span class="filter-count">15</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="price3" name="price" value="100-200">
-                    <label for="price3">R$ 100 - R$ 200</label>
-                    <span class="filter-count">12</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="price4" name="price" value="200+">
-                    <label for="price4">Acima de R$ 200</label>
-                    <span class="filter-count">6</span>
-                </div>
-            </div>
-            <div class="price-range">
-                <div class="price-inputs">
-                    <input type="number" class="price-input" placeholder="Min" id="priceMin">
-                    <span class="price-separator">-</span>
-                    <input type="number" class="price-input" placeholder="Max" id="priceMax">
-                </div>
-            </div>
-        </div>
-
-        <!-- Features Filter -->
-        <div class="filter-group">
-            <div class="filter-title">Características</div>
-            <div class="filter-options">
-                <div class="filter-option">
-                    <input type="checkbox" id="termico" name="features" value="termico">
-                    <label for="termico">Térmico</label>
-                    <span class="filter-count">26</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="personalizavel" name="features" value="personalizavel">
-                    <label for="personalizavel">Personalizável</label>
-                    <span class="filter-count">41</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="premium" name="features" value="premium">
-                    <label for="premium">Premium</label>
-                    <span class="filter-count">18</span>
-                </div>
-                <div class="filter-option">
-                    <input type="checkbox" id="eco" name="features" value="eco">
-                    <label for="eco">Ecológico</label>
-                    <span class="filter-count">12</span>
-                </div>
-            </div>
-        </div>
-    </aside>
-
-    <!-- Coluna Direita: Busca + Produtos + Paginação -->
     <div class="products-area">
-        <!-- Search and Sort Area -->
+
+        <!-- Barra de controles: busca + ordenação + toggle filtros -->
         <div class="search-sort-area">
             <div class="search-container">
                 <span class="search-icon">🔍</span>
@@ -188,8 +75,7 @@
                 <div class="results-count">
                     Mostrando <strong id="resultsCount">51</strong> produtos
                 </div>
-                <!-- Botão filtro (só aparece no mobile) -->
-                <button class="filter-toggle-btn" onclick="openFilters()" aria-label="Abrir filtros">
+                <button class="filter-toggle-btn" id="filterToggleBtn" onclick="toggleFilters()" aria-label="Filtros">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="4" y1="6" x2="20" y2="6"/>
                         <line x1="8" y1="12" x2="16" y2="12"/>
@@ -208,6 +94,111 @@
                         <option value="newest">Mais Recentes</option>
                     </select>
                 </div>
+            </div>
+        </div>
+
+        <!-- Painel de filtros horizontal (oculto por padrão) -->
+        <div class="filters-panel" id="filtersPanel">
+            <div class="filters-inner">
+
+                <!-- Categoria -->
+                <div class="filter-group">
+                    <div class="filter-title">Categoria</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="garrafas" name="category" value="garrafas">
+                            <label for="garrafas">Garrafas Térmicas</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="copos" name="category" value="copos">
+                            <label for="copos">Copos Térmicos</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="bolsas" name="category" value="bolsas">
+                            <label for="bolsas">Bolsas Térmicas</label>
+                            <span class="filter-count">6</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="malas" name="category" value="malas">
+                            <label for="malas">Malas & Mochilas</label>
+                            <span class="filter-count">10</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="imas" name="category" value="imas">
+                            <label for="imas">Imãs de Geladeira</label>
+                            <span class="filter-count">15</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Faixa de Preço -->
+                <div class="filter-group">
+                    <div class="filter-title">Faixa de Preço</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="price1" name="price" value="0-50">
+                            <label for="price1">Até R$ 50</label>
+                            <span class="filter-count">8</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price2" name="price" value="50-100">
+                            <label for="price2">R$ 50 – R$ 100</label>
+                            <span class="filter-count">15</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price3" name="price" value="100-200">
+                            <label for="price3">R$ 100 – R$ 200</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="price4" name="price" value="200+">
+                            <label for="price4">Acima de R$ 200</label>
+                            <span class="filter-count">6</span>
+                        </div>
+                    </div>
+                    <div class="price-range">
+                        <div class="price-inputs">
+                            <input type="number" class="price-input" placeholder="Min" id="priceMin">
+                            <span class="price-separator">–</span>
+                            <input type="number" class="price-input" placeholder="Max" id="priceMax">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Características -->
+                <div class="filter-group">
+                    <div class="filter-title">Características</div>
+                    <div class="filter-options">
+                        <div class="filter-option">
+                            <input type="checkbox" id="termico" name="features" value="termico">
+                            <label for="termico">Térmico</label>
+                            <span class="filter-count">26</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="personalizavel" name="features" value="personalizavel">
+                            <label for="personalizavel">Personalizável</label>
+                            <span class="filter-count">41</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="premium" name="features" value="premium">
+                            <label for="premium">Premium</label>
+                            <span class="filter-count">18</span>
+                        </div>
+                        <div class="filter-option">
+                            <input type="checkbox" id="eco" name="features" value="eco">
+                            <label for="eco">Ecológico</label>
+                            <span class="filter-count">12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ações -->
+                <div class="filter-actions">
+                    <button class="clear-filters" onclick="clearAllFilters()">Limpar filtros</button>
+                </div>
+
             </div>
         </div>
 
@@ -544,15 +535,11 @@
     <script type="module" src="../assets/js/app.js"></script>
     <script type="module" src="../assets/js/pages/produtos.js"></script>
     <script>
-        function openFilters() {
-            document.getElementById('filtersSidebar').classList.add('open');
-            document.getElementById('filterBackdrop').classList.add('open');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeFilters() {
-            document.getElementById('filtersSidebar').classList.remove('open');
-            document.getElementById('filterBackdrop').classList.remove('open');
-            document.body.style.overflow = '';
+        function toggleFilters() {
+            const panel = document.getElementById('filtersPanel');
+            const btn   = document.getElementById('filterToggleBtn');
+            const open  = panel.classList.toggle('open');
+            btn.classList.toggle('active', open);
         }
     </script>
 </body>
