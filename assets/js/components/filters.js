@@ -67,7 +67,6 @@ export class ProductFilters {
         this.currentFilters = {
             categories: [],
             prices: [],
-            features: [],
             priceRange: { min: '', max: '' },
             search: ''
         };
@@ -96,11 +95,6 @@ export class ProductFilters {
         // Filtros de preço
         document.querySelectorAll('input[name="price"]').forEach(checkbox => {
             checkbox.addEventListener('change', (e) => this.handlePriceFilter(e));
-        });
-        
-        // Filtros de características
-        document.querySelectorAll('input[name="features"]').forEach(checkbox => {
-            checkbox.addEventListener('change', (e) => this.handleFeaturesFilter(e));
         });
         
         // Range de preço personalizado
@@ -147,24 +141,6 @@ export class ProductFilters {
             }
         } else {
             this.currentFilters.prices = this.currentFilters.prices.filter(p => p !== priceRange);
-        }
-        
-        this.applyFilters();
-    }
-
-    /**
-     * Manipula filtro de características
-     * @param {Event} event - Evento do checkbox
-     */
-    handleFeaturesFilter(event) {
-        const feature = event.target.value;
-        
-        if (event.target.checked) {
-            if (!this.currentFilters.features.includes(feature)) {
-                this.currentFilters.features.push(feature);
-            }
-        } else {
-            this.currentFilters.features = this.currentFilters.features.filter(f => f !== feature);
         }
         
         this.applyFilters();
@@ -279,19 +255,6 @@ export class ProductFilters {
             });
         }
         
-        // Filtro por características (flexível - sem acentos)
-        if (this.currentFilters.features.length > 0) {
-            filtered = filtered.filter(product => {
-                if (!product.features || product.features.length === 0) return false;
-                return this.currentFilters.features.some(filterFeature => {
-                    const normalizedFilter = normalizeText(filterFeature);
-                    return product.features.some(productFeature => 
-                        flexibleIncludes(productFeature, normalizedFilter)
-                    );
-                });
-            });
-        }
-        
         // Filtro por busca (flexível - sem acentos, case-insensitive)
         if (this.currentFilters.search) {
             filtered = filtered.filter(product => {
@@ -324,7 +287,6 @@ export class ProductFilters {
             this.currentFilters = {
                 categories: [],
                 prices: [],
-                features: [],
                 priceRange: { min: '', max: '' },
                 search: ''
             };
@@ -342,13 +304,6 @@ export class ProductFilters {
         // Faixas de preço
         document.querySelectorAll('input[name="price"]').forEach(cb => {
             const count = countFor('prices', cb.value);
-            const span = cb.closest('.filter-option')?.querySelector('.filter-count');
-            if (span) span.textContent = count;
-        });
-
-        // Características
-        document.querySelectorAll('input[name="features"]').forEach(cb => {
-            const count = countFor('features', cb.value);
             const span = cb.closest('.filter-option')?.querySelector('.filter-count');
             if (span) span.textContent = count;
         });
@@ -476,7 +431,6 @@ export class ProductFilters {
         this.currentFilters = {
             categories: [],
             prices: [],
-            features: [],
             priceRange: { min: '', max: '' },
             search: ''
         };
@@ -541,12 +495,6 @@ export class ProductFilters {
         // Aplicar preços
         filtersToApply.prices.forEach(price => {
             const checkbox = document.querySelector(`input[name="price"][value="${price}"]`);
-            if (checkbox) checkbox.checked = true;
-        });
-        
-        // Aplicar características
-        filtersToApply.features.forEach(feature => {
-            const checkbox = document.querySelector(`input[name="features"][value="${feature}"]`);
             if (checkbox) checkbox.checked = true;
         });
         
