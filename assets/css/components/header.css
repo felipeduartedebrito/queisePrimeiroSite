@@ -47,8 +47,8 @@
 }
 
 .logo-icon {
-    width: 44px;
-    height: 44px;
+    width: 64px;
+    height: 64px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,17 +62,17 @@
 }
 
 .logo-write {
-    height: 26px;
+    height: 38px;
     overflow: hidden;
     display: flex;
     align-items: flex-start;
 }
 
 .logo-write img {
-    height: 104px; /* imagem quadrada: renderiza maior para o texto ficar legível */
+    height: 152px;
     width: auto;
     flex-shrink: 0;
-    margin-top: -39px; /* centraliza verticalmente no texto */
+    margin-top: -57px;
 }
 
 /* === NAV LINKS === */
