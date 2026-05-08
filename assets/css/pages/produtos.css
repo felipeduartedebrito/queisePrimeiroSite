@@ -260,7 +260,9 @@
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-light);
-    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    pointer-events: none;
 }
 
 .sort-controls {
