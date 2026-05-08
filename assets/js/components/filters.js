@@ -350,6 +350,54 @@ export class ProductFilters {
     }
 
     /**
+     * Atualiza as contagens exibidas ao lado de cada opção de filtro
+     * com base nos produtos reais do catálogo.
+     * @param {Array} products - Produtos capturados do DOM
+     */
+    updateFilterCounts(products) {
+        if (!products || products.length === 0) return;
+
+        // Salva estado atual para restaurar depois
+        const saved = JSON.parse(JSON.stringify(this.currentFilters));
+
+        const countFor = (field, value) => {
+            this.currentFilters = {
+                categories: [],
+                prices: [],
+                features: [],
+                priceRange: { min: '', max: '' },
+                search: ''
+            };
+            this.currentFilters[field] = [value];
+            return this.applyFiltersToProducts(products).length;
+        };
+
+        // Categorias
+        document.querySelectorAll('input[name="category"]').forEach(cb => {
+            const count = countFor('categories', cb.value);
+            const span = cb.closest('.filter-option')?.querySelector('.filter-count');
+            if (span) span.textContent = count;
+        });
+
+        // Faixas de preço
+        document.querySelectorAll('input[name="price"]').forEach(cb => {
+            const count = countFor('prices', cb.value);
+            const span = cb.closest('.filter-option')?.querySelector('.filter-count');
+            if (span) span.textContent = count;
+        });
+
+        // Características
+        document.querySelectorAll('input[name="features"]').forEach(cb => {
+            const count = countFor('features', cb.value);
+            const span = cb.closest('.filter-option')?.querySelector('.filter-count');
+            if (span) span.textContent = count;
+        });
+
+        // Restaura estado
+        this.currentFilters = saved;
+    }
+
+    /**
      * Calibra os buckets de preço com base no catálogo real de produtos.
      * Garante que o primeiro bucket ("Até R$ X") sempre inclui pelo menos
      * o produto mais barato do catálogo.
