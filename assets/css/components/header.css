@@ -62,17 +62,13 @@
 }
 
 .logo-write {
-    height: 46px;
-    overflow: hidden;
     display: flex;
-    align-items: flex-start;
+    align-items: center;
 }
 
 .logo-write img {
-    height: 184px;
+    height: 28px;
     width: auto;
-    flex-shrink: 0;
-    margin-top: -69px;
 }
 
 /* === NAV LINKS === */
