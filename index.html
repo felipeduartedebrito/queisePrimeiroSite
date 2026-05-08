@@ -42,15 +42,38 @@
         </nav>
     </header>
 
-    <!-- Banner Section -->
+    <!-- Banner Carrossel -->
     <section class="banner-topo">
-        <div class="banner-topo-placeholder">
-            <div class="banner-topo-info">
-                <span class="banner-topo-icon">🖼️</span>
-                <p class="banner-topo-desktop">Desktop: <strong>1440 × 720 px</strong></p>
-                <p class="banner-topo-mobile">Mobile: <strong>768 × 400 px</strong></p>
-                <p class="banner-topo-hint">Substitua esta div pela tag &lt;img&gt; ou &lt;a&gt;&lt;img&gt;&lt;/a&gt; do seu banner</p>
+        <div class="banner-carousel" id="bannerCarousel">
+
+            <div class="carousel-slide active">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="imagens/banners_mobile/Banner-QUEISE-Cupom-Mobile.png">
+                    <img src="imagens/banners_desktop/Banner-QUEISE-Cupom--Desktop.png" alt="Banner QUEISE Cupom">
+                </picture>
             </div>
+            <div class="carousel-slide">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="imagens/banners_mobile/Banner-QUEISE-Empresas-Mobile.png">
+                    <img src="imagens/banners_desktop/Banner-QUEISE-Empresas-Desktop.png" alt="Banner QUEISE Empresas">
+                </picture>
+            </div>
+            <div class="carousel-slide">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="imagens/banners_mobile/Banner-QUEISE-Presente-Mobile.png">
+                    <img src="imagens/banners_desktop/Banner-QUEISE-Presente--Desktop.png" alt="Banner QUEISE Presente">
+                </picture>
+            </div>
+
+            <button class="carousel-btn carousel-prev" onclick="carouselPrev()" aria-label="Banner anterior">&#8249;</button>
+            <button class="carousel-btn carousel-next" onclick="carouselNext()" aria-label="Próximo banner">&#8250;</button>
+
+            <div class="carousel-dots">
+                <button class="carousel-dot active" onclick="carouselGoTo(0)" aria-label="Banner 1"></button>
+                <button class="carousel-dot" onclick="carouselGoTo(1)" aria-label="Banner 2"></button>
+                <button class="carousel-dot" onclick="carouselGoTo(2)" aria-label="Banner 3"></button>
+            </div>
+
         </div>
     </section>
 
@@ -354,6 +377,33 @@
     </footer>
 
     <script type="module" src="assets/js/app.js"></script>
+    <script>
+    (function () {
+        let current = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        let timer;
+
+        function goTo(n) {
+            slides[current].classList.remove('active');
+            dots[current].classList.remove('active');
+            current = (n + slides.length) % slides.length;
+            slides[current].classList.add('active');
+            dots[current].classList.add('active');
+        }
+
+        function startTimer() {
+            clearInterval(timer);
+            timer = setInterval(function () { goTo(current + 1); }, 5000);
+        }
+
+        window.carouselNext = function () { goTo(current + 1); startTimer(); };
+        window.carouselPrev = function () { goTo(current - 1); startTimer(); };
+        window.carouselGoTo = function (n) { goTo(n); startTimer(); };
+
+        startTimer();
+    })();
+    </script>
 </body>
 
 </html>
