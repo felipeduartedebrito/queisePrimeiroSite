@@ -788,11 +788,13 @@ export class ProductDetailManager {
         // quantityAvailable pode ser null se não estiver disponível na API
         if (availableForSale && (quantityAvailable === null || quantityAvailable > 0)) {
             availabilityElement.innerHTML = `
-                <span class="availability-icon">✓</span>
+                <span class="availability-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
                 <span class="availability-text">${quantityAvailable !== null ? `Em estoque (${quantityAvailable} disponíveis)` : 'Em estoque'}</span>
             `;
             availabilityElement.className = 'availability in-stock';
-            
+
             // Habilitar controles
             if (addToCartBtn) addToCartBtn.disabled = false;
             if (buyNowBtn) buyNowBtn.disabled = false;
@@ -803,7 +805,9 @@ export class ProductDetailManager {
             }
         } else {
             availabilityElement.innerHTML = `
-                <span class="availability-icon">✗</span>
+                <span class="availability-icon">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </span>
                 <span class="availability-text">Indisponível</span>
             `;
             availabilityElement.className = 'availability out-of-stock';
