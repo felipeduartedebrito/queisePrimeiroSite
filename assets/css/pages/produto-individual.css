@@ -959,15 +959,12 @@
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.6rem 0.75rem;
-    background: var(--surface);
-    border-radius: 10px;
-    border: 1px solid var(--border-subtle);
-    transition: box-shadow 0.25s ease;
+    padding: 0.5rem 0.25rem;
+    background: transparent;
 }
 
 .feature-item:hover {
-    box-shadow: var(--shadow-soft);
+    background: transparent;
 }
 
 .feature-icon {
