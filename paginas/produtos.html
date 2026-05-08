@@ -104,29 +104,33 @@
                 <!-- Categoria -->
                 <div class="filter-group">
                     <div class="filter-title">Categoria</div>
-                    <div class="filter-options">
+                    <div class="filter-options" id="categoryFilterOptions">
                         <div class="filter-option">
-                            <input type="checkbox" id="garrafas" name="category" value="garrafas">
+                            <input type="radio" id="cat-all" name="category" value="all" checked>
+                            <label for="cat-all">Todas</label>
+                        </div>
+                        <div class="filter-option">
+                            <input type="radio" id="garrafas" name="category" value="garrafas">
                             <label for="garrafas">Garrafas Térmicas</label>
                             <span class="filter-count">12</span>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="copos" name="category" value="copos">
+                            <input type="radio" id="copos" name="category" value="copos">
                             <label for="copos">Copos Térmicos</label>
                             <span class="filter-count">8</span>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="bolsas" name="category" value="bolsas">
+                            <input type="radio" id="bolsas" name="category" value="bolsas">
                             <label for="bolsas">Bolsas Térmicas</label>
                             <span class="filter-count">6</span>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="malas" name="category" value="malas">
+                            <input type="radio" id="malas" name="category" value="malas">
                             <label for="malas">Malas & Mochilas</label>
                             <span class="filter-count">10</span>
                         </div>
                         <div class="filter-option">
-                            <input type="checkbox" id="imas" name="category" value="imas">
+                            <input type="radio" id="imas" name="category" value="imas">
                             <label for="imas">Imãs de Geladeira</label>
                             <span class="filter-count">15</span>
                         </div>

@@ -124,20 +124,13 @@ export class ProductFilters {
     // ========================================
 
     /**
-     * Manipula filtro de categoria
-     * @param {Event} event - Evento do checkbox
+     * Manipula filtro de categoria (radio button — seleção única)
+     * @param {Event} event - Evento do radio
      */
     handleCategoryFilter(event) {
-        const category = event.target.value;
-        
-        if (event.target.checked) {
-            if (!this.currentFilters.categories.includes(category)) {
-                this.currentFilters.categories.push(category);
-            }
-        } else {
-            this.currentFilters.categories = this.currentFilters.categories.filter(c => c !== category);
-        }
-        
+        const value = event.target.value;
+        // "all" ou radio desmarcado → limpar filtro de categoria
+        this.currentFilters.categories = (value && value !== 'all') ? [value] : [];
         this.applyFilters();
     }
 
@@ -458,9 +451,15 @@ export class ProductFilters {
      * Limpa todos os filtros
      */
     clearAllFilters() {
-        // Limpar checkboxes
+        // Limpar checkboxes de preço e características
         document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.checked = false;
+        });
+        // Restaurar radio "Todas" como selecionado
+        const allRadio = document.getElementById('cat-all');
+        if (allRadio) allRadio.checked = true;
+        document.querySelectorAll('input[type="radio"][name="category"]').forEach(r => {
+            if (r.value !== 'all') r.checked = false;
         });
         
         // Limpar inputs de preço

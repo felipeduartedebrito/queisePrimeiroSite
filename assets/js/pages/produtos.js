@@ -194,17 +194,26 @@ function buildCategoryFilters(products) {
 
     console.log(`🏷️ Categorias geradas (${categories.length}):`, categories);
 
-    filterOptions.innerHTML = categories.map(cat => {
-        const value = normalizeText(cat);           // sem acentos, minúsculas
-        const label = toLabel(cat);                 // "Garrafas Térmicas"
+    // Opção "Todas" sempre primeiro, marcada por padrão
+    const allOption = `
+        <div class="filter-option">
+            <input type="radio" id="cat-all" name="category" value="all" checked>
+            <label for="cat-all">Todas</label>
+        </div>`;
+
+    const categoryOptions = categories.map(cat => {
+        const value = normalizeText(cat);
+        const label = toLabel(cat);
         const id    = 'cat-' + value.replace(/\s+/g, '-');
         return `
             <div class="filter-option">
-                <input type="checkbox" id="${id}" name="category" value="${value}">
+                <input type="radio" id="${id}" name="category" value="${value}">
                 <label for="${id}">${label}</label>
                 <span class="filter-count">0</span>
             </div>`;
     }).join('');
+
+    filterOptions.innerHTML = allOption + categoryOptions;
 }
 
 /**

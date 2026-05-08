@@ -144,11 +144,13 @@
     background: rgba(47, 79, 111, 0.07);
 }
 
-.filter-option input[type="checkbox"] {
+.filter-option input[type="checkbox"],
+.filter-option input[type="radio"] {
     width: 16px;
     height: 16px;
     accent-color: var(--primary);
     flex-shrink: 0;
+    cursor: pointer;
 }
 
 .filter-option label {
