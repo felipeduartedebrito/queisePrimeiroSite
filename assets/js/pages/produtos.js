@@ -153,14 +153,53 @@ async function loadProductsFromAPI() {
         
         console.log(`✅ ${products.length} produtos renderizados no DOM`);
 
-        // 🔍 Log de todos os productTypes presentes — útil para ajustar o CATEGORY_MAP
-        const uniqueTypes = [...new Set(products.map(p => p.productType || '(sem tipo)'))].sort();
-        console.log(`📋 ProductTypes únicos no catálogo (${uniqueTypes.length}):`, uniqueTypes);
+        // Construir filtros de categoria com os productTypes reais
+        buildCategoryFilters(products);
 
     } catch (error) {
         console.error('Erro ao carregar produtos:', error);
         container.innerHTML = `<div class="error">Erro ao carregar produtos: ${error.message}</div>`;
     }
+}
+
+/**
+ * Constrói dinamicamente as opções de categoria do painel de filtros
+ * usando os productTypes reais vindos do Shopify.
+ * Isso garante que os filtros sempre espelham o catálogo real — sem
+ * precisar de nenhum mapeamento manual.
+ *
+ * @param {Array} products - Produtos carregados do Shopify
+ */
+function buildCategoryFilters(products) {
+    const filterOptions = document.querySelector('.filter-group .filter-options');
+    if (!filterOptions) return;
+
+    // Coletar productTypes únicos e não-vazios, em ordem alfabética
+    const types = [...new Set(
+        products.map(p => p.productType).filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b, 'pt-BR'));
+
+    if (types.length === 0) {
+        console.warn('⚠️ Nenhum productType encontrado nos produtos');
+        return;
+    }
+
+    console.log(`🏷️ Categorias do catálogo (${types.length}):`, types);
+
+    // Função local de normalização (igual à do filters.js)
+    const normalize = t => t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    // Substituir checkboxes estáticos pelos dinâmicos
+    filterOptions.innerHTML = types.map(type => {
+        const value = normalize(type);
+        const id    = 'cat-' + value.replace(/\s+/g, '-');
+        return `
+            <div class="filter-option">
+                <input type="checkbox" id="${id}" name="category" value="${value}">
+                <label for="${id}">${type}</label>
+                <span class="filter-count">0</span>
+            </div>`;
+    }).join('');
 }
 
 /**

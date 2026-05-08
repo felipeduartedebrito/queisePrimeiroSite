@@ -39,74 +39,19 @@ function flexibleIncludes(text, term) {
     return normalizeText(text).includes(normalizeText(term));
 }
 
-// ========================================
-// MAPEAMENTO DE CATEGORIAS
-// ========================================
-
-/**
- * Roteamento explícito para productTypes problemáticos.
- * Se um tipo aparece aqui, ele vai SOMENTE para a categoria indicada,
- * independente de qualquer outra regra.
- *
- * Chave: productType normalizado  →  Valor: filterValue destino
- */
-const EXPLICIT_ROUTING = {
-    'bolsas de viagem':   'malas',
-    'bolsa de viagem':    'malas',
-    'bolsas travel':      'malas',
-    'bolsa travel':       'malas',
-    'mochila de viagem':  'malas',
-    'mochilas de viagem': 'malas',
-};
-
-/**
- * Termos-raiz de cada filtro de categoria.
- * Um productType pertence a um filtro se o seu PRIMEIRO TOKEN
- * (primeira palavra) corresponder a algum desses termos.
- *
- * Exemplos:
- *   "garrafas termicas" → primeiro token "garrafas" → filtro "garrafas" ✓
- *   "canecas personalizadas" → primeiro token "canecas" → filtro "copos" ✓
- *   "bolsas termicas" → primeiro token "bolsas" → filtro "bolsas" ✓
- *   "bolsas de viagem" → EXPLICIT_ROUTING → filtro "malas" ✓
- */
-const CATEGORY_ROOTS = {
-    garrafas: ['garrafa', 'garrafas', 'squeeze', 'squeezes', 'cantil', 'cantis'],
-    copos:    ['copo', 'copos', 'caneca', 'canecas', 'tumbler', 'tumblers', 'xicara', 'xicaras'],
-    bolsas:   ['bolsa', 'bolsas'],
-    malas:    ['mala', 'malas', 'mochila', 'mochilas', 'sacola', 'sacolas'],
-    imas:     ['ima', 'imas'],
-};
-
 /**
  * Verifica se um productType (normalizado) pertence a um filtro de categoria.
  *
- * Estratégia em três etapas:
- *  1. EXPLICIT_ROUTING — tipos com conflito pontual → roteamento direto.
- *  2. CATEGORY_ROOTS  — compara o primeiro token do productType com os
- *     termos-raiz do filtro. Cobre todas as variantes sem listá-las uma a uma.
- *  3. Fallback         — substring simples para filtros não mapeados.
+ * Os checkboxes de categoria são gerados dinamicamente em produtos.js com
+ * o valor = normalizeText(productType), portanto a comparação é exata.
+ * Não é necessário nenhum mapeamento.
  *
  * @param {string} productType - productType normalizado (sem acentos, minúsculas)
- * @param {string} filterValue - valor do checkbox de categoria
+ * @param {string} filterValue - valor do checkbox (= productType normalizado)
  * @returns {boolean}
  */
 function matchesProductType(productType, filterValue) {
-    // 1. Roteamento explícito
-    const explicitDest = EXPLICIT_ROUTING[productType];
-    if (explicitDest !== undefined) {
-        return explicitDest === filterValue;
-    }
-
-    // 2. Comparação pelo primeiro token
-    const roots = CATEGORY_ROOTS[filterValue];
-    if (roots) {
-        const firstToken = productType.split(' ')[0];
-        return roots.includes(firstToken);
-    }
-
-    // 3. Fallback para filtros não mapeados
-    return productType.includes(filterValue);
+    return productType === filterValue;
 }
 
 // ========================================
