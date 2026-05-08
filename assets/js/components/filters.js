@@ -44,72 +44,69 @@ function flexibleIncludes(text, term) {
 // ========================================
 
 /**
- * Mapa explícito: valor do checkbox → tipos de produto aceitos (normalizados).
- * Usar correspondência EXATA para evitar falsos positivos (ex.: "bolsas de
- * viagem" não deve aparecer no filtro "bolsas térmicas").
+ * Roteamento explícito para productTypes problemáticos.
+ * Se um tipo aparece aqui, ele vai SOMENTE para a categoria indicada,
+ * independente de qualquer outra regra.
  *
- * Adicione aqui qualquer productType novo que apareça no Shopify — basta
- * incluí-lo na lista correspondente.
+ * Chave: productType normalizado  →  Valor: filterValue destino
  */
-const CATEGORY_MAP = {
-    garrafas: [
-        'garrafa', 'garrafas',
-        'garrafa termica', 'garrafas termicas',
-        'garrafa de agua', 'garrafas de agua',
-        'squeeze', 'squeezes',
-    ],
-    copos: [
-        'copo', 'copos',
-        'copo termico', 'copos termicos',
-        'caneca', 'canecas',
-        'copo stanley', 'copos stanley',
-        'tumbler', 'tumblers',
-    ],
-    bolsas: [
-        'bolsa termica', 'bolsas termicas',
-        'bolsa refrigerada', 'bolsas refrigeradas',
-        'bolsa cooler', 'bolsas cooler',
-    ],
-    malas: [
-        'mala', 'malas',
-        'mochila', 'mochilas',
-        'mala de viagem', 'malas de viagem',
-        'bolsa de viagem', 'bolsas de viagem',
-        'mochila de viagem', 'mochilas de viagem',
-    ],
-    imas: [
-        'ima', 'imas',
-        'ima de geladeira', 'imas de geladeira',
-        'ima magnetico', 'imas magneticos',
-        'ima personalizado', 'imas personalizados',
-    ],
+const EXPLICIT_ROUTING = {
+    'bolsas de viagem':   'malas',
+    'bolsa de viagem':    'malas',
+    'bolsas travel':      'malas',
+    'bolsa travel':       'malas',
+    'mochila de viagem':  'malas',
+    'mochilas de viagem': 'malas',
+};
+
+/**
+ * Termos-raiz de cada filtro de categoria.
+ * Um productType pertence a um filtro se o seu PRIMEIRO TOKEN
+ * (primeira palavra) corresponder a algum desses termos.
+ *
+ * Exemplos:
+ *   "garrafas termicas" → primeiro token "garrafas" → filtro "garrafas" ✓
+ *   "canecas personalizadas" → primeiro token "canecas" → filtro "copos" ✓
+ *   "bolsas termicas" → primeiro token "bolsas" → filtro "bolsas" ✓
+ *   "bolsas de viagem" → EXPLICIT_ROUTING → filtro "malas" ✓
+ */
+const CATEGORY_ROOTS = {
+    garrafas: ['garrafa', 'garrafas', 'squeeze', 'squeezes', 'cantil', 'cantis'],
+    copos:    ['copo', 'copos', 'caneca', 'canecas', 'tumbler', 'tumblers', 'xicara', 'xicaras'],
+    bolsas:   ['bolsa', 'bolsas'],
+    malas:    ['mala', 'malas', 'mochila', 'mochilas', 'sacola', 'sacolas'],
+    imas:     ['ima', 'imas'],
 };
 
 /**
  * Verifica se um productType (normalizado) pertence a um filtro de categoria.
- * Usa correspondência exata contra o CATEGORY_MAP para evitar falsos positivos.
+ *
+ * Estratégia em três etapas:
+ *  1. EXPLICIT_ROUTING — tipos com conflito pontual → roteamento direto.
+ *  2. CATEGORY_ROOTS  — compara o primeiro token do productType com os
+ *     termos-raiz do filtro. Cobre todas as variantes sem listá-las uma a uma.
+ *  3. Fallback         — substring simples para filtros não mapeados.
  *
  * @param {string} productType - productType normalizado (sem acentos, minúsculas)
  * @param {string} filterValue - valor do checkbox de categoria
  * @returns {boolean}
  */
 function matchesProductType(productType, filterValue) {
-    const accepted = CATEGORY_MAP[filterValue];
-
-    if (accepted) {
-        // Verificação exata: o productType deve ser EXATAMENTE um dos valores aceitos
-        if (accepted.includes(productType)) return true;
-
-        // Verificação adicional: o productType começa com algum dos termos aceitos
-        // (cobre plurais/variações não listadas, ex.: "garrafas sport" → "garrafas")
-        if (accepted.some(term => productType.startsWith(term + ' '))) return true;
-
-        return false;
+    // 1. Roteamento explícito
+    const explicitDest = EXPLICIT_ROUTING[productType];
+    if (explicitDest !== undefined) {
+        return explicitDest === filterValue;
     }
 
-    // Filtro não mapeado: fallback conservador — prefere começar com o valor
-    // ao invés de simples includes, para reduzir falsos positivos
-    return productType === filterValue || productType.startsWith(filterValue + ' ');
+    // 2. Comparação pelo primeiro token
+    const roots = CATEGORY_ROOTS[filterValue];
+    if (roots) {
+        const firstToken = productType.split(' ')[0];
+        return roots.includes(firstToken);
+    }
+
+    // 3. Fallback para filtros não mapeados
+    return productType.includes(filterValue);
 }
 
 // ========================================
