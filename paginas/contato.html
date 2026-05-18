@@ -7,7 +7,7 @@
     <meta name="description" content="Entre em contato com a QUEISE. Estamos aqui para ajudar com seu pedido, orçamento corporativo ou dúvidas sobre personalização.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/css/styles.css">
-    <link rel="icon" type="image/png" href="../imagens/logoQbonito.png">
+    <link rel="icon" type="image/png" href="../imagens/logo_sem_fundo.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -413,8 +413,8 @@
     <header class="header">
         <nav class="nav">
             <a href="../index.html" class="logo">
-                <img src="../imagens/logoQbonito2.png" alt="QUEISE" class="logo-img">
-                <img src="../imagens/logoescrita2.png" alt="QUEISE" class="logo-text">
+                <img src="../imagens/logo_sem_fundo.png" alt="QUEISE" class="logo-img">
+                <img src="../imagens/logo_escrita_sem_fundo.png" alt="QUEISE" class="logo-text">
             </a>
             <ul class="nav-links">
                 <li><a href="../index.html">Home</a></li>
@@ -425,8 +425,9 @@
                 <li><a href="contato.html" class="active">Contato</a></li>
             </ul>
             <div class="nav-actions">
-                <a href="carrinho.html" class="cart-icon">
-                    <span class="cart-count">0</span>🛒
+                <a href="carrinho.html" class="cta-button">
+                    <span>Carrinho</span>
+                    <span class="cart-badge" id="headerCartBadge" style="display: none;">0</span>
                 </a>
                 <button class="menu-toggle" aria-label="Menu">☰</button>
             </div>
@@ -658,5 +659,6 @@
             }
         });
     </script>
+    <script defer src="../assets/js/cart-badge.js"></script>
 </body>
 </html>

@@ -9,6 +9,51 @@
     box-sizing: border-box;
 }
 
+/* === SHARP EDGES — zero border-radius globally === */
+*, *::before, *::after {
+    border-radius: 0 !important;
+}
+
+/* === PRESERVE BUTTONS — subtle 3px radius for purchase flow === */
+.btn-primary,
+.btn-secondary,
+.btn-white,
+.cta-button,
+.btn-view-collection,
+.btn-submit,
+.load-more-btn,
+.checkout-btn,
+.add-to-cart-btn,
+.buy-now-btn,
+.btn-back,
+.btn-next,
+.btn-novo-produto,
+.btn-comprar {
+    border-radius: 3px !important;
+}
+
+/* === PRESERVE CIRCLES — spinners, carousel controls, indicators === */
+.loader,
+.loading-spinner,
+.carousel-btn,
+.carousel-dot,
+.gallery-nav-btn,
+.color-preview,
+.contact-modal-close,
+.contact-modal-icon,
+.geometric-bg,
+.collection-image::before,
+.has-subcollections::after,
+.step-number,
+.section-number,
+.success-icon,
+.mvv-icon,
+.timeline-year,
+.timeline-year::before,
+.hover-glow::before {
+    border-radius: 50% !important;
+}
+
 /* === BODY === */
 body {
     font-family: 'Inter', sans-serif;

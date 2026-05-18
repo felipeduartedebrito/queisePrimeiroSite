@@ -30,7 +30,7 @@
     --focus-ring: 0 0 0 3px rgba(79, 109, 136, 0.28);
 
     /* === BACKDROP === */
-    --backdrop: rgba(255, 255, 255, 0.82);
+    --backdrop: rgba(255, 255, 255, 0.62);
 
     /* === BORDERS === */
     --border-subtle: rgba(31, 42, 55, 0.08);
@@ -51,9 +51,9 @@
     --transition-fast: all 0.25s ease;
 
     /* === RADII === */
-    --border-radius-card: 24px;
-    --border-radius-button: 6px;
-    --radius-lg: 28px;
-    --radius-xl: 36px;
-    --radius-pill: 999px;
+    --border-radius-card: 0px;
+    --border-radius-button: 3px;
+    --radius-lg: 0px;
+    --radius-xl: 0px;
+    --radius-pill: 0px;
 }

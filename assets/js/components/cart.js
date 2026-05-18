@@ -95,18 +95,38 @@ export class CartManager {
             }
             return cart;
         } else {
-            // Modo produção: usar Shopify API
+            // Modo produção:
+            // _saveAndReturnCart() mantém queise_cart sempre sincronizado após
+            // cada operação Shopify (criar, adicionar, atualizar, remover).
+            // Usar localStorage como fonte primária evita uma segunda chamada à
+            // API que pode falhar (CORS, rede, cart expirado) e criar um carrinho
+            // vazio sobrescrevendo o cart ID válido.
             try {
+                const localCart  = CartStorage.get();         // queise_cart
+                const cartId     = CartStorage.getCartId();   // shopify_cart_id
+
+                // Se localStorage já tem dados do mesmo carrinho Shopify, usar direto
+                if (localCart.id && localCart.id === cartId) {
+                    console.log('🛒 Carrinho carregado do localStorage:', (localCart.items || []).length, 'iten(s)');
+                    return {
+                        items:         localCart.items        || [],
+                        timestamp:     Date.now(),
+                        shopifyCartId: localCart.id,
+                        checkoutUrl:   localCart.checkoutUrl  || ''
+                    };
+                }
+
+                // Sem dados locais coerentes: buscar (ou criar) no Shopify
+                console.log('🛒 Buscando carrinho no Shopify...');
                 const shopifyCart = await api.getOrCreateCart();
-                // Converter formato Shopify para formato interno
                 return {
-                    items: shopifyCart.items || [],
-                    timestamp: Date.now(),
+                    items:         shopifyCart.items        || [],
+                    timestamp:     Date.now(),
                     shopifyCartId: shopifyCart.id,
-                    checkoutUrl: shopifyCart.checkoutUrl
+                    checkoutUrl:   shopifyCart.checkoutUrl  || ''
                 };
             } catch (error) {
-                console.error('Erro ao carregar carrinho do Shopify:', error);
+                console.error('Erro ao carregar carrinho:', error);
                 Notification.error('Erro ao carregar carrinho. Tente novamente.');
                 return { items: [], timestamp: Date.now() };
             }
@@ -157,6 +177,7 @@ export class CartManager {
                 CartStorage.updateQuantity(productId, newQuantity);
                 this.cart = this.loadCart();
                 this.renderCart();
+                window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart: this.cart } }));
                 Notification.success(`Quantidade atualizada para ${newQuantity}`);
             } else {
                 // Modo produção: usar Shopify API
@@ -208,6 +229,7 @@ export class CartManager {
                 CartStorage.removeItem(productId);
                 this.cart = this.loadCart();
                 this.renderCart();
+                window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart: this.cart } }));
                 Notification.success(`${item.name} removido do carrinho`);
             } else {
                 // Modo produção: usar Shopify API
@@ -465,8 +487,13 @@ export class CartManager {
             
             const variantEl = itemElement.querySelector('.item-variant');
             if (variantEl) {
-                variantEl.textContent = 
-                    `${item.variant?.size || ''} ${item.variant?.color || ''}`.trim() || 'Tamanho único';
+                // Suporta itens do localStorage (size/color) e itens do Shopify API (title)
+                const variantText =
+                    `${item.variant?.size || ''} ${item.variant?.color || ''}`.trim() ||
+                    item.variant?.title ||
+                    item.variantTitle ||
+                    '';
+                variantEl.textContent = variantText || 'Tamanho único';
             }
             
             // Personalização

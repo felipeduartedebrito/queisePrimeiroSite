@@ -177,7 +177,7 @@ export class Storage {
  */
 export const CartStorage = {
     /**
-     * Obtém carrinho atual
+     * Obtém carrinho atual, removendo automaticamente itens expirados
      * @returns {Object} Objeto do carrinho com items array
      */
     get() {

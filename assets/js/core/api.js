@@ -594,7 +594,7 @@ class ShopifyAPI {
         // Salvar cart ID
         CartStorage.saveCartId(cart.id);
         
-        return this._transformCart(cart);
+        return this._saveAndReturnCart(this._transformCart(cart));
     }
 
     /**
@@ -615,7 +615,7 @@ class ShopifyAPI {
             throw new Error('Carrinho não encontrado');
         }
 
-        return this._transformCart(data.cart);
+        return this._saveAndReturnCart(this._transformCart(data.cart));
     }
 
     /**
@@ -659,7 +659,7 @@ class ShopifyAPI {
             throw new Error(data.cartLinesAdd.userErrors[0].message);
         }
 
-        return this._transformCart(data.cartLinesAdd.cart);
+        return this._saveAndReturnCart(this._transformCart(data.cartLinesAdd.cart));
     }
 
     /**
@@ -684,7 +684,7 @@ class ShopifyAPI {
             throw new Error(data.cartLinesUpdate.userErrors[0].message);
         }
 
-        return this._transformCart(data.cartLinesUpdate.cart);
+        return this._saveAndReturnCart(this._transformCart(data.cartLinesUpdate.cart));
     }
 
     /**
@@ -709,7 +709,7 @@ class ShopifyAPI {
             throw new Error(data.cartLinesRemove.userErrors[0].message);
         }
 
-        return this._transformCart(data.cartLinesRemove.cart);
+        return this._saveAndReturnCart(this._transformCart(data.cartLinesRemove.cart));
     }
 
     /**
@@ -921,6 +921,20 @@ class ShopifyAPI {
                 title:  e.node.title
             })) || []
         };
+    }
+
+    /**
+     * Persiste o carrinho transformado no localStorage e o retorna.
+     * Garante que o badge do carrinho reflita o estado real em qualquer página.
+     * @param {Object} cart - Carrinho já transformado
+     * @returns {Object}
+     */
+    _saveAndReturnCart(cart) {
+        if (cart) {
+            CartStorage.set(cart);
+            window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart } }));
+        }
+        return cart;
     }
 
     /**

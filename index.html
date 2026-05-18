@@ -38,7 +38,10 @@
                 <li><a href="paginas/contato.html">Contato</a></li>
             </ul>
             <!-- ✅ CTA ATUALIZADO -->
-            <a href="paginas/personalizar.html" class="cta-button">Personalize Já</a>
+            <a href="paginas/carrinho.html" class="cta-button">
+                <span>Carrinho</span>
+                <span class="cart-badge" id="headerCartBadge" style="display: none;">0</span>
+            </a>
         </nav>
     </header>
 
@@ -380,16 +383,50 @@
     <script>
     (function () {
         let current = 0;
+        let isAnimating = false;
         const slides = document.querySelectorAll('.carousel-slide');
         const dots = document.querySelectorAll('.carousel-dot');
         let timer;
+        const DURATION = 450;
+        const EASING = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
+
+        /* set initial positions */
+        slides.forEach(function (s, i) {
+            s.style.transform = i === 0 ? 'translateX(0)' : 'translateX(100%)';
+        });
+        if (dots.length) dots[0].classList.add('active');
 
         function goTo(n) {
-            slides[current].classList.remove('active');
-            dots[current].classList.remove('active');
-            current = (n + slides.length) % slides.length;
-            slides[current].classList.add('active');
-            dots[current].classList.add('active');
+            if (isAnimating) return;
+            const total = slides.length;
+            const next = ((n % total) + total) % total;
+            if (next === current) return;
+            isAnimating = true;
+
+            /* shortest circular path → direction */
+            const forward = ((next - current + total) % total) <= total / 2;
+            const dir = forward ? 1 : -1;
+
+            /* snap incoming slide off-screen without animation */
+            slides[next].style.transition = 'none';
+            slides[next].style.transform = 'translateX(' + (dir * 100) + '%)';
+            void slides[next].offsetWidth; /* force reflow */
+
+            /* animate both slides */
+            const t = 'transform ' + DURATION + 'ms ' + EASING;
+            slides[next].style.transition = t;
+            slides[next].style.transform = 'translateX(0)';
+            slides[current].style.transition = t;
+            slides[current].style.transform = 'translateX(' + (-dir * 100) + '%)';
+
+            /* update dots */
+            if (dots.length) {
+                dots[current].classList.remove('active');
+                dots[next].classList.add('active');
+            }
+
+            current = next;
+            setTimeout(function () { isAnimating = false; }, DURATION);
         }
 
         function startTimer() {
@@ -404,6 +441,7 @@
         startTimer();
     })();
     </script>
+    <script defer src="assets/js/cart-badge.js"></script>
 </body>
 
 </html>

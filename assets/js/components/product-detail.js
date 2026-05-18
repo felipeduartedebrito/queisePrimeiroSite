@@ -39,13 +39,13 @@ export class ProductDetailManager {
         this.quantity = 1;
         this.isLoading = false;
 
-        // Personalization state (alinhado com novo sistema)
+        // Personalization state
         this.personalization = {
             enabled: false,
             text: '',
             font: 'Arial',
-            orientation: 'texto-horizontal',
-            icon: 'icon-1'
+            color: '#000000',
+            position: 'center'
         };
 
         // Referências DOM
@@ -211,20 +211,37 @@ export class ProductDetailManager {
      * Configura personalização baseado no produto
      */
     setupPersonalization() {
-        // Verificar se personalização está habilitada globalmente
-        if (!PERSONALIZATION_CONFIG.enabled) {
-            // Painel será renderizado com mensagem "em breve" no renderPersonalization()
+        const mode = PERSONALIZATION_CONFIG.mode;
+
+        // 'none' → nenhum produto personaliza
+        if (mode === 'none') {
             this.personalization.enabled = false;
             return;
         }
 
-        const config = this.currentProduct?.metafields?.personalization;
-        if (config?.enabled) {
-            this.personalization.enabled = true;
-            this.setupPersonalizationOptions(config);
-        } else {
-            this.personalization.enabled = false;
+        // 'allowed' → respeita metafield do Shopify
+        if (mode === 'allowed') {
+            const config = this.currentProduct?.metafields?.personalization;
+            if (config?.enabled) {
+                this.personalization.enabled = true;
+                this.setupPersonalizationOptions(config);
+            } else {
+                this.personalization.enabled = false;
+            }
+            return;
         }
+
+        // 'global' → todos os produtos, usa metafield se existir ou defaults
+        const config = this.currentProduct?.metafields?.personalization ?? {
+            enabled: true,
+            price: PERSONALIZATION_CONFIG.basePrice,
+            maxChars: PERSONALIZATION_CONFIG.maxChars,
+            allowedFonts: PERSONALIZATION_CONFIG.availableFonts.map(f => f.value),
+            allowedColors: PERSONALIZATION_CONFIG.availableColors.map(c => c.value),
+            allowedPositions: PERSONALIZATION_CONFIG.availablePositions.map(p => p.value)
+        };
+        this.personalization.enabled = true;
+        this.setupPersonalizationOptions(config);
     }
 
     /**
@@ -346,8 +363,11 @@ export class ProductDetailManager {
 
         // Mostrar badge de personalizável
         const personalizableBadge = document.getElementById('personalizableBadge');
-        if (personalizableBadge && this.currentProduct.metafields?.personalization?.enabled) {
-            personalizableBadge.style.display = 'inline-block';
+        if (personalizableBadge) {
+            const showBadge =
+                PERSONALIZATION_CONFIG.mode === 'global' ||
+                (PERSONALIZATION_CONFIG.mode === 'allowed' && this.currentProduct.metafields?.personalization?.enabled);
+            personalizableBadge.style.display = showBadge ? 'inline-block' : 'none';
         }
     }
 
@@ -578,7 +598,6 @@ export class ProductDetailManager {
             this.renderVariants();
             this.updatePricing();
             this.updateAvailability();
-            this.updatePersonalizationPreview();
         }
     }
 
@@ -589,62 +608,31 @@ export class ProductDetailManager {
         const panel = this.elements.personalizationPanel;
         if (!panel) return;
 
-        // Salvar HTML original na primeira vez
-        if (!this.originalPersonalizationHTML && panel.innerHTML.trim()) {
-            this.originalPersonalizationHTML = panel.innerHTML;
-        }
-
-        // Verificar se personalização está habilitada globalmente
-        if (!PERSONALIZATION_CONFIG.enabled) {
-            // Mostrar mensagem "Em breve" quando desabilitado
-            panel.style.display = 'block';
-            panel.innerHTML = `
-                <div class="personalization-coming-soon">
-                    <div class="coming-soon-icon">✨</div>
-                    <h3>Personalização em Breve!</h3>
-                    <p>Estamos trabalhando para trazer a funcionalidade de personalização de produtos. Em breve você poderá adicionar textos, escolher fontes e cores para tornar seus produtos únicos!</p>
-                    <div class="coming-soon-features">
-                        <div class="feature-item">
-                            <span class="feature-icon">✍️</span>
-                            <span>Texto personalizado</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">🎨</span>
-                            <span>Escolha de fontes e cores</span>
-                        </div>
-                        <div class="feature-item">
-                            <span class="feature-icon">👁️</span>
-                            <span>Preview em tempo real</span>
-                        </div>
-                    </div>
-                    <p class="coming-soon-note">Enquanto isso, você pode adicionar os produtos ao carrinho normalmente!</p>
-                </div>
-            `;
+        // 'none' → esconder completamente, sem mostrar nada
+        if (PERSONALIZATION_CONFIG.mode === 'none') {
+            panel.style.display = 'none';
             this.personalization.enabled = false;
             return;
         }
 
-        // Personalização habilitada - renderizar normalmente
-        const config = this.currentProduct.metafields?.personalization;
-
-        if (config?.enabled) {
-            // Se o painel contém a mensagem "em breve", restaurar HTML original
-            if (panel.querySelector('.personalization-coming-soon') && this.originalPersonalizationHTML) {
-                panel.innerHTML = this.originalPersonalizationHTML;
-                // Re-inicializar elementos após restaurar HTML
-                this.elements.personalizationPanel = document.getElementById('personalizationPanel');
-                this.elements.personalizationText = document.getElementById('personalizationText');
-                this.elements.personalizationFont = document.getElementById('personalizationFont');
+        // 'allowed' → respeita flag por produto via metafield Shopify
+        if (PERSONALIZATION_CONFIG.mode === 'allowed') {
+            const config = this.currentProduct?.metafields?.personalization;
+            if (config?.enabled) {
+                panel.style.display = 'flex';
+                this.personalization.enabled = true;
                 this.setupPersonalizationListeners();
+            } else {
+                panel.style.display = 'none';
+                this.personalization.enabled = false;
             }
-            
-            panel.style.display = 'block';
-            this.personalization.enabled = true;
-            // O conteúdo do formulário será renderizado pelos outros métodos
-        } else {
-            panel.style.display = 'none';
-            this.personalization.enabled = false;
+            return;
         }
+
+        // 'global' → mostrar para todos
+        panel.style.display = 'flex';
+        this.personalization.enabled = true;
+        this.setupPersonalizationListeners();
     }
 
     /**
@@ -828,56 +816,33 @@ export class ProductDetailManager {
     // ========================================
 
     /**
-     * Atualiza preview de personalização
+     * Atualiza overlay de texto sobre a imagem do produto
      */
-    updatePersonalizationPreview() {
-        const preview = document.getElementById('personalizationPreview');
-        if (!preview) return;
+    updateImageOverlay() {
+        const overlay = document.getElementById('personalizationOverlay');
+        const overlayText = document.getElementById('overlayText');
+        if (!overlay || !overlayText) return;
 
-        if (this.personalization.text.trim()) {
-            preview.style.display = 'block';
-            const container = preview.querySelector('.preview-container');
-            if (container) {
-                const orientationLabel = this.getOrientationLabel(this.personalization.orientation);
-                container.innerHTML = `
-                    <div class="preview-text" style="
-                        font-family: ${this.personalization.font};
-                        color: #000000;
-                        padding: 1rem;
-                        border-radius: 8px;
-                        margin-bottom: 1rem;
-                        background: #f8f9fa;
-                    ">
-                        "${this.personalization.text}"
-                    </div>
-                    <div class="preview-info">
-                        <strong>Configuração:</strong><br>
-                        Fonte: ${this.personalization.font} | 
-                        Orientação: ${orientationLabel}
-                    </div>
-                `;
+        const text = this.personalization.text.trim();
+
+        if (text) {
+            overlay.style.display = 'flex';
+            overlayText.textContent = text;
+            overlayText.style.fontFamily = this.personalization.font;
+            overlayText.style.color = this.personalization.color;
+
+            // Position classes
+            overlay.className = 'personalization-overlay';
+            if (this.personalization.position === 'bottom') {
+                overlay.classList.add('pos-bottom');
+            } else if (this.personalization.position === 'side') {
+                overlay.classList.add('pos-side');
             }
         } else {
-            preview.style.display = 'none';
+            overlay.style.display = 'none';
         }
-        
-        this.updatePricing();
-    }
 
-    /**
-     * Obtém label da orientação
-     * @param {string} orientation - Orientação
-     * @returns {string} Label
-     */
-    getOrientationLabel(orientation) {
-        const labels = {
-            'texto-vertical': 'Texto Vertical',
-            'texto-horizontal': 'Texto Horizontal',
-            'icone-texto-vertical': 'Ícone + Texto Vertical',
-            'icone-texto-horizontal': 'Ícone + Texto Horizontal',
-            'icone': 'Ícone'
-        };
-        return labels[orientation] || 'Texto Horizontal';
+        this.updatePricing();
     }
 
     /**
@@ -885,12 +850,12 @@ export class ProductDetailManager {
      */
     updateCharCount() {
         const charCount = this.elements.charCount;
-        const maxChars = this.currentProduct?.metafields?.personalization?.maxChars || 30;
-        
+        const maxChars = this.currentProduct?.metafields?.personalization?.maxChars || PERSONALIZATION_CONFIG.maxChars || 30;
+
         if (charCount && this.elements.personalizationText) {
             const current = this.elements.personalizationText.value.length;
             charCount.textContent = `${current}/${maxChars}`;
-            
+
             charCount.className = 'char-count';
             if (current > maxChars * 0.8) {
                 charCount.classList.add(current > maxChars * 0.9 ? 'danger' : 'warning');
@@ -1032,8 +997,8 @@ export class ProductDetailManager {
             const personalizationStr = JSON.stringify({
                 text: this.personalization.text,
                 font: this.personalization.font,
-                orientation: this.personalization.orientation,
-                icon: this.personalization.icon
+                color: this.personalization.color,
+                position: this.personalization.position
             });
             // Criar hash simples da personalização
             let hash = 0;
@@ -1081,8 +1046,8 @@ export class ProductDetailManager {
             cartItem.personalization = {
                 text: this.personalization.text,
                 font: this.personalization.font,
-                orientation: this.personalization.orientation,
-                icon: this.personalization.icon
+                color: this.personalization.color,
+                position: this.personalization.position
             };
             cartItem.personalizationPrice = personalizationPrice;
         }
@@ -1113,65 +1078,58 @@ export class ProductDetailManager {
         }
 
         const cartItem = this.buildCartItem();
-        
+
         try {
             this.setButtonLoading('buyNowBtn', true);
             this.isLoading = true;
-            
-            await delay(500); // Simular processamento
-            
-            CartStorage.addItem(cartItem);
-            window.dispatchEvent(new CustomEvent('cartUpdated'));
-            
-            Notification.success('Redirecionando para o carrinho...');
+
+            if (ENVIRONMENT.isDevelopment) {
+                await delay(500);
+                CartStorage.addItem(cartItem);
+                window.dispatchEvent(new CustomEvent('cartUpdated'));
+            } else {
+                // Produção: adiciona via Shopify API (igual ao addToCart)
+                let cart = await api.getOrCreateCart();
+                const lines = [{
+                    merchandiseId: cartItem.variantId,
+                    quantity: cartItem.quantity,
+                    attributes: (PERSONALIZATION_CONFIG.enabled && cartItem.personalization)
+                        ? Object.entries(cartItem.personalization).map(([k, v]) => ({ key: k, value: String(v) }))
+                        : []
+                }];
+                cart = await api.addToCart(cart.id, lines);
+                window.dispatchEvent(new CustomEvent('cartUpdated', { detail: { cart } }));
+            }
+
             this.updateCartBadge();
-            
-            // Redirecionar para carrinho
-            // Usar um timeout maior para garantir que o estado seja limpo antes do redirect
+            Notification.success('Redirecionando para o carrinho...');
+
             setTimeout(() => {
-                try {
-                    // Tentar redirecionar, mas se falhar (ex: test page), reabilitar o botão
-                    const currentPath = window.location.pathname;
-                    const isTestPage = currentPath.includes('test-');
-                    
-                    if (isTestPage) {
-                        // Na página de teste, apenas mostrar mensagem e reabilitar botão
-                        console.log('Test page detectada - não redirecionando');
-                        this.setButtonLoading('buyNowBtn', false);
-                        this.isLoading = false;
-                        Notification.success('Produto adicionado ao carrinho! (Test page - sem redirect)');
-                    } else {
-                        window.location.href = '../paginas/carrinho.html';
-                    }
-                } catch (redirectError) {
-                    console.error('Erro ao redirecionar:', redirectError);
-                    // Se o redirect falhar, garantir que o botão seja reabilitado
-                    this.setButtonLoading('buyNowBtn', false);
-                    this.isLoading = false;
-                    Notification.error('Não foi possível redirecionar. Produto adicionado ao carrinho.');
-                }
-            }, 1000);
+                window.location.href = '../paginas/carrinho.html';
+            }, 800);
 
         } catch (error) {
             console.error('Erro ao processar compra:', error);
             Notification.error('Erro ao processar compra');
-            // Garantir que o botão seja reabilitado em caso de erro
             this.setButtonLoading('buyNowBtn', false);
             this.isLoading = false;
         }
-        // NOTA: Não usar finally aqui porque o redirect acontece em setTimeout
-        // O botão será reabilitado apenas se o redirect falhar ou em caso de erro
     }
 
     /**
      * Atualiza badge do carrinho
      */
     updateCartBadge() {
-        const count = CartStorage.getCount();
         const badge = document.getElementById('headerCartBadge');
-        if (badge) {
+        if (!badge) return;
+        try {
+            const raw   = localStorage.getItem('queise_cart');
+            const cart  = raw ? JSON.parse(raw) : { items: [] };
+            const count = (cart.items || []).reduce((t, i) => t + (i.quantity || 1), 0);
             badge.textContent = count;
             badge.style.display = count > 0 ? 'inline' : 'none';
+        } catch (e) {
+            badge.style.display = 'none';
         }
     }
 
@@ -1344,137 +1302,147 @@ export class ProductDetailManager {
     }
 
     /**
-     * Configura listeners de personalização
+     * Configura listeners de personalização (nova UI com swatches e pills)
      */
     setupPersonalizationListeners() {
-        if (this.elements.personalizationText) {
-            this.elements.personalizationText.addEventListener('input', (e) => {
-                this.personalization.text = e.target.value;
-                this.updateCharCount();
-                this.updatePersonalizationPreview();
-            });
-        }
+        const panel = this.elements.personalizationPanel;
+        if (!panel) return;
 
-        if (this.elements.personalizationFont) {
-            this.elements.personalizationFont.addEventListener('change', (e) => {
-                this.personalization.font = e.target.value;
-                this.updatePersonalizationPreview();
-            });
-        }
-
-        if (this.elements.orientationSelect) {
-            this.elements.orientationSelect.addEventListener('change', (e) => {
-                this.personalization.orientation = e.target.value;
-                this.toggleIconSelector();
-                this.updatePersonalizationPreview();
-            });
-        }
-
-        // Icon selection
-        if (this.elements.iconOptions && this.elements.iconOptions.length > 0) {
-            this.elements.iconOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    const siblings = option.parentNode.querySelectorAll('.icon-option');
-                    siblings.forEach(sibling => sibling.classList.remove('active'));
-                    option.classList.add('active');
-                    
-                    this.personalization.icon = option.dataset.icon;
-                    this.updatePersonalizationPreview();
-                });
-            });
-        }
-    }
-
-    // ========================================
-    // IMAGE ZOOM
-    // ========================================
-
-    /**
-     * Configura zoom de imagem
-     */
-    setupImageZoom() {
-        const mainImage = this.elements.mainProductImage;
-        const modal = document.getElementById('imageZoomModal');
-        const closeBtn = document.getElementById('zoomCloseBtn');
-        const overlay = document.getElementById('zoomModalOverlay');
-
-        if (mainImage && modal) {
-            mainImage.addEventListener('click', () => {
-                this.openImageZoom();
-            });
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    this.closeImageZoom();
-                });
-            }
-
-            if (overlay) {
-                overlay.addEventListener('click', (e) => {
-                    if (e.target === overlay) {
-                        this.closeImageZoom();
-                    }
+        // --- Texto ---
+        const textInput = panel.querySelector('#personalizationText');
+        if (textInput) {
+            this.elements.personalizationText = textInput;
+            // Evitar duplicate listeners
+            if (!textInput._queiseListener) {
+                textInput._queiseListener = true;
+                textInput.addEventListener('input', (e) => {
+                    this.personalization.text = e.target.value;
+                    this.updateCharCount();
+                    this.updateImageOverlay();
                 });
             }
         }
 
-        // Suporte a teclado
-        document.addEventListener('keydown', (e) => {
-            if (modal && modal.style.display === 'block') {
-                if (e.key === 'Escape') {
-                    this.closeImageZoom();
-                } else if (e.key === 'ArrowLeft') {
-                    this.navigateZoomImage(-1);
-                } else if (e.key === 'ArrowRight') {
-                    this.navigateZoomImage(1);
-                }
+        // --- Swatches de fonte ---
+        const fontSwatches = panel.querySelectorAll('.font-swatch');
+        fontSwatches.forEach(btn => {
+            if (!btn._queiseListener) {
+                btn._queiseListener = true;
+                btn.addEventListener('click', () => {
+                    fontSwatches.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.personalization.font = btn.dataset.font;
+                    this.updateImageOverlay();
+                });
             }
         });
+
+        // --- Swatches de cor ---
+        const colorSwatches = panel.querySelectorAll('.color-swatch');
+        colorSwatches.forEach(btn => {
+            if (!btn._queiseListener) {
+                btn._queiseListener = true;
+                btn.addEventListener('click', () => {
+                    colorSwatches.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.personalization.color = btn.dataset.color;
+                    this.updateImageOverlay();
+                });
+            }
+        });
+
+        // --- Pills de posição ---
+        const positionPills = panel.querySelectorAll('.position-pill');
+        positionPills.forEach(btn => {
+            if (!btn._queiseListener) {
+                btn._queiseListener = true;
+                btn.addEventListener('click', () => {
+                    positionPills.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    this.personalization.position = btn.dataset.position;
+                    this.updateImageOverlay();
+                });
+            }
+        });
+
+        // Inicializar charCount
+        const charCount = panel.querySelector('#charCount');
+        if (charCount) this.elements.charCount = charCount;
+        this.updateCharCount();
     }
 
-    /**
-     * Abre zoom de imagem
-     */
-    openImageZoom() {
-        const modal = document.getElementById('imageZoomModal');
-        const modalImage = document.getElementById('zoomModalImage');
-        
-        if (modal && modalImage && this.currentProduct.images) {
-            const currentImage = this.currentProduct.images[this.selectedImageIndex];
-            modalImage.src = currentImage.url;
-            modalImage.alt = currentImage.altText;
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-    }
+    // ========================================
+    // IMAGE ZOOM (lens magnifier)
+    // ========================================
 
     /**
-     * Fecha zoom de imagem
+     * Configura zoom com lupa + painel lateral:
+     * um quadrado segue o mouse sobre a imagem e um painel ao lado
+     * mostra a área ampliada.
      */
-    closeImageZoom() {
-        const modal = document.getElementById('imageZoomModal');
-        if (modal) {
-            modal.style.display = 'none';
-            document.body.style.overflow = '';
-        }
-    }
+    setupImageZoom() {
+        const img       = this.elements.mainProductImage;
+        const container = img?.parentElement;
+        const lens      = document.getElementById('zoomLens');
+        const result    = document.getElementById('zoomResult');
+        const hint      = document.getElementById('imageZoomOverlay');
 
-    /**
-     * Navega imagem no zoom
-     * @param {number} direction - Direção (-1 ou 1)
-     */
-    navigateZoomImage(direction) {
-        const totalImages = this.currentProduct?.images?.length || 0;
-        if (totalImages <= 1) return;
+        if (!img || !lens || !result) return;
 
-        if (direction > 0 && this.selectedImageIndex < totalImages - 1) {
-            this.selectedImageIndex++;
-        } else if (direction < 0 && this.selectedImageIndex > 0) {
-            this.selectedImageIndex--;
-        }
+        const LENS_SIZE = 200;
 
-        this.renderGallery();
-        this.openImageZoom();
+        const isTouchOnly = () =>
+            window.matchMedia('(max-width: 1200px)').matches ||
+            window.matchMedia('(hover: none)').matches;
+
+        const moveLens = (e) => {
+            const rect = container.getBoundingClientRect();
+            const W = rect.width;
+            const H = rect.height;
+
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+
+            // Mantém a lupa dentro dos limites
+            x = Math.max(LENS_SIZE / 2, Math.min(x, W - LENS_SIZE / 2));
+            y = Math.max(LENS_SIZE / 2, Math.min(y, H - LENS_SIZE / 2));
+
+            const lensLeft = x - LENS_SIZE / 2;
+            const lensTop  = y - LENS_SIZE / 2;
+
+            lens.style.left   = lensLeft + 'px';
+            lens.style.top    = lensTop  + 'px';
+            lens.style.width  = LENS_SIZE + 'px';
+            lens.style.height = LENS_SIZE + 'px';
+
+            // Painel de resultado
+            const rW = result.offsetWidth  || 380;
+            const rH = result.offsetHeight || 380;
+            const cx = rW / LENS_SIZE;
+            const cy = rH / LENS_SIZE;
+
+            result.style.backgroundImage    = `url('${img.src}')`;
+            result.style.backgroundSize     = `${W * cx}px ${H * cy}px`;
+            result.style.backgroundPosition = `-${lensLeft * cx}px -${lensTop * cy}px`;
+        };
+
+        container.addEventListener('mouseenter', () => {
+            if (isTouchOnly()) return;
+            lens.style.display   = 'block';
+            result.style.display = 'block';
+            if (hint) hint.style.opacity = '0';
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (isTouchOnly()) return;
+            moveLens(e);
+        });
+
+        container.addEventListener('mouseleave', () => {
+            lens.style.display   = 'none';
+            result.style.display = 'none';
+            if (hint) hint.style.opacity = '';
+        });
     }
 
     // ========================================
