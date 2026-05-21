@@ -129,7 +129,7 @@ export const PRODUCTS_QUERY = `
                         }
                     }
                     
-                    images(first: 1) {
+                    images(first: 5) {
                         edges {
                             node {
                                 url
@@ -137,7 +137,27 @@ export const PRODUCTS_QUERY = `
                             }
                         }
                     }
-                    
+
+                    options {
+                        name
+                        values
+                    }
+
+                    variants(first: 20) {
+                        edges {
+                            node {
+                                selectedOptions {
+                                    name
+                                    value
+                                }
+                                image {
+                                    url
+                                    altText
+                                }
+                            }
+                        }
+                    }
+
                     tags
 
                     collections(first: 5) {

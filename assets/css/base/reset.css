@@ -14,7 +14,7 @@
     border-radius: 0 !important;
 }
 
-/* === PRESERVE BUTTONS — subtle 3px radius for purchase flow === */
+/* === PRESERVE BUTTONS — 8px radius nos botões de ação === */
 .btn-primary,
 .btn-secondary,
 .btn-white,
@@ -28,8 +28,13 @@
 .btn-back,
 .btn-next,
 .btn-novo-produto,
-.btn-comprar {
-    border-radius: 3px !important;
+.btn-comprar,
+.personalize-toggle-btn,
+.preview-btn,
+.font-btn,
+.icon-btn,
+.position-pill {
+    border-radius: 8px !important;
 }
 
 /* === PRESERVE CIRCLES — spinners, carousel controls, indicators === */

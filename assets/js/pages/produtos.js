@@ -217,183 +217,158 @@ function buildCategoryFilters(products) {
 }
 
 /**
- * Cria elemento HTML para um produto
+ * Cria elemento HTML para um produto (estilo Tuyo — sem botão, swatches + hover)
  */
 function createProductElement(product) {
-    // Determinar categoria: productType > primeira coleção > 'outros'
-    // (productType pode estar vazio no Shopify; collections são mais confiáveis)
     const firstCollection = product.collections?.[0];
     const categoryLabel = product.productType || firstCollection?.title || '';
     const categoryValue = categoryLabel.toLowerCase();
+
+    const handle = product.handle || product.id || '';
+    const detailUrl = `produto-individual.html?id=${encodeURIComponent(handle)}`;
 
     const article = document.createElement('article');
     article.className = 'product-item';
     article.setAttribute('data-category', categoryValue || 'outros');
     article.setAttribute('data-price', Math.round(product.price / 100));
-    article.setAttribute('data-product-handle', product.handle);
+    article.setAttribute('data-product-handle', handle);
+    article.style.cursor = 'pointer';
+
+    const navigateToDetail = () => {
+        if (handle) sessionStorage.setItem('product_handle', handle);
+        window.location.href = detailUrl;
+    };
 
     // Imagem
-    const imageUrl = product.images?.[0]?.url || '../imagens/placeholder-product.svg';
+    const defaultImageUrl = product.images?.[0]?.url || '../imagens/placeholder-product.svg';
     const imageContainer = document.createElement('div');
     imageContainer.className = 'product-image-container';
-    
-    const imageDiv = document.createElement('div');
-    imageDiv.className = 'product-image';
-    
+    imageContainer.addEventListener('click', navigateToDetail);
+
     const img = document.createElement('img');
-    img.src = imageUrl;
+    img.className = 'product-main-img';
+    img.src = defaultImageUrl;
     img.alt = product.title || 'Produto';
     img.loading = 'lazy';
-    // CSS vai controlar o tamanho
-    
-    // Tratar erro de imagem
-    img.onerror = function() {
-        console.warn('Erro ao carregar imagem:', imageUrl);
-        this.src = '../imagens/placeholder-product.svg';
-    };
-    
-    imageDiv.appendChild(img);
-    imageContainer.appendChild(imageDiv);
+    img.onerror = function() { this.src = '../imagens/placeholder-product.svg'; };
+    imageContainer.appendChild(img);
 
-    // Info
-    const info = document.createElement('div');
-    info.className = 'product-info';
-    
-    const category = document.createElement('div');
-    category.className = 'product-category';
-    category.textContent = categoryLabel || 'Produto';
-    
+    // Swatches de cor
+    const swatchRow = document.createElement('div');
+    swatchRow.className = 'product-card-swatches';
+
+    const colorOption = product.options?.find(o => /^cor$/i.test(o.name.trim()));
+    if (colorOption && product.variants?.length) {
+        // Mapear cor → imagem da variante; fallback por índice no array de imagens
+        const colorImageMap = {};
+        const allImages = product.images || [];
+        colorOption.values.forEach((colorName, colorIdx) => {
+            const variant = product.variants.find(v =>
+                v.selectedOptions?.some(o => /^cor$/i.test(o.name.trim()) && o.value === colorName)
+            );
+            colorImageMap[colorName] = variant?.image?.url || defaultImageUrl;
+        });
+
+        // Preload das imagens de variantes para eliminar delay no hover
+        Object.values(colorImageMap).forEach(url => {
+            if (url && url !== defaultImageUrl) {
+                const preload = new Image();
+                preload.src = url;
+            }
+        });
+
+        const MAX_SHOWN = 5;
+        const colors = colorOption.values;
+        const shown = colors.slice(0, MAX_SHOWN);
+        const extra = colors.length - MAX_SHOWN;
+
+        shown.forEach(colorName => {
+            const hex = _cardColorToHex(colorName);
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'product-card-swatch';
+            btn.style.background = hex;
+            btn.title = colorName;
+            btn.setAttribute('aria-label', colorName);
+            btn.style.boxShadow = `0 0 0 2px #fff, 0 0 0 3.5px #d0d0d0`;
+
+            btn.addEventListener('mouseenter', () => {
+                const imgUrl = colorImageMap[colorName];
+                if (imgUrl) img.src = imgUrl;
+            });
+            btn.addEventListener('mouseleave', () => {
+                img.src = defaultImageUrl;
+            });
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                navigateToDetail();
+            });
+
+            swatchRow.appendChild(btn);
+        });
+
+        if (extra > 0) {
+            const more = document.createElement('span');
+            more.className = 'product-card-swatches-more';
+            more.textContent = `+${extra}`;
+            swatchRow.appendChild(more);
+        }
+    }
+
+    // Nome
     const name = document.createElement('h3');
     name.className = 'product-name';
     name.textContent = product.title;
-    
-    const description = document.createElement('p');
-    description.className = 'product-description';
-    // Truncar descrição se muito longa
-    const descText = product.description || '';
-    description.textContent = descText.length > 150 ? descText.substring(0, 150) + '...' : descText;
-    
-    const spacer = document.createElement('div');
-    spacer.className = 'product-spacer';
-    
-    const pricing = document.createElement('div');
-    pricing.className = 'product-pricing';
-    
-    const priceDiv = document.createElement('div');
-    const priceMain = document.createElement('div');
-    priceMain.className = 'price-main';
-    priceMain.textContent = formatPrice(product.price);
-    
-    priceDiv.appendChild(priceMain);
-    pricing.appendChild(priceDiv);
-    
-    const actions = document.createElement('div');
-    actions.className = 'product-actions';
-    
-    // Verificar se handle existe
-    if (!product.handle) {
-        console.error('⚠️ Produto sem handle:', product.title, product);
-    }
-    
-    const handle = product.handle || product.id || '';
-    // Usar caminho relativo correto (página está em paginas/, então produto-individual.html também está em paginas/)
-    const detailUrl = `produto-individual.html?id=${encodeURIComponent(handle)}`;
-    
-    // Debug: log do link criado
-    console.log(`🔗 Criando link para "${product.title}": ${detailUrl} (handle: ${handle})`);
-    
-    if (!handle) {
-        console.warn('⚠️ Link criado sem handle para produto:', product.title);
-    }
-    
-    const detailLink = document.createElement('a');
-    detailLink.href = detailUrl;
-    detailLink.className = 'btn-product btn-primary-small';
-    detailLink.textContent = 'Ver Detalhes';
-    
-    // Debug: verificar href após criação
-    console.log(`🔗 Link criado - href: "${detailLink.href}", handle: "${handle}"`);
-    
-    // Adicionar evento de clique para debug
-    detailLink.addEventListener('click', (e) => {
-        console.log('🖱️ Clique no botão "Ver Detalhes" detectado!');
-        console.log('🖱️ href atual:', detailLink.href);
-        console.log('🖱️ detailUrl:', detailUrl);
-        console.log('🖱️ Handle sendo passado:', handle);
-        
-        // SALVAR handle no sessionStorage ANTES de navegar (fallback)
-        if (handle) {
-            sessionStorage.setItem('product_handle', handle);
-            console.log('✅ Handle salvo no sessionStorage:', handle);
-        }
-        
-        // Verificar se query string está presente
-        const url = new URL(detailLink.href, window.location.origin);
-        console.log('🖱️ Query string do link:', url.search);
-        
-        // Se o query string não estiver presente, forçar navegação manual
-        if (!url.search || !url.search.includes('id=')) {
-            console.warn('⚠️ Query string perdido! Forçando navegação manual...');
-            e.preventDefault();
-            window.location.href = detailUrl;
-            return;
-        }
-        
-        // NÃO prevenir default - deixar navegar normalmente
-    });
-    
-    // Também tornar a imagem clicável
-    const imageLink = document.createElement('a');
-    imageLink.href = detailUrl;
-    imageLink.style.display = 'contents'; // Não quebrar layout
-    imageLink.addEventListener('click', (e) => {
-        console.log('🖱️ Clique na imagem detectado!');
-        console.log('🖱️ href do link:', imageLink.href);
-        console.log('🖱️ detailUrl:', detailUrl);
-        console.log('🖱️ Handle sendo passado:', handle);
-        
-        // SALVAR handle no sessionStorage ANTES de navegar (fallback)
-        if (handle) {
-            sessionStorage.setItem('product_handle', handle);
-            console.log('✅ Handle salvo no sessionStorage:', handle);
-        }
-        
-        // Verificar se query string está presente
-        const url = new URL(imageLink.href, window.location.origin);
-        console.log('🖱️ Query string do link:', url.search);
-        
-        // Se o query string não estiver presente, forçar navegação manual
-        if (!url.search || !url.search.includes('id=')) {
-            console.warn('⚠️ Query string perdido! Forçando navegação manual...');
-            e.preventDefault();
-            window.location.href = detailUrl;
-            return;
-        }
-        
-        // NÃO prevenir default - deixar navegar normalmente
-    });
-    imageContainer.insertBefore(imageLink, imageDiv);
-    imageLink.appendChild(imageDiv);
-    
-    // Debug: apenas para produtos sem handle
-    if (!handle) {
-        console.warn(`⚠️ Link criado sem handle: ${detailUrl}`);
-    }
-    
-    actions.appendChild(detailLink);
-    
-    // Montar estrutura
-    info.appendChild(category);
-    info.appendChild(name);
-    info.appendChild(description);
-    info.appendChild(spacer);
-    info.appendChild(pricing);
-    info.appendChild(actions);
-    
+    name.addEventListener('click', navigateToDetail);
+
+    // Preço
+    const priceEl = document.createElement('div');
+    priceEl.className = 'price-main';
+    priceEl.textContent = formatPrice(product.price);
+    priceEl.addEventListener('click', navigateToDetail);
+
     article.appendChild(imageContainer);
-    article.appendChild(info);
-    
+    article.appendChild(swatchRow);
+    article.appendChild(name);
+    article.appendChild(priceEl);
+
     return article;
+}
+
+function _cardColorToHex(name) {
+    const map = {
+        'preto': '#1a1a1a', 'black': '#1a1a1a',
+        'branco': '#f0f0f0', 'white': '#f0f0f0',
+        'prata': '#a8a8a8', 'silver': '#a8a8a8',
+        'dourado': '#c9a84c', 'gold': '#c9a84c',
+        'azul': '#2563eb', 'blue': '#2563eb',
+        'azul claro': '#93c5fd', 'light blue': '#93c5fd',
+        'azul marinho': '#1e3a5f', 'navy': '#1e3a5f', 'navy blue': '#1e3a5f',
+        'azul petróleo': '#0f4c5c', 'teal': '#0f766e',
+        'verde': '#16a34a', 'green': '#16a34a',
+        'verde claro': '#86efac', 'light green': '#86efac',
+        'verde escuro': '#14532d', 'dark green': '#14532d',
+        'verde militar': '#4b5320', 'olive': '#4b5320',
+        'vermelho': '#dc2626', 'red': '#dc2626',
+        'rosa': '#f472b6', 'pink': '#f472b6',
+        'rosa claro': '#fbcfe8', 'light pink': '#fbcfe8',
+        'rosa bebê': '#fce7f3',
+        'salmão': '#fa8072', 'salmon': '#fa8072',
+        'laranja': '#f97316', 'orange': '#f97316',
+        'amarelo': '#facc15', 'yellow': '#facc15',
+        'roxo': '#7c3aed', 'purple': '#7c3aed',
+        'lilás': '#c4b5fd', 'lilac': '#c4b5fd',
+        'lavanda': '#e9d5ff', 'lavender': '#e9d5ff',
+        'vinho': '#7f1d1d', 'burgundy': '#7f1d1d', 'wine': '#7f1d1d',
+        'marrom': '#92400e', 'brown': '#92400e',
+        'bege': '#d4b896', 'beige': '#d4b896',
+        'cinza': '#9ca3af', 'gray': '#9ca3af', 'grey': '#9ca3af',
+        'cinza claro': '#e5e7eb', 'light gray': '#e5e7eb',
+        'cinza escuro': '#374151', 'dark gray': '#374151',
+        'terracota': '#c1674a', 'terracotta': '#c1674a',
+        'cobre': '#b87333', 'copper': '#b87333',
+    };
+    return map[name.toLowerCase()] || '#888888';
 }
 
 /**

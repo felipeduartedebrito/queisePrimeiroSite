@@ -42,10 +42,12 @@ export class ProductDetailManager {
         // Personalization state
         this.personalization = {
             enabled: false,
+            panelOpen: false,
+            type: '',       // texto-vertical | texto-horizontal | icone-texto-vertical | icone-texto-horizontal | icone
             text: '',
             font: 'Arial',
-            color: '#000000',
-            position: 'center'
+            icon: '',       // nome do ícone (ex: 'arvore')
+            iconSrc: ''     // caminho da imagem do ícone
         };
 
         // Referências DOM
@@ -440,6 +442,20 @@ export class ProductDetailManager {
     }
 
     /**
+     * Troca src da imagem principal sem exigir que a URL esteja no array de imagens
+     */
+    _swapMainImageUrl(url) {
+        const mainImg = this.elements.mainProductImage;
+        if (!mainImg) return;
+        mainImg.style.transition = 'opacity 0.2s ease';
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+            mainImg.src = url;
+            mainImg.style.opacity = '1';
+        }, 200);
+    }
+
+    /**
      * Atualiza navegação da galeria
      */
     updateGalleryNavigation() {
@@ -462,42 +478,108 @@ export class ProductDetailManager {
         this.currentProduct.options.forEach(option => {
             const groupElement = document.getElementById(`${option.name.toLowerCase()}Group`);
             const optionsContainer = document.getElementById(`${option.name.toLowerCase()}Options`);
-            
+
             if (!groupElement || !optionsContainer) return;
 
             groupElement.style.display = 'block';
             optionsContainer.innerHTML = '';
-            
-            option.values.forEach(value => {
-                const optionBtn = document.createElement('button');
-                optionBtn.className = 'variant-option';
-                optionBtn.textContent = value;
-                
-                // Verificar disponibilidade considerando outras opções já selecionadas
-                const isAvailable = this.isVariantOptionAvailable(option.name, value);
-                
-                if (!isAvailable) {
-                    optionBtn.classList.add('unavailable');
-                    optionBtn.disabled = true;
+
+            const isColorOption = /^cor$/i.test(option.name.trim());
+
+            // Atualizar label "Cor — NomeAtual"
+            if (isColorOption) {
+                const labelEl = groupElement.querySelector('.variant-label');
+                const selectedColor = this.selectedVariant?.selectedOptions?.find(
+                    o => o.name === option.name
+                )?.value || '';
+                if (labelEl && selectedColor) {
+                    labelEl.textContent = `${option.name} — ${selectedColor}`;
                 }
-                
-                // Verificar se está selecionado
+            }
+
+            option.values.forEach(value => {
+                const isAvailable = this.isVariantOptionAvailable(option.name, value);
                 const isSelected = this.selectedVariant?.selectedOptions?.some(
                     opt => opt.name === option.name && opt.value === value
                 );
-                
-                if (isSelected) {
-                    optionBtn.classList.add('selected');
+
+                const btn = document.createElement('button');
+
+                if (isColorOption) {
+                    const hex = this._colorNameToHex(value);
+                    btn.className = 'variant-color-swatch' + (isSelected ? ' selected' : '') + (!isAvailable ? ' unavailable' : '');
+                    btn.style.background = hex;
+                    btn.title = value;
+                    btn.setAttribute('aria-label', value);
+                    if (isSelected) {
+                        btn.style.boxShadow = `0 0 0 2.5px #fff, 0 0 0 4px ${hex}`;
+                    } else {
+                        btn.style.boxShadow = `0 0 0 2.5px #fff, 0 0 0 3.5px #d0d0d0`;
+                    }
+                } else {
+                    btn.className = 'variant-option' + (isSelected ? ' selected' : '') + (!isAvailable ? ' unavailable' : '');
+                    btn.textContent = value;
                 }
-                
-                optionBtn.addEventListener('click', () => {
+
+                if (!isAvailable) btn.disabled = true;
+
+                btn.addEventListener('click', () => {
                     if (!isAvailable) return;
+
+                    // Atualizar label da cor ao selecionar
+                    if (isColorOption) {
+                        const labelEl = groupElement.querySelector('.variant-label');
+                        if (labelEl) labelEl.textContent = `${option.name} — ${value}`;
+                    }
+
                     this.selectVariant(option.name, value);
                 });
-                
-                optionsContainer.appendChild(optionBtn);
+
+                optionsContainer.appendChild(btn);
             });
         });
+    }
+
+    /**
+     * Mapeia nome de cor para hex
+     */
+    _colorNameToHex(name) {
+        const map = {
+            // PT
+            'preto': '#1a1a1a', 'black': '#1a1a1a',
+            'branco': '#f5f5f5', 'white': '#f5f5f5',
+            'cinza': '#9e9e9e', 'gray': '#9e9e9e', 'grey': '#9e9e9e',
+            'cinza escuro': '#4a4a4a', 'chumbo': '#4a4a4a',
+            'prata': '#c0c0c0', 'silver': '#c0c0c0',
+            'azul': '#3a6ea8', 'blue': '#3a6ea8',
+            'azul claro': '#6baed6', 'light blue': '#6baed6', 'sky': '#87ceeb',
+            'azul escuro': '#1a3a5c', 'navy': '#1a3a5c', 'marinho': '#1a3a5c',
+            'vermelho': '#c0392b', 'red': '#c0392b',
+            'rosa': '#e9a0b0', 'pink': '#e9a0b0',
+            'rosa claro': '#f8c8d0', 'baby pink': '#f8c8d0',
+            'lilás': '#c8a9d4', 'lilas': '#c8a9d4', 'lilac': '#c8a9d4', 'lavanda': '#b89ac8',
+            'roxo': '#7b2d8b', 'purple': '#7b2d8b', 'violeta': '#7b2d8b',
+            'vinho': '#722f37', 'burgundy': '#722f37', 'bordô': '#722f37', 'bordo': '#722f37',
+            'laranja': '#e07b39', 'orange': '#e07b39',
+            'amarelo': '#f5c842', 'yellow': '#f5c842',
+            'verde': '#3a7a52', 'green': '#3a7a52',
+            'verde claro': '#6dbf7e', 'mint': '#6dbf7e',
+            'verde escuro': '#1e4d2b', 'dark green': '#1e4d2b',
+            'bege': '#e8dcc8', 'beige': '#e8dcc8', 'areia': '#e8dcc8',
+            'marrom': '#7a4a2a', 'brown': '#7a4a2a', 'café': '#7a4a2a',
+            'dourado': '#c9a84c', 'gold': '#c9a84c',
+            'caramelo': '#c47e3a', 'caramel': '#c47e3a',
+            'salmão': '#e8967a', 'salmon': '#e8967a', 'pessego': '#e8967a',
+            'coral': '#e8735a',
+            'terracota': '#c4673a',
+            'nude': '#d4a882',
+            'off white': '#f0ede8', 'off-white': '#f0ede8', 'cru': '#f0ede8',
+            'plum': '#8b3a62', 'ameixa': '#8b3a62',
+            'tiffany': '#81d8d0', 'turquesa': '#40bfbf', 'turquoise': '#40bfbf',
+            'grafite': '#5a5a5a', 'graphite': '#5a5a5a',
+        };
+        const key = name.toLowerCase().trim();
+        return map[key] || '#cccccc';
     }
 
     /**
@@ -584,13 +666,15 @@ export class ProductDetailManager {
         if (newVariant) {
             this.selectedVariant = newVariant;
 
-            // Trocar imagem principal se a variante tiver imagem própria
+            // Trocar imagem se a variante tiver imagem própria
             if (newVariant.image?.url) {
-                const imgIndex = this.currentProduct.images.findIndex(
-                    img => img.url === newVariant.image.url
-                );
-                if (imgIndex !== -1 && imgIndex !== this.selectedImageIndex) {
-                    this.switchImage(imgIndex);
+                const stripQ = url => url?.split('?')[0];
+                const images = this.currentProduct.images || [];
+                const targetIndex = images.findIndex(img => stripQ(img.url) === stripQ(newVariant.image.url));
+                if (targetIndex !== -1 && targetIndex !== this.selectedImageIndex) {
+                    this.switchImage(targetIndex);
+                } else if (targetIndex === -1) {
+                    this._swapMainImageUrl(newVariant.image.url);
                 }
             }
 
@@ -602,35 +686,35 @@ export class ProductDetailManager {
     }
 
     /**
-     * Renderiza painel de personalização
+     * Renderiza seção de personalização
      */
     renderPersonalization() {
-        const panel = this.elements.personalizationPanel;
-        if (!panel) return;
+        const section = document.getElementById('personalizationSection');
+        if (!section) return;
 
-        // 'none' → esconder completamente, sem mostrar nada
+        // 'none' → ocultar tudo
         if (PERSONALIZATION_CONFIG.mode === 'none') {
-            panel.style.display = 'none';
+            section.style.display = 'none';
             this.personalization.enabled = false;
             return;
         }
 
-        // 'allowed' → respeita flag por produto via metafield Shopify
+        // 'allowed' → respeita metafield Shopify
         if (PERSONALIZATION_CONFIG.mode === 'allowed') {
             const config = this.currentProduct?.metafields?.personalization;
             if (config?.enabled) {
-                panel.style.display = 'flex';
+                section.style.display = 'flex';
                 this.personalization.enabled = true;
                 this.setupPersonalizationListeners();
             } else {
-                panel.style.display = 'none';
+                section.style.display = 'none';
                 this.personalization.enabled = false;
             }
             return;
         }
 
         // 'global' → mostrar para todos
-        panel.style.display = 'flex';
+        section.style.display = 'flex';
         this.personalization.enabled = true;
         this.setupPersonalizationListeners();
     }
@@ -755,7 +839,7 @@ export class ProductDetailManager {
      * @returns {number} Preço em centavos
      */
     getPersonalizationPrice() {
-        if (this.personalization.enabled && this.personalization.text.trim()) {
+        if (this.personalization.enabled && this.personalization.panelOpen && this.personalization.type) {
             return this.currentProduct?.metafields?.personalization?.price || 0;
         }
         return 0;
@@ -816,32 +900,44 @@ export class ProductDetailManager {
     // ========================================
 
     /**
-     * Atualiza overlay de texto sobre a imagem do produto
+     * Atualiza overlay de personalização sobre a imagem do produto
      */
     updateImageOverlay() {
         const overlay = document.getElementById('personalizationOverlay');
-        const overlayText = document.getElementById('overlayText');
-        if (!overlay || !overlayText) return;
+        if (!overlay) return;
 
-        const text = this.personalization.text.trim();
+        const { type, text, font, iconSrc } = this.personalization;
+        const hasText = text.trim().length > 0;
+        const hasIcon = iconSrc.length > 0;
+        const needsText = type.includes('texto');
+        const needsIcon = type.includes('icone');
+        const isVertical = type.includes('vertical');
 
-        if (text) {
-            overlay.style.display = 'flex';
-            overlayText.textContent = text;
-            overlayText.style.fontFamily = this.personalization.font;
-            overlayText.style.color = this.personalization.color;
+        // Só mostra overlay se houver algo para exibir
+        const shouldShow = (needsText && hasText) || (needsIcon && hasIcon) || (!needsText && needsIcon && hasIcon);
 
-            // Position classes
-            overlay.className = 'personalization-overlay';
-            if (this.personalization.position === 'bottom') {
-                overlay.classList.add('pos-bottom');
-            } else if (this.personalization.position === 'side') {
-                overlay.classList.add('pos-side');
-            }
-        } else {
+        if (!shouldShow || !type) {
             overlay.style.display = 'none';
+            return;
         }
 
+        overlay.style.display = 'flex';
+        overlay.className = 'personalization-overlay';
+
+        const vertClass = isVertical ? ' vertical' : '';
+        let content = '';
+        if (needsIcon && needsText) {
+            content = `<span class="overlay-icon-text${vertClass}">
+                ${hasIcon ? `<img class="overlay-icon" src="${iconSrc}" alt="">` : ''}
+                ${hasText ? `<span class="overlay-text${vertClass}" style="font-family:${font}">${text.trim()}</span>` : ''}
+            </span>`;
+        } else if (needsIcon) {
+            content = hasIcon ? `<img class="overlay-icon" src="${iconSrc}" alt="">` : '';
+        } else {
+            content = hasText ? `<span class="overlay-text${vertClass}" style="font-family:${font}">${text.trim()}</span>` : '';
+        }
+
+        overlay.innerHTML = content;
         this.updatePricing();
     }
 
@@ -849,17 +945,17 @@ export class ProductDetailManager {
      * Atualiza contador de caracteres
      */
     updateCharCount() {
-        const charCount = this.elements.charCount;
-        const maxChars = this.currentProduct?.metafields?.personalization?.maxChars || PERSONALIZATION_CONFIG.maxChars || 30;
+        const textArea = document.getElementById('personalizationText');
+        const charCount = document.getElementById('charCount');
+        if (!textArea || !charCount) return;
 
-        if (charCount && this.elements.personalizationText) {
-            const current = this.elements.personalizationText.value.length;
-            charCount.textContent = `${current}/${maxChars}`;
+        const maxChars = parseInt(textArea.maxLength) || 30;
+        const current = textArea.value.length;
+        charCount.textContent = `${current}/${maxChars}`;
 
-            charCount.className = 'char-count';
-            if (current > maxChars * 0.8) {
-                charCount.classList.add(current > maxChars * 0.9 ? 'danger' : 'warning');
-            }
+        charCount.className = 'char-count';
+        if (current > maxChars * 0.8) {
+            charCount.classList.add(current > maxChars * 0.9 ? 'danger' : 'warning');
         }
     }
 
@@ -935,20 +1031,24 @@ export class ProductDetailManager {
                 
                 // Construir customAttributes para personalização (apenas se habilitada)
                 const buildCustomAttributes = (personalization) => {
-                    if (!PERSONALIZATION_CONFIG.enabled || !personalization || !personalization.text) return [];
+                    if (!PERSONALIZATION_CONFIG.enabled || !personalization || !personalization.type) return [];
                     const attrs = [];
+                    attrs.push({ key: 'Tipo de Personalização', value: personalization.type });
                     if (personalization.text) {
                         attrs.push({ key: 'Texto Personalizado', value: personalization.text });
                     }
                     if (personalization.font) {
                         attrs.push({ key: 'Fonte', value: personalization.font });
                     }
-                    if (personalization.color) {
-                        attrs.push({ key: 'Cor', value: personalization.color });
+                    if (personalization.icon) {
+                        attrs.push({ key: 'Ícone', value: personalization.icon });
                     }
-                    if (personalization.position || personalization.orientation) {
-                        attrs.push({ key: 'Posição', value: personalization.position || personalization.orientation });
-                    }
+                    attrs.push({
+                        key: 'Confirmação de não devolução',
+                        value: personalization.confirmado === 'sim'
+                            ? `Confirmado em ${new Date().toLocaleString('pt-BR')}`
+                            : 'Não confirmado'
+                    });
                     return attrs;
                 };
                 
@@ -993,12 +1093,12 @@ export class ProductDetailManager {
         let id = `${this.currentProduct.handle}-${this.selectedVariant.id}`;
         
         // Adicionar hash da personalização se existir
-        if (this.personalization.enabled && this.personalization.text.trim()) {
+        if (this.personalization.enabled && this.personalization.panelOpen && this.personalization.type) {
             const personalizationStr = JSON.stringify({
+                type: this.personalization.type,
                 text: this.personalization.text,
                 font: this.personalization.font,
-                color: this.personalization.color,
-                position: this.personalization.position
+                icon: this.personalization.icon
             });
             // Criar hash simples da personalização
             let hash = 0;
@@ -1042,12 +1142,14 @@ export class ProductDetailManager {
         };
 
         // Adicionar personalização se configurada
-        if (this.personalization.enabled && this.personalization.text.trim()) {
+        if (this.personalization.enabled && this.personalization.panelOpen && this.personalization.type) {
+            const confirmEl = document.getElementById('personalizationConfirm');
             cartItem.personalization = {
+                type: this.personalization.type,
                 text: this.personalization.text,
                 font: this.personalization.font,
-                color: this.personalization.color,
-                position: this.personalization.position
+                icon: this.personalization.icon,
+                confirmado: confirmEl?.checked ? 'sim' : 'nao'
             };
             cartItem.personalizationPrice = personalizationPrice;
         }
@@ -1302,73 +1404,254 @@ export class ProductDetailManager {
     }
 
     /**
-     * Configura listeners de personalização (nova UI com swatches e pills)
+     * Configura listeners de personalização (fluxo estilo Tuyo)
      */
     setupPersonalizationListeners() {
-        const panel = this.elements.personalizationPanel;
-        if (!panel) return;
+        if (this._personalizationListenersSet) return;
+        this._personalizationListenersSet = true;
 
-        // --- Texto ---
-        const textInput = panel.querySelector('#personalizationText');
-        if (textInput) {
-            this.elements.personalizationText = textInput;
-            // Evitar duplicate listeners
-            if (!textInput._queiseListener) {
-                textInput._queiseListener = true;
-                textInput.addEventListener('input', (e) => {
-                    this.personalization.text = e.target.value;
-                    this.updateCharCount();
-                    this.updateImageOverlay();
-                });
-            }
+        // --- Botão toggle Personalizar / Remover ---
+        const toggleBtn = document.getElementById('personalizeToggleBtn');
+        const panel = document.getElementById('personalizationPanel');
+        if (toggleBtn && panel) {
+            toggleBtn.addEventListener('click', () => {
+                this.personalization.panelOpen = !this.personalization.panelOpen;
+                if (this.personalization.panelOpen) {
+                    panel.style.display = 'flex';
+                    toggleBtn.textContent = 'Remover';
+                    toggleBtn.classList.add('active');
+                } else {
+                    panel.style.display = 'none';
+                    toggleBtn.textContent = 'Personalizar (Grátis)';
+                    toggleBtn.classList.remove('active');
+                    this._resetPersonalization();
+                }
+                this._updateCartButtonsState();
+            });
         }
 
-        // --- Swatches de fonte ---
-        const fontSwatches = panel.querySelectorAll('.font-swatch');
-        fontSwatches.forEach(btn => {
-            if (!btn._queiseListener) {
-                btn._queiseListener = true;
-                btn.addEventListener('click', () => {
-                    fontSwatches.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    this.personalization.font = btn.dataset.font;
-                    this.updateImageOverlay();
-                });
-            }
+        // --- Dropdown de tipo ---
+        const typeSelect = document.getElementById('customTypeSelect');
+        if (typeSelect) {
+            typeSelect.addEventListener('change', (e) => {
+                this.personalization.type = e.target.value;
+                this._handleTypeChange(e.target.value);
+                this.updateImageOverlay();
+                this._updateCartButtonsState();
+            });
+        }
+
+        // --- Ícones ---
+        const iconBtns = document.querySelectorAll('.icon-btn');
+        iconBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                iconBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.personalization.icon = btn.dataset.icon;
+                this.personalization.iconSrc = btn.dataset.src;
+                this.updateImageOverlay();
+            });
         });
 
-        // --- Swatches de cor ---
-        const colorSwatches = panel.querySelectorAll('.color-swatch');
-        colorSwatches.forEach(btn => {
-            if (!btn._queiseListener) {
-                btn._queiseListener = true;
-                btn.addEventListener('click', () => {
-                    colorSwatches.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    this.personalization.color = btn.dataset.color;
-                    this.updateImageOverlay();
-                });
-            }
+        // --- Campo de texto ---
+        const textArea = document.getElementById('personalizationText');
+        if (textArea) {
+            this.elements.personalizationText = textArea;
+            textArea.addEventListener('input', (e) => {
+                this.personalization.text = e.target.value;
+                this.updateCharCount();
+                this.updateImageOverlay();
+            });
+        }
+
+        // --- Botões de fonte ---
+        const fontBtns = document.querySelectorAll('.font-btn');
+        fontBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                fontBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                this.personalization.font = btn.dataset.font;
+                this.updateImageOverlay();
+            });
         });
 
-        // --- Pills de posição ---
-        const positionPills = panel.querySelectorAll('.position-pill');
-        positionPills.forEach(btn => {
-            if (!btn._queiseListener) {
-                btn._queiseListener = true;
-                btn.addEventListener('click', () => {
-                    positionPills.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    this.personalization.position = btn.dataset.position;
-                    this.updateImageOverlay();
-                });
-            }
-        });
+        // --- Checkbox de confirmação ---
+        const confirmCheck = document.getElementById('personalizationConfirm');
+        if (confirmCheck) {
+            confirmCheck.addEventListener('change', () => this._updateCartButtonsState());
+        }
 
-        // Inicializar charCount
-        const charCount = panel.querySelector('#charCount');
+        // --- Botão Preview ---
+        const previewBtn = document.getElementById('previewBtn');
+        if (previewBtn) {
+            previewBtn.addEventListener('click', () => this._openPreviewModal());
+        }
+
+        // --- Fechar modal ---
+        const modalBg = document.getElementById('previewModalBg');
+        const modalCloseBtn = document.getElementById('previewModalCloseBtn');
+        if (modalBg) modalBg.addEventListener('click', () => this._closePreviewModal());
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', () => this._closePreviewModal());
+
+        // charCount ref
+        const charCount = document.getElementById('charCount');
         if (charCount) this.elements.charCount = charCount;
+    }
+
+    /**
+     * Mostra/esconde seções conforme o tipo selecionado
+     */
+    _handleTypeChange(type) {
+        const iconSection    = document.getElementById('iconSection');
+        const textSection    = document.getElementById('textSection');
+        const fontSection    = document.getElementById('fontSection');
+        const confirmSection = document.getElementById('confirmSection');
+        const previewBtn     = document.getElementById('previewBtn');
+
+        const hasText = type.includes('texto');
+        const hasIcon = type.includes('icone');
+        const hasType = type.length > 0;
+        const isVertical = type.includes('vertical');
+        const maxChars = isVertical ? 20 : 8;
+
+        if (iconSection)    iconSection.style.display    = hasIcon ? 'flex' : 'none';
+        if (textSection)    textSection.style.display    = hasText ? 'flex' : 'none';
+        if (fontSection)    fontSection.style.display    = hasText ? 'flex' : 'none';
+        if (confirmSection) confirmSection.style.display = hasType ? 'flex' : 'none';
+        if (previewBtn)     previewBtn.style.display     = hasType ? 'block' : 'none';
+
+        // Aplicar limite de caracteres conforme orientação
+        if (hasText) {
+            const textArea = document.getElementById('personalizationText');
+            const charCount = document.getElementById('charCount');
+            if (textArea) {
+                textArea.maxLength = maxChars;
+                textArea.placeholder = `Máximo ${maxChars} caracteres`;
+            }
+            if (charCount) charCount.textContent = `0/${maxChars}`;
+        }
+
+        // Resetar estado ao mudar tipo
+        this.personalization.text = '';
+        this.personalization.icon = '';
+        this.personalization.iconSrc = '';
+        const textArea = document.getElementById('personalizationText');
+        if (textArea) textArea.value = '';
+        document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
+        const confirm = document.getElementById('personalizationConfirm');
+        if (confirm) confirm.checked = false;
         this.updateCharCount();
+    }
+
+    /**
+     * Reseta todo o estado de personalização
+     */
+    _resetPersonalization() {
+        this.personalization.type = '';
+        this.personalization.text = '';
+        this.personalization.font = 'Arial';
+        this.personalization.icon = '';
+        this.personalization.iconSrc = '';
+
+        const typeSelect = document.getElementById('customTypeSelect');
+        if (typeSelect) typeSelect.value = '';
+
+        ['iconSection','textSection','fontSection','confirmSection'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        const previewBtn = document.getElementById('previewBtn');
+        if (previewBtn) previewBtn.style.display = 'none';
+
+        const textArea = document.getElementById('personalizationText');
+        if (textArea) textArea.value = '';
+        document.querySelectorAll('.icon-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.font-btn').forEach((b, i) => {
+            b.classList.toggle('active', i === 0);
+        });
+        const confirm = document.getElementById('personalizationConfirm');
+        if (confirm) confirm.checked = false;
+
+        this.updateImageOverlay();
+        this.updatePricing();
+        this._updateCartButtonsState();
+    }
+
+    /**
+     * Abre o modal fullscreen de preview
+     */
+    _openPreviewModal() {
+        const modal   = document.getElementById('previewModal');
+        const img     = document.getElementById('previewModalImg');
+        const overlay = document.getElementById('previewModalOverlayEl');
+        if (!modal || !img) return;
+
+        // Imagem atual do produto
+        const currentImg = this.elements.mainProductImage;
+        img.src = currentImg?.src || '';
+
+        // Montar overlay no modal
+        const { type, text, font, iconSrc } = this.personalization;
+        const hasText = text.trim().length > 0;
+        const hasIcon = iconSrc.length > 0;
+        const needsText = type.includes('texto');
+        const needsIcon = type.includes('icone');
+
+        const isVertical = type.includes('vertical');
+        const vertClass = isVertical ? ' vertical' : '';
+        overlay.className = 'preview-modal-overlay';
+
+        let content = '';
+        if (needsIcon && needsText) {
+            content = `<span class="overlay-icon-text${vertClass}">
+                ${hasIcon ? `<img class="overlay-icon" src="${iconSrc}" alt="">` : ''}
+                ${hasText ? `<span class="overlay-text${vertClass}" style="font-family:${font}">${text.trim()}</span>` : ''}
+            </span>`;
+        } else if (needsIcon) {
+            content = hasIcon ? `<img class="overlay-icon" src="${iconSrc}" alt="">` : '';
+        } else {
+            content = hasText ? `<span class="overlay-text${vertClass}" style="font-family:${font}">${text.trim()}</span>` : '';
+        }
+        overlay.innerHTML = content;
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Fecha o modal fullscreen de preview
+     */
+    _closePreviewModal() {
+        const modal = document.getElementById('previewModal');
+        if (modal) modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Atualiza estado dos botões de compra:
+     * - Bloqueia quando painel aberto + tipo selecionado + checkbox não marcado
+     * - Libera quando checkbox marcado ou painel fechado
+     */
+    _updateCartButtonsState() {
+        const addBtn = this.elements.addToCartBtn;
+        const buyBtn = this.elements.buyNowBtn;
+        const confirm = document.getElementById('personalizationConfirm');
+
+        const panelOpen = this.personalization.panelOpen;
+        const typeSelected = this.personalization.type.length > 0;
+        const confirmed = confirm?.checked ?? true;
+
+        // Bloquear só quando painel aberto, tipo escolhido e checkbox não marcado
+        const shouldBlock = panelOpen && typeSelected && !confirmed;
+
+        if (addBtn) {
+            addBtn.disabled = shouldBlock;
+            addBtn.title = shouldBlock ? 'Confirme os termos da personalização para continuar' : '';
+        }
+        if (buyBtn) {
+            buyBtn.disabled = shouldBlock;
+            buyBtn.title = shouldBlock ? 'Confirme os termos da personalização para continuar' : '';
+        }
     }
 
     // ========================================

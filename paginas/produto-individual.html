@@ -92,8 +92,6 @@
                 <!-- Cabeçalho -->
                 <div class="product-header">
                     <div class="product-badges">
-                        <span class="badge premium-badge">Premium</span>
-                        <span class="badge personalizavel-badge" id="personalizableBadge" style="display: none;">Personalizável</span>
                     </div>
                     <h1 id="productTitle" class="product-title">Carregando produto...</h1>
                     <div class="product-vendor">
@@ -136,43 +134,75 @@
                     </div>
                 </div>
 
-                <!-- Painel de Personalização (oculto por padrão) -->
-                <div class="personalization-panel" id="personalizationPanel" style="display: none;">
-                    <div class="custom-section-header">
-                        <span class="custom-section-title">Personalizar</span>
-                        <span class="custom-section-price">+ R$ 20,00</span>
-                    </div>
-                    <div class="custom-text-group">
-                        <input type="text" id="personalizationText" class="custom-text-input" placeholder="Seu texto aqui..." maxlength="30">
-                        <span class="char-count" id="charCount">0/30</span>
-                    </div>
-                    <div class="custom-row">
-                        <div class="custom-field">
-                            <label class="custom-field-label">Fonte</label>
-                            <div class="font-swatches" id="fontSwatches">
-                                <button class="font-swatch active" data-font="Arial" style="font-family: Arial, sans-serif">Aa</button>
-                                <button class="font-swatch" data-font="Times New Roman" style="font-family: 'Times New Roman', serif">Aa</button>
-                                <button class="font-swatch" data-font="Brush Script MT" style="font-family: 'Brush Script MT', cursive">Aa</button>
-                                <button class="font-swatch" data-font="Arial Black" style="font-family: 'Arial Black', sans-serif">Aa</button>
+                <!-- Seção de Personalização -->
+                <div class="personalization-section" id="personalizationSection" style="display: none;">
+                    <!-- Botão toggle: Personalizar / Remover -->
+                    <button type="button" class="personalize-toggle-btn" id="personalizeToggleBtn">
+                        Personalizar (Grátis)
+                    </button>
+
+                    <!-- Painel expandido -->
+                    <div class="personalization-panel" id="personalizationPanel" style="display: none;">
+                        <label class="custom-label">Escolha como Personalizar</label>
+                        <select class="custom-type-select" id="customTypeSelect">
+                            <option value="">Selecionar</option>
+                            <option value="texto-vertical">Texto Vertical</option>
+                            <option value="texto-horizontal">Texto Horizontal</option>
+                            <option value="icone-texto-vertical">Ícone + Texto Vertical</option>
+                            <option value="icone-texto-horizontal">Ícone + Texto Horizontal</option>
+                            <option value="icone">Ícone</option>
+                        </select>
+
+                        <!-- Seletor de ícones -->
+                        <div class="icon-section" id="iconSection" style="display: none;">
+                            <label class="custom-sublabel">Ícone</label>
+                            <div class="icon-grid" id="iconGrid">
+                                <button type="button" class="icon-btn" data-icon="arvore" data-src="../imagens/icones/arvore.png">
+                                    <img src="../imagens/icones/arvore.png" alt="Árvore">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="girassol" data-src="../imagens/icones/girassol.png">
+                                    <img src="../imagens/icones/girassol.png" alt="Girassol">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="olho-paz" data-src="../imagens/icones/olho-paz.png">
+                                    <img src="../imagens/icones/olho-paz.png" alt="Olho Paz">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="sol-ondas" data-src="../imagens/icones/sol-ondas.png">
+                                    <img src="../imagens/icones/sol-ondas.png" alt="Sol Ondas">
+                                </button>
                             </div>
                         </div>
-                        <div class="custom-field">
-                            <label class="custom-field-label">Cor</label>
-                            <div class="color-swatches" id="colorSwatches">
-                                <button class="color-swatch" data-color="#FFFFFF" style="background:#FFFFFF;border:1.5px solid #ccc" title="Branco"></button>
-                                <button class="color-swatch active" data-color="#000000" style="background:#000000" title="Preto"></button>
-                                <button class="color-swatch" data-color="#FFD700" style="background:#FFD700" title="Dourado"></button>
-                                <button class="color-swatch" data-color="#C0C0C0" style="background:#C0C0C0" title="Prata"></button>
+
+                        <!-- Campo de texto -->
+                        <div class="text-section" id="textSection" style="display: none;">
+                            <label class="custom-sublabel" id="textSectionLabel">Texto</label>
+                            <div class="textarea-wrap">
+                                <textarea class="custom-textarea" id="personalizationText" placeholder="Digite seu texto aqui..." maxlength="30" rows="2"></textarea>
+                                <span class="char-count" id="charCount">0/30</span>
                             </div>
                         </div>
-                    </div>
-                    <div class="custom-field">
-                        <label class="custom-field-label">Posição</label>
-                        <div class="position-pills" id="positionPills">
-                            <button class="position-pill active" data-position="center">Centro</button>
-                            <button class="position-pill" data-position="bottom">Inferior</button>
-                            <button class="position-pill" data-position="side">Lateral</button>
+
+                        <!-- Seletor de fontes -->
+                        <div class="font-section" id="fontSection" style="display: none;">
+                            <div class="font-btns" id="fontSwatches">
+                                <button type="button" class="font-btn active" data-font="Arial" style="font-family: Arial, sans-serif">Arial</button>
+                                <button type="button" class="font-btn" data-font="Times New Roman" style="font-family: 'Times New Roman', serif">Times</button>
+                                <button type="button" class="font-btn" data-font="Brush Script MT" style="font-family: 'Brush Script MT', cursive">Script</button>
+                                <button type="button" class="font-btn" data-font="Arial Black" style="font-family: 'Arial Black', sans-serif">Bold</button>
+                            </div>
                         </div>
+
+                        <!-- Checkbox de confirmação -->
+                        <div class="confirm-section" id="confirmSection" style="display: none;">
+                            <label class="confirm-label">
+                                <input type="checkbox" id="personalizationConfirm" class="confirm-checkbox">
+                                <span>Confirmo que a personalização está correta e estou ciente de que produtos personalizados não podem ser trocados ou devolvidos.</span>
+                            </label>
+                        </div>
+
+                        <!-- Botão Preview -->
+                        <button type="button" class="preview-btn" id="previewBtn" style="display: none;">
+                            Preview
+                        </button>
                     </div>
                 </div>
 
@@ -353,6 +383,18 @@
             <p>&copy; 2024 QUEISE. Todos os direitos reservados. CNPJ: 42.779.053/0001-22</p>
         </div>
     </footer>
+
+    <!-- Modal fullscreen de Preview de Personalização -->
+    <div class="preview-modal" id="previewModal" style="display: none;">
+        <div class="preview-modal-bg" id="previewModalBg"></div>
+        <div class="preview-modal-inner">
+            <button type="button" class="preview-modal-close" id="previewModalCloseBtn">×</button>
+            <div class="preview-modal-image-wrap" id="previewModalImageWrap">
+                <img class="preview-modal-img" id="previewModalImg" src="" alt="Preview do produto">
+                <div class="preview-modal-overlay" id="previewModalOverlayEl"></div>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="../assets/js/app.js"></script>
     <script type="module" src="../assets/js/pages/produto-individual.js"></script>
