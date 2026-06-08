@@ -55,8 +55,23 @@
 .mvv-icon,
 .timeline-year,
 .timeline-year::before,
-.hover-glow::before {
+.hover-glow::before,
+.cart-badge,
+.product-card-swatch,
+.variant-color-swatch,
+.csc-close,
+.notification-close {
     border-radius: 50% !important;
+}
+
+/* === PRESERVE PILLS — notificações, badges, tags === */
+.notification,
+.search-overlay-input,
+.search-overlay-bar,
+.filter-count,
+.breadcrumb,
+.cart-badge-pill {
+    border-radius: 999px !important;
 }
 
 /* === BODY === */

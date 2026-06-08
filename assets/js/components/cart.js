@@ -25,21 +25,21 @@ const RECOMMENDED_PRODUCTS = [
         handle: 'copo-termico-500ml',
         name: 'Copo Térmico 500ml',
         price: 8000,
-        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+        image: '../imagens/placeholder-product.svg'
     },
     {
         id: 'bolsa-termica-20l',
         handle: 'bolsa-termica-20l',
         name: 'Bolsa Térmica 20L',
         price: 12000,
-        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+        image: '../imagens/placeholder-product.svg'
     },
     {
         id: 'garrafa-600ml',
         handle: 'garrafa-600ml',
         name: 'Garrafa Térmica 600ml',
         price: 14500,
-        image: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp'
+        image: '../imagens/placeholder-product.svg'
     }
 ];
 

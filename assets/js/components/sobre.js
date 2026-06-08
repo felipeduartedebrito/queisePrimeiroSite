@@ -220,23 +220,23 @@ export class SobreManager {
 
     setupParallaxEffect() {
         const heroSection = document.querySelector('.hero-sobre');
-        
+
         if (heroSection && window.innerWidth > 768) {
             let ticking = false;
-            
+
             const handleParallax = () => {
                 if (!ticking) {
                     requestAnimationFrame(() => {
                         const scrolled = window.pageYOffset;
                         const parallax = scrolled * 0.3;
-                        
+
                         heroSection.style.transform = `translateY(${parallax}px)`;
                         ticking = false;
                     });
                     ticking = true;
                 }
             };
-            
+
             window.addEventListener('scroll', handleParallax, { passive: true });
         }
     }

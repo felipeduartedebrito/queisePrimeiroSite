@@ -1241,76 +1241,176 @@ export class ProductDetailManager {
     showCartModal() {
         const modal = document.createElement('div');
         modal.className = 'cart-success-modal';
+
+        // Montar estrutura
         modal.innerHTML = `
-            <div class="modal-overlay">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h3>✅ Produto adicionado ao carrinho!</h3>
-                        <button class="close-btn" id="closeModal">✕</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>O que você gostaria de fazer agora?</p>
-                        <div class="modal-actions">
-                            <button class="btn-secondary" id="continueShopping">
-                                Continuar Comprando
-                            </button>
-                            <a href="../paginas/carrinho.html" class="btn-primary">
-                                Ver Carrinho
-                            </a>
-                        </div>
-                    </div>
+            <div class="csc-inner">
+                <button class="csc-close" aria-label="Fechar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+                <div class="csc-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2f4f6f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                </div>
+                <h3 class="csc-title">Produto adicionado!</h3>
+                <p class="csc-msg">O que você gostaria de fazer agora?</p>
+                <div class="csc-actions">
+                    <button class="csc-btn-secondary">Continuar Comprando</button>
+                    <a href="../paginas/carrinho.html" class="csc-btn-primary">Ver Carrinho</a>
                 </div>
             </div>
         `;
 
-        // Estilos inline para modal
+        // === OVERLAY ===
         Object.assign(modal.style, {
             position: 'fixed',
-            top: '0',
-            left: '0',
-            width: '100%',
-            height: '100%',
-            background: 'rgba(0, 0, 0, 0.5)',
+            inset: '0',
+            background: 'rgba(0,0,0,0.45)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            zIndex: '10000'
+            zIndex: '99999',
+            padding: '1rem',
+            boxSizing: 'border-box'
         });
 
-        const modalContent = modal.querySelector('.modal-content');
-        Object.assign(modalContent.style, {
+        // === CARD INNER ===
+        const inner = modal.querySelector('.csc-inner');
+        Object.assign(inner.style, {
             background: 'white',
-            padding: '2rem',
-            borderRadius: '16px',
-            textAlign: 'center',
-            maxWidth: '400px',
+            borderRadius: '20px',
+            padding: '2.5rem 2rem 2rem',
+            maxWidth: '380px',
+            width: '100%',
             position: 'relative',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+            boxShadow: '0 24px 64px rgba(0,0,0,0.22)',
+            textAlign: 'center',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            animation: 'cscIn 0.25s ease'
         });
+
+        // === CLOSE BTN ===
+        const closeBtn = modal.querySelector('.csc-close');
+        Object.assign(closeBtn.style, {
+            position: 'absolute',
+            top: '1rem',
+            right: '1rem',
+            background: 'none',
+            border: 'none',
+            fontSize: '1.2rem',
+            cursor: 'pointer',
+            color: '#888',
+            width: '28px',
+            height: '28px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: '50%',
+            transition: 'background 0.2s'
+        });
+
+        // === ICON ===
+        const icon = modal.querySelector('.csc-icon');
+        Object.assign(icon.style, {
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '56px',
+            height: '56px',
+            borderRadius: '50%',
+            background: 'rgba(47,79,111,0.08)',
+            margin: '0 auto 1rem'
+        });
+
+        // === TITLE ===
+        const title = modal.querySelector('.csc-title');
+        Object.assign(title.style, {
+            margin: '0 0 0.5rem',
+            fontSize: '1.25rem',
+            fontWeight: '700',
+            color: '#1a1a1a',
+            fontFamily: 'Inter, system-ui, sans-serif'
+        });
+
+        // === MESSAGE ===
+        const msg = modal.querySelector('.csc-msg');
+        Object.assign(msg.style, {
+            margin: '0 0 1.75rem',
+            fontSize: '0.95rem',
+            color: '#666',
+            fontFamily: 'Inter, system-ui, sans-serif'
+        });
+
+        // === ACTIONS ===
+        const actions = modal.querySelector('.csc-actions');
+        Object.assign(actions.style, {
+            display: 'flex',
+            gap: '0.75rem',
+            justifyContent: 'center',
+            flexWrap: 'wrap'
+        });
+
+        // === BTN SECONDARY ===
+        const btnSecondary = modal.querySelector('.csc-btn-secondary');
+        Object.assign(btnSecondary.style, {
+            padding: '0.75rem 1.25rem',
+            borderRadius: '10px',
+            border: '1px solid #2f4f6f',
+            background: 'transparent',
+            color: '#2f4f6f',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            transition: 'background 0.2s, color 0.2s',
+            flex: '1',
+            minWidth: '130px'
+        });
+
+        // === BTN PRIMARY ===
+        const btnPrimary = modal.querySelector('.csc-btn-primary');
+        Object.assign(btnPrimary.style, {
+            padding: '0.75rem 1.25rem',
+            borderRadius: '10px',
+            background: 'linear-gradient(135deg, #2f4f6f, #4682B4)',
+            color: 'white',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            fontFamily: 'Inter, system-ui, sans-serif',
+            boxShadow: '0 4px 14px rgba(47,79,111,0.3)',
+            flex: '1',
+            minWidth: '130px'
+        });
+
+        // Adicionar keyframe de entrada
+        if (!document.getElementById('csc-keyframes')) {
+            const style = document.createElement('style');
+            style.id = 'csc-keyframes';
+            style.textContent = `@keyframes cscIn { from { opacity:0; transform:scale(0.92) translateY(10px); } to { opacity:1; transform:scale(1) translateY(0); } }`;
+            document.head.appendChild(style);
+        }
 
         document.body.appendChild(modal);
 
-        // Event listeners
-        modal.querySelector('#closeModal').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
+        // Hover effects
+        closeBtn.addEventListener('mouseenter', () => { closeBtn.style.background = '#f0f0f0'; });
+        closeBtn.addEventListener('mouseleave', () => { closeBtn.style.background = 'none'; });
+        btnSecondary.addEventListener('mouseenter', () => { btnSecondary.style.background = '#2f4f6f'; btnSecondary.style.color = 'white'; });
+        btnSecondary.addEventListener('mouseleave', () => { btnSecondary.style.background = 'transparent'; btnSecondary.style.color = '#2f4f6f'; });
 
-        modal.querySelector('#continueShopping').addEventListener('click', () => {
-            document.body.removeChild(modal);
-        });
+        // Event listeners para fechar
+        const close = () => { if (document.body.contains(modal)) document.body.removeChild(modal); };
 
-        modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
-            if (e.target.classList.contains('modal-overlay')) {
-                document.body.removeChild(modal);
-            }
-        });
+        closeBtn.addEventListener('click', close);
+        btnSecondary.addEventListener('click', close);
+        modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
 
         // Auto close após 8 segundos
-        setTimeout(() => {
-            if (document.body.contains(modal)) {
-                document.body.removeChild(modal);
-            }
-        }, 8000);
+        setTimeout(close, 8000);
     }
 
     // ========================================

@@ -36,6 +36,11 @@
     gap: 1.5rem;
 }
 
+.products-hero-content .tagline,
+.products-hero-content p {
+    color: #ffffff;
+}
+
 .breadcrumb {
     display: inline-flex;
     align-items: center;

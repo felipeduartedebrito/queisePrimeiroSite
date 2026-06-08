@@ -283,13 +283,60 @@
     margin-bottom: clamp(2.5rem, 6vw, 4rem);
 }
 
-.collections-overview {
+/* ========================================
+   CAROUSEL — Produtos em Destaque
+   ======================================== */
+
+.carousel-wrapper {
+    position: relative;
     max-width: var(--max-width-wide);
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: clamp(1.75rem, 4vw, 2.5rem);
 }
+
+.carousel-track-container {
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    gap: clamp(1.75rem, 4vw, 2.5rem);
+    transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Mesmo tamanho do grid original: (100% - 2 gaps) / 3 */
+.carousel-track .collection-card {
+    flex: 0 0 calc((100% - 2 * clamp(1.75rem, 4vw, 2.5rem)) / 3);
+}
+
+/* Setas sobrepostas nas bordas */
+.carousel-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border: 1.5px solid var(--border-subtle);
+    background: var(--surface);
+    color: var(--text-muted);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+    z-index: 10;
+    box-shadow: var(--shadow-soft);
+}
+
+.carousel-btn:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.carousel-btn-prev { left: 0.75rem; }
+.carousel-btn-next { right: 0.75rem; }
+
 
 .collection-card {
     position: relative;
@@ -638,8 +685,9 @@
         transform: none;
     }
 
-    .collections-overview {
-        gap: 1.5rem;
+    /* Tablet: 2 cards por vez */
+    .carousel-track .collection-card {
+        flex: 0 0 calc((100% - clamp(1.75rem, 4vw, 2.5rem)) / 2);
     }
 
     .para-empresas,
@@ -671,8 +719,9 @@
         grid-template-columns: 1fr;
     }
 
-    .collections-overview {
-        grid-template-columns: 1fr;
+    /* Mobile: 1 card full width */
+    .carousel-track .collection-card {
+        flex: 0 0 100%;
     }
 
     .about-content {

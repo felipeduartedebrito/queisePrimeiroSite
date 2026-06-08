@@ -580,20 +580,86 @@ export const CART_LINES_REMOVE_MUTATION = `
 // EXPORTS
 // ========================================
 
+// ========================================
+// CUSTOMER QUERIES & MUTATIONS
+// ========================================
+
+export const CUSTOMER_ACCESS_TOKEN_CREATE = `
+    mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+        customerAccessTokenCreate(input: $input) {
+            customerAccessToken {
+                accessToken
+                expiresAt
+            }
+            customerUserErrors {
+                code
+                field
+                message
+            }
+        }
+    }
+`;
+
+export const CUSTOMER_ACCESS_TOKEN_DELETE = `
+    mutation customerAccessTokenDelete($customerAccessToken: String!) {
+        customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
+            deletedAccessToken
+            userErrors { field message }
+        }
+    }
+`;
+
+export const CUSTOMER_QUERY = `
+    query getCustomer($customerAccessToken: String!) {
+        customer(customerAccessToken: $customerAccessToken) {
+            id
+            firstName
+            lastName
+            email
+        }
+    }
+`;
+
+export const PRODUCTS_SEARCH_QUERY = `
+    query searchProducts($query: String!) {
+        products(first: 6, query: $query) {
+            edges {
+                node {
+                    id
+                    handle
+                    title
+                    priceRange {
+                        minVariantPrice { amount currencyCode }
+                    }
+                    images(first: 1) {
+                        edges { node { url altText } }
+                    }
+                }
+            }
+        }
+    }
+`;
+
 export default {
     // Product Queries
     PRODUCT_QUERY,
     PRODUCTS_QUERY,
-    
+    PRODUCTS_SEARCH_QUERY,
+
     // Collection Queries
     COLLECTION_QUERY,
     COLLECTIONS_QUERY,
-    
+
     // Cart Operations
     CART_CREATE_MUTATION,
     CART_QUERY,
     CART_LINES_ADD_MUTATION,
     CART_LINES_UPDATE_MUTATION,
-    CART_LINES_REMOVE_MUTATION
+    CART_LINES_REMOVE_MUTATION,
+
+    // Customer Operations
+    CUSTOMER_ACCESS_TOKEN_CREATE,
+    CUSTOMER_ACCESS_TOKEN_DELETE,
+    CUSTOMER_QUERY
 };
 

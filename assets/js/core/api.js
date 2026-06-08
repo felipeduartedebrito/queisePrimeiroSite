@@ -13,16 +13,20 @@
 import { ENVIRONMENT, SHOPIFY, debugLog } from './config.js';
 import { delay } from './utils.js';
 import { shopifyFetch, buildProductQuery, getThumbnailUrl, getResponsiveImageUrl } from './shopify-client.js';
-import { 
-    PRODUCT_QUERY, 
-    PRODUCTS_QUERY, 
+import {
+    PRODUCT_QUERY,
+    PRODUCTS_QUERY,
+    PRODUCTS_SEARCH_QUERY,
     COLLECTION_QUERY,
     COLLECTIONS_QUERY,
     CART_CREATE_MUTATION,
     CART_QUERY,
     CART_LINES_ADD_MUTATION,
     CART_LINES_UPDATE_MUTATION,
-    CART_LINES_REMOVE_MUTATION
+    CART_LINES_REMOVE_MUTATION,
+    CUSTOMER_ACCESS_TOKEN_CREATE,
+    CUSTOMER_ACCESS_TOKEN_DELETE,
+    CUSTOMER_QUERY
 } from '../config/shopify.config.js';
 import { cache, SimpleCache } from './cache.js';
 import { CartStorage } from './storage.js';
@@ -55,7 +59,7 @@ const MOCK_DATABASE = {
             images: [
                 {
                     id: 'img1',
-                    url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                    url: '../imagens/placeholder-product.svg',
                     altText: 'Garrafa Stanley 1L'
                 }
             ],
@@ -162,7 +166,7 @@ const MOCK_DATABASE = {
             images: [
                 {
                     id: 'img1',
-                    url: '../imagens/copo_termico_de_cerveja_stanley_473ml_plum_personalizado_916_2_7c3111c33df2762491be463c97ff1d0c.webp',
+                    url: '../imagens/placeholder-product.svg',
                     altText: 'Copo Térmico 500ml'
                 }
             ],
@@ -845,6 +849,80 @@ class ShopifyAPI {
                 subtotalPrice: cart.subtotal
             }
         };
+    }
+
+    // ========================================
+    // CUSTOMER AUTHENTICATION
+    // ========================================
+
+    /**
+     * Autentica cliente via Shopify Storefront API
+     * @param {string} email
+     * @param {string} password
+     * @returns {Promise<{accessToken, expiresAt}>}
+     */
+    async customerLogin(email, password) {
+        const data = await shopifyFetch({
+            query: CUSTOMER_ACCESS_TOKEN_CREATE,
+            variables: { input: { email, password } }
+        });
+        const result = data?.customerAccessTokenCreate;
+        const errors = result?.customerUserErrors;
+        if (errors?.length) throw new Error(errors[0].message);
+        return result.customerAccessToken;
+    }
+
+    /**
+     * Invalida token do cliente no Shopify
+     * @param {string} accessToken
+     */
+    async customerLogout(accessToken) {
+        try {
+            await shopifyFetch({
+                query: CUSTOMER_ACCESS_TOKEN_DELETE,
+                variables: { customerAccessToken: accessToken }
+            });
+        } catch (_) { /* silencioso */ }
+    }
+
+    /**
+     * Retorna dados do cliente logado
+     * @param {string} accessToken
+     * @returns {Promise<Object>}
+     */
+    async getCustomer(accessToken) {
+        const data = await shopifyFetch({
+            query: CUSTOMER_QUERY,
+            variables: { customerAccessToken: accessToken }
+        });
+        return data?.customer || null;
+    }
+
+    // ========================================
+    // PRODUCT SEARCH
+    // ========================================
+
+    /**
+     * Busca produtos por texto
+     * @param {string} query
+     * @returns {Promise<Array>}
+     */
+    async searchProducts(query) {
+        const data = await shopifyFetch({
+            query: PRODUCTS_SEARCH_QUERY,
+            variables: { query }
+        });
+        return (data?.products?.edges || []).map(e => {
+            const node = e.node;
+            const priceAmount = parseFloat(node.priceRange?.minVariantPrice?.amount || 0);
+            const image = node.images?.edges?.[0]?.node?.url || '';
+            return {
+                handle: node.handle,
+                title: node.title,
+                price: Math.round(priceAmount * 100),
+                image
+            };
+        });
     }
 
     /**
