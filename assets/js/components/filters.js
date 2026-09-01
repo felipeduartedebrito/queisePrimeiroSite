@@ -542,19 +542,22 @@ export class ProductFilters {
     }
 
     /**
-     * Atualiza URL com filtros atuais
+     * Atualiza URL com filtros atuais, preservando params que não gerenciamos (ex: ?colecao=)
      */
     updateURL() {
-        const params = new URLSearchParams();
-        
+        const params = new URLSearchParams(window.location.search);
+
+        // Remover apenas os params que gerenciamos antes de re-setar
+        params.delete('category');
+        params.delete('search');
+
         if (this.currentFilters.categories.length > 0) {
             params.set('category', this.currentFilters.categories.join(','));
         }
-        
         if (this.currentFilters.search) {
             params.set('search', this.currentFilters.search);
         }
-        
+
         const newURL = `${window.location.pathname}${params.toString() ? '?' + params.toString() : ''}`;
         window.history.replaceState({}, '', newURL);
     }

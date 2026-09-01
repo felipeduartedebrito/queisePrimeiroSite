@@ -9,7 +9,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css?v=7">
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
 </head>
 
@@ -33,7 +33,12 @@
             <ul class="nav-links">
                 <!-- ✅ LINKS ATUALIZADOS PARA NOVA ESTRUTURA -->
                 <li><a href="paginas/produtos.html">Produtos</a></li>
-                <li><a href="paginas/colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="paginas/colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="paginas/para-empresas.html">Para Empresas</a></li>
                 <li><a href="paginas/sobre.html">Sobre</a></li>
                 <li><a href="paginas/contato.html">Contato</a></li>
@@ -105,37 +110,28 @@
         </div>
     </section>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="geometric-bg"></div>
-        <div class="geometric-bg"></div>
-        <div class="geometric-bg"></div>
-
-        <div class="hero-content">
-            <div class="hero-text">
-                <div class="tagline">Use Exclusividade</div>
-                <h1>Personalize já</h1>
-                <p>Crie seu produto exclusivo com a mais alta qualidade e design sofisticado</p>
-                <div class="hero-buttons">
-                    <!-- ✅ BOTÕES ATUALIZADOS -->
-                    <a href="paginas/personalizar.html" class="btn-primary">
-                        Começar Agora
-                        <span>→</span>
-                    </a>
-                    <a href="paginas/produtos.html" class="btn-secondary">
-                        Ver Produtos
-                        <span>↓</span>
-                    </a>
-                </div>
+    <!-- Fileira de Produtos Section -->
+    <section id="home-produtos" class="home-products scroll-animate">
+        <div class="section-header">
+            <div class="tagline">Catálogo</div>
+            <h2>Nossos Produtos</h2>
+        </div>
+        <div class="home-products-grid" id="homeProductsGrid">
+            <div class="home-products-loading">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="spin"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                Carregando produtos...
             </div>
+        </div>
+        <div class="home-products-cta">
+            <a href="paginas/produtos.html" class="btn-secondary">Ver Todos os Produtos <span>→</span></a>
         </div>
     </section>
 
-    <!-- Featured Products Section -->
-    <section id="produtos" class="featured-products scroll-animate">
+    <!-- Coleções em Destaque Section -->
+    <section id="colecoes" class="featured-products scroll-animate">
         <div class="section-header">
             <div class="tagline">Nossos Destaques</div>
-            <h2>Produtos em Destaque</h2>
+            <h2>Coleções em Destaque</h2>
             <p>Descubra nossa linha premium de produtos personalizáveis com qualidade excepcional e design sofisticado
             </p>
         </div>
@@ -202,6 +198,80 @@
         </div>
     </section>
 
+    <!-- Personalize Já Section -->
+    <section class="hero">
+        <div class="geometric-bg"></div>
+        <div class="geometric-bg"></div>
+        <div class="geometric-bg"></div>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="tagline">Use Exclusividade</div>
+                <h1>Personalize já</h1>
+                <p>Crie seu produto exclusivo com a mais alta qualidade e design sofisticado</p>
+                <div class="hero-buttons">
+                    <a href="paginas/personalizar.html" class="btn-primary">
+                        Começar Agora
+                        <span>→</span>
+                    </a>
+                    <a href="paginas/produtos.html" class="btn-secondary">
+                        Ver Produtos
+                        <span>↓</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="about scroll-animate">
+        <div class="about-content">
+            <div class="about-text">
+                <div class="tagline">Nossa Essência</div>
+                <h2>Por que escolher a QUEISE?</h2>
+                <p>Criamos produtos personalizados com qualidade premium e design exclusivo. Cada peça é cuidadosamente
+                    desenvolvida para refletir sua personalidade única e proporcionar uma experiência excepcional.</p>
+                <div class="about-features">
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <img src="imagens/icones/iconesPorqueQueise/icone_qualidade_premium.png"
+                                alt="Qualidade Premium">
+                        </div>
+                        <h4>Qualidade Premium</h4>
+                        <p>Materiais selecionados e acabamento impecável</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <img src="imagens/icones/iconesPorqueQueise/icone_desing_exclusivo.png"
+                                alt="Design Exclusivo">
+                        </div>
+                        <h4>Design Exclusivo</h4>
+                        <p>Criações únicas desenvolvidas para você</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <img src="imagens/icones/iconesPorqueQueise/icone_entrega_rápida.png"
+                                alt="Entrega Rápida">
+                        </div>
+                        <h4>Entrega Rápida</h4>
+                        <p>Seus produtos chegam no prazo combinado</p>
+                    </div>
+                    <div class="feature">
+                        <div class="feature-icon">
+                            <img src="imagens/icones/iconesPorqueQueise/icone_feito_no_brasil.png"
+                                alt="Feito no Brasil">
+                        </div>
+                        <h4>Feito no Brasil</h4>
+                        <p>Produção nacional com responsabilidade</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <img src="imagens/foto_quadrado_final_home.png" alt="QUEISE" class="about-visual-img">
+            </div>
+        </div>
+    </section>
+
     <!-- Para Empresas Section -->
     <section id="para-empresas" class="para-empresas scroll-animate">
         <div class="para-empresas-content">
@@ -230,7 +300,6 @@
                     </div>
                 </div>
 
-                <!-- ✅ LINK ATUALIZADO -->
                 <a href="paginas/contato.html" class="btn-white">
                     Solicitar Orçamento
                     <span>→</span>
@@ -257,60 +326,6 @@
                         <div class="empresa-icon"><svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg></div>
                         <h4>Presentes VIP</h4>
                         <p>Relacionamento premium</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="sobre" class="about scroll-animate">
-        <div class="about-content">
-            <div class="about-text">
-                <div class="tagline">Nossa Essência</div>
-                <h2>Por que escolher a QUEISE?</h2>
-                <p>Criamos produtos personalizados com qualidade premium e design exclusivo. Cada peça é cuidadosamente
-                    desenvolvida para refletir sua personalidade única e proporcionar uma experiência excepcional.</p>
-                <div class="about-features">
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjOTFBN0JEIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzUgNDVIMzBDMjcuMjM4NiA0NSAyNSA0Ny4yMzg2IDI1IDUwVjY1QzI1IDY3Ljc2MTQgMjcuMjM4NiA3MCAzMCA3MEg3MEMNMi43NjE0IDcwIDc1IDY3Ljc2MTQgNzUgNjVWNTBDNzUgNDcuMjM4NiA3Mi43NjE0IDQ1IDcwIDQ1SDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+"
-                                alt="Quality">
-                        </div>
-                        <h4>Qualidade Premium</h4>
-                        <p>Materiais selecionados e acabamento impecável</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjOTFBN0JEIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzUgNDVIMzBDMjcuMjM4NiA0NSAyNSA0Ny4yMzg2IDI1IDUwVjY1QzI1IDY3Ljc2MTQgMjcuMjM4NiA3MCAzMCA3MEg3MEMNMi43NjE0IDcwIDc1IDY3Ljc2MTQgNzUgNjVWNTBDNzUgNDcuMjM4NiA3Mi43NjE0IDQ1IDcwIDQ1SDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+"
-                                alt="Design">
-                        </div>
-                        <h4>Design Exclusivo</h4>
-                        <p>Criações únicas desenvolvidas para você</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjOTFBN0JEIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzUgNDVIMzBDMjcuMjM4NiA0NSAyNSA0Ny4yMzg2IDI1IDUwVjY1QzI1IDY3Ljc2MTQgMjcuMjM4NiA3MCAzMCA3MEg3MEMNMi43NjE0IDcwIDc1IDY3Ljc2MTQgNzUgNjVWNTBDNzUgNDcuMjM4NiA3Mi43NjE0IDQ1IDcwIDQ1SDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+"
-                                alt="Delivery">
-                        </div>
-                        <h4>Entrega Rápida</h4>
-                        <p>Seus produtos chegam no prazo combinado</p>
-                    </div>
-                    <div class="feature">
-                        <div class="feature-icon">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjOTFBN0JEIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzUgNDVIMzBDMjcuMjM4NiA0NSAyNSA0Ny4yMzg2IDI1IDUwVjY1QzI1IDY3Ljc2MTQgMjcuMjM4NiA3MCAzMCA3MEg3MEMNMi43NjE0IDcwIDc1IDY3Ljc2MTQgNzUgNjVWNTBDNzUgNDcuMjM4NiA3Mi43NjE0IDQ1IDcwIDQ1SDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+"
-                                alt="Brazil">
-                        </div>
-                        <h4>Feito no Brasil</h4>
-                        <p>Produção nacional com responsabilidade</p>
-                    </div>
-                </div>
-            </div>
-            <div class="about-visual">
-                <div class="logo-display">
-                    <div class="logo-letter">
-                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjUwIiBmaWxsPSIjOTFBN0JEIi8+CjxjaXJjbGUgY3g9IjUwIiBjeT0iMzUiIHI9IjEwIiBmaWxsPSJ3aGl0ZSIvPgo8cGF0aCBkPSJNMzUgNDVIMzBDMjcuMjM4NiA0NSAyNSA0Ny4yMzg2IDI1IDUwVjY1QzI1IDY3Ljc2MTQgMjcuMjM4NiA3MCAzMCA3MEg3MEMNMi43NjE0IDcwIDc1IDY3Ljc2MTQgNzUgNjVWNTBDNzUgNDcuMjM4NiA3Mi43NjE0IDQ1IDcwIDQ1SDY1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjMiIGZpbGw9Im5vbmUiLz4KPC9zdmc+"
-                            alt="QUEISE Symbol">
                     </div>
                 </div>
             </div>
@@ -375,6 +390,35 @@
     </footer>
 
     <script type="module" src="assets/js/app.js"></script>
+    <script type="module">
+    import { api } from './assets/js/core/api.js';
+    import { createProductElement } from './assets/js/core/product-card.js';
+
+    (async function loadHomeProducts() {
+        const grid = document.getElementById('homeProductsGrid');
+        if (!grid) return;
+
+        try {
+            const result = await api.getProducts({ first: 8, sortKey: 'BEST_SELLING' });
+            const shown = (result.products || result).slice(0, 8);
+
+            if (!shown.length) {
+                grid.innerHTML = '';
+                return;
+            }
+
+            grid.innerHTML = '';
+            shown.forEach(p => {
+                grid.appendChild(createProductElement(p, {
+                    placeholderSrc: 'imagens/placeholder-product.svg',
+                    detailUrlPrefix: 'paginas/produto-individual.html?id='
+                }));
+            });
+        } catch (e) {
+            grid.innerHTML = '';
+        }
+    })();
+    </script>
     <script>
     (function () {
         let current = 0;

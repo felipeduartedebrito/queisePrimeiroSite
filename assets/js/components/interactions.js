@@ -78,22 +78,7 @@ export class InteractionManager {
      * Configura hover effects para features
      */
     setupFeatureHovers() {
-        document.querySelectorAll('.feature, .empresa-feature').forEach(feature => {
-            feature.addEventListener('mouseenter', function () {
-                const icon = this.querySelector('.feature-icon, .empresa-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1.1) rotate(5deg)';
-                    icon.style.transition = 'transform 0.3s ease';
-                }
-            });
-
-            feature.addEventListener('mouseleave', function () {
-                const icon = this.querySelector('.feature-icon, .empresa-icon');
-                if (icon) {
-                    icon.style.transform = 'scale(1) rotate(0deg)';
-                }
-            });
-        });
+        // hover removido a pedido do cliente
     }
 
     /**

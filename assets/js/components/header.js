@@ -33,6 +33,7 @@ export class HeaderManager {
         this._syncCartBadge();
         this._setupCartListeners();
         this._setupSearch();
+        this._setupCollectionsDropdown();
     }
 
     // ========================================
@@ -118,6 +119,64 @@ export class HeaderManager {
                 const results = document.getElementById('searchResults');
                 if (results) results.innerHTML = '';
             }
+        });
+    }
+
+    // ========================================
+    // COLLECTIONS MEGA MENU
+    // ========================================
+
+    _setupCollectionsDropdown() {
+        const li      = document.querySelector('.nav-dropdown');
+        const menu    = document.getElementById('collectionsDropdown');
+        const trigger = li?.querySelector('.nav-dropdown-trigger');
+        if (!li || !menu) return;
+
+        // Inject arrow span into trigger (avoids ::after conflicts)
+        if (trigger && !trigger.querySelector('.nav-arrow')) {
+            trigger.insertAdjacentHTML('beforeend',
+                `<span class="nav-arrow" aria-hidden="true">
+                    <svg width="10" height="6" viewBox="0 0 10 6" fill="none">
+                        <path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"
+                              stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </span>`
+            );
+        }
+
+        // JS hover with short delay so mouse can travel from trigger to menu
+        let closeTimer = null;
+        const open  = () => { clearTimeout(closeTimer); li.classList.add('is-open'); };
+        const close = () => { closeTimer = setTimeout(() => li.classList.remove('is-open'), 120); };
+
+        li.addEventListener('mouseenter', open);
+        li.addEventListener('mouseleave', close);
+        menu.addEventListener('mouseenter', open);
+        menu.addEventListener('mouseleave', close);
+
+        // Close on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') li.classList.remove('is-open');
+        });
+
+        // Load collections from Shopify
+        const subpage       = window.location.pathname.includes('/paginas/');
+        const productsUrl   = subpage ? 'produtos.html'  : 'paginas/produtos.html';
+        const collectionsUrl = subpage ? 'colecoes.html' : 'paginas/colecoes.html';
+
+        api.getCollections().then(result => {
+            const collections = (result.collections || []).filter(col => col.handle !== 'frontpage');
+            if (!collections.length) {
+                menu.innerHTML = `<a href="${collectionsUrl}" class="nav-dropdown-item nav-dropdown-all">Ver todas as coleções</a>`;
+                return;
+            }
+            const items = collections.map(col =>
+                `<a href="${productsUrl}?colecao=${encodeURIComponent(col.handle)}" class="nav-dropdown-item">${col.title}</a>`
+            ).join('');
+            menu.innerHTML = items +
+                `<a href="${collectionsUrl}" class="nav-dropdown-item nav-dropdown-all">Ver todas →</a>`;
+        }).catch(() => {
+            menu.innerHTML = `<a href="${collectionsUrl}" class="nav-dropdown-item nav-dropdown-all">Ver todas as coleções</a>`;
         });
     }
 

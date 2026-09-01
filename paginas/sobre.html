@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -7,7 +7,7 @@
     <title>Sobre - QUEISE | Use Exclusividade</title>
     <meta name="description" content="Conheça a história da QUEISE: uma marca que acredita na autenticidade e cria produtos personalizados sustentáveis que expressam quem você é.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/sobre.css">
     <style>
         /* === RESET E BASE === */
@@ -814,7 +814,12 @@
             <ul class="nav-links">
                 <li><a href="../index.html">Home</a></li>
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html">Para Empresas</a></li>
                 <li><a href="sobre.html" class="active">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>

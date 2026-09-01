@@ -648,6 +648,14 @@
     box-shadow: none;
 }
 
+.checkout-taxes-note {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--color-text-muted, #888);
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
 /* Security Badges */
 .security-badges {
     display: grid;

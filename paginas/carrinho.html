@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/carrinho.css">
 
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
@@ -35,7 +35,12 @@
             </a>
             <ul class="nav-links">
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html">Para Empresas</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
@@ -151,30 +156,11 @@
                                 <span id="personalizationPrice">R$ 0,00</span>
                             </div>
                             
-                            <div class="summary-line">
-                                <span>Frete</span>
-                                <span id="shippingPrice">Calcular</span>
-                            </div>
-                            
                             <div class="summary-divider"></div>
                             
                             <div class="summary-total">
                                 <span>Total</span>
                                 <span id="totalPrice">R$ 0,00</span>
-                            </div>
-
-                            <!-- Shipping Calculator -->
-                            <div class="shipping-calculator">
-                                <label for="zipCode">Calcular Frete</label>
-                                <div class="zip-input-group">
-                                    <input type="text" id="zipCode" placeholder="00000-000" maxlength="9">
-                                    <button type="button" id="calculateShipping" class="btn-calculate">
-                                        Calcular
-                                    </button>
-                                </div>
-                                <div class="shipping-options" id="shippingOptions" style="display: none;">
-                                    <!-- Shipping options will be inserted here -->
-                                </div>
                             </div>
 
                             <!-- Coupon Code -->
@@ -194,6 +180,7 @@
                                 Finalizar Compra
                                 <span>→</span>
                             </button>
+                            <p class="checkout-taxes-note">Taxas e envio calculados no checkout</p>
 
                             <!-- Security Badges -->
                             <div class="security-badges">

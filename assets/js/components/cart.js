@@ -53,7 +53,6 @@ const RECOMMENDED_PRODUCTS = [
 export class CartManager {
     constructor() {
         this.cart = { items: [], timestamp: Date.now() };
-        this.selectedShipping = null;
         this.appliedCoupon = null;
         this.isLoading = false;
         
@@ -276,7 +275,6 @@ export class CartManager {
                 // Modo desenvolvimento: usar localStorage
                 CartStorage.clear();
                 this.cart = { items: [], timestamp: Date.now() };
-                this.selectedShipping = null;
                 this.appliedCoupon = null;
                 this.saveCart();
                 this.renderCart();
@@ -290,7 +288,6 @@ export class CartManager {
                 }
 
                 this.cart = { items: [], timestamp: Date.now() };
-                this.selectedShipping = null;
                 this.appliedCoupon = null;
                 this.renderCart();
                 Notification.success('Carrinho limpo com sucesso');
@@ -352,30 +349,14 @@ export class CartManager {
     }
 
     /**
-     * Calcula total final do carrinho
+     * Calcula total final do carrinho (frete calculado no checkout)
      * @returns {number} Total em centavos
      */
     calculateTotal() {
         const subtotal = this.calculateSubtotal();
         const personalizationTotal = this.calculatePersonalizationTotal();
-        const shippingCost = this.getShippingCost();
         const discount = this.getDiscountAmount();
-        
-        return Math.max(0, subtotal + personalizationTotal + shippingCost - discount);
-    }
-
-    /**
-     * Obtém custo do frete
-     * @returns {number} Custo em centavos
-     */
-    getShippingCost() {
-        if (!this.selectedShipping) return 0;
-        
-        // Frete grátis se coupon aplicado ou valor mínimo atingido
-        if (this.appliedCoupon?.type === 'free_shipping') return 0;
-        if (this.calculateSubtotal() >= CART_CONFIG.shipping.freeShippingLimit) return 0;
-        
-        return this.selectedShipping.price;
+        return Math.max(0, subtotal + personalizationTotal - discount);
     }
 
     /**
@@ -567,24 +548,6 @@ export class CartManager {
             personalizationEl.textContent = formatPrice(this.calculatePersonalizationTotal());
         }
         
-        const shippingElement = document.getElementById('shippingPrice');
-        if (shippingElement) {
-            const shippingCost = this.getShippingCost();
-            
-            if (this.selectedShipping) {
-                if (shippingCost === 0) {
-                    shippingElement.textContent = 'Grátis';
-                    shippingElement.classList.add('free-shipping');
-                } else {
-                    shippingElement.textContent = formatPrice(shippingCost);
-                    shippingElement.classList.remove('free-shipping');
-                }
-            } else {
-                shippingElement.textContent = 'Calcular';
-                shippingElement.classList.remove('free-shipping');
-            }
-        }
-        
         const totalEl = document.getElementById('totalPrice');
         if (totalEl) {
             totalEl.textContent = formatPrice(this.calculateTotal());
@@ -598,87 +561,8 @@ export class CartManager {
     }
 
     // ========================================
-    // FRETE E CUPONS
+    // CUPONS
     // ========================================
-
-    /**
-     * Calcula opções de frete
-     * @param {string} zipCode - CEP
-     */
-    async calculateShipping(zipCode) {
-        this.setLoading(true, 'Calculando frete...');
-        
-        try {
-            // Simular chamada de API
-            await delay(1500);
-            
-            // Em produção, aqui seria uma chamada real para API dos Correios ou Melhor Envio
-            const shippingOptions = this.getShippingOptions(zipCode);
-            this.displayShippingOptions(shippingOptions);
-            
-        } catch (error) {
-            Notification.error('Erro ao calcular frete. Tente novamente.');
-        } finally {
-            this.setLoading(false);
-        }
-    }
-
-    /**
-     * Obtém opções de frete baseado no CEP
-     * @param {string} zipCode - CEP
-     * @returns {Array} Opções de frete
-     */
-    getShippingOptions(zipCode) {
-        // Simulação baseada no CEP
-        const options = [...CART_CONFIG.shipping.defaultShippingMethods];
-        
-        // Ajustar preços baseado na região (simulado)
-        if (zipCode.startsWith('01') || zipCode.startsWith('04')) {
-            // São Paulo capital - frete mais barato
-            options.forEach(option => option.price = Math.floor(option.price * 0.8));
-        } else if (zipCode.startsWith('2') || zipCode.startsWith('3')) {
-            // Interior SP/RJ - preço normal
-        } else {
-            // Outras regiões - frete mais caro
-            options.forEach(option => option.price = Math.floor(option.price * 1.3));
-        }
-        
-        return options;
-    }
-
-    /**
-     * Exibe opções de frete na interface
-     * @param {Array} options - Opções de frete
-     */
-    displayShippingOptions(options) {
-        const container = document.getElementById('shippingOptions');
-        if (!container) return;
-        
-        container.innerHTML = '';
-        container.style.display = 'block';
-        
-        options.forEach(option => {
-            const optionElement = document.createElement('div');
-            optionElement.className = 'shipping-option';
-            optionElement.innerHTML = `
-                <div class="shipping-info">
-                    <div class="shipping-name">${option.name}</div>
-                    <div class="shipping-time">${option.time}</div>
-                </div>
-                <div class="shipping-price">${formatPrice(option.price)}</div>
-            `;
-            
-            optionElement.addEventListener('click', () => {
-                document.querySelectorAll('.shipping-option').forEach(el => el.classList.remove('selected'));
-                optionElement.classList.add('selected');
-                this.selectedShipping = option;
-                this.updateSummary();
-                Notification.success(`Frete ${option.name} selecionado`);
-            });
-            
-            container.appendChild(optionElement);
-        });
-    }
 
     /**
      * Aplica cupom de desconto
@@ -901,24 +785,6 @@ export class CartManager {
             clearBtn.addEventListener('click', () => this.clearCart());
         }
 
-        // Calcular frete
-        const calculateShippingBtn = document.getElementById('calculateShipping');
-        if (calculateShippingBtn) {
-            calculateShippingBtn.addEventListener('click', () => {
-                const zipCodeInput = document.getElementById('zipCode');
-                if (!zipCodeInput) return;
-                
-                const zipCode = zipCodeInput.value.replace(/\D/g, '');
-                
-                if (zipCode.length !== 8) {
-                    Notification.error('Digite um CEP válido (8 dígitos)');
-                    return;
-                }
-                
-                this.calculateShipping(zipCode);
-            });
-        }
-
         // Aplicar cupom
         const applyCouponBtn = document.getElementById('applyCoupon');
         if (applyCouponBtn) {
@@ -928,25 +794,6 @@ export class CartManager {
                 
                 const code = couponInput.value.trim();
                 this.applyCoupon(code);
-            });
-        }
-
-        // Enter nos campos de entrada
-        const zipCodeInput = document.getElementById('zipCode');
-        if (zipCodeInput) {
-            zipCodeInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter' && calculateShippingBtn) {
-                    calculateShippingBtn.click();
-                }
-            });
-
-            // Máscara de CEP
-            zipCodeInput.addEventListener('input', (e) => {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 5) {
-                    value = value.substring(0, 5) + '-' + value.substring(5, 8);
-                }
-                e.target.value = value;
             });
         }
 

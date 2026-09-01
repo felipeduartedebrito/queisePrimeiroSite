@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -8,7 +8,7 @@
     <title>Coleções - QUEISE | Use Exclusividade</title>
     <meta name="description" content="Explore nossas coleções premium de produtos personalizáveis. Azulejos, garrafas, canecas, copos, camisetas e bolsas com design exclusivo.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/colecoes.css">
 
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
@@ -33,7 +33,12 @@
             </a>
             <ul class="nav-links">
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html" class="active">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger active">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html">Para Empresas</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/produto-individual.css">
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
 </head>
@@ -34,7 +34,12 @@
             </a>
             <ul class="nav-links">
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html">Para Empresas</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
@@ -180,17 +185,29 @@
                         <div class="icon-section" id="iconSection" style="display: none;">
                             <label class="custom-sublabel">Ícone</label>
                             <div class="icon-grid" id="iconGrid">
-                                <button type="button" class="icon-btn" data-icon="arvore" data-src="../imagens/icones/arvore.png">
-                                    <img src="../imagens/icones/arvore.png" alt="Árvore">
+                                <button type="button" class="icon-btn" data-icon="girassol" data-src="../imagens/icones/iconesPersonalizacao/199.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/199.png" alt="Girassol">
                                 </button>
-                                <button type="button" class="icon-btn" data-icon="girassol" data-src="../imagens/icones/girassol.png">
-                                    <img src="../imagens/icones/girassol.png" alt="Girassol">
+                                <button type="button" class="icon-btn" data-icon="sol-ondas" data-src="../imagens/icones/iconesPersonalizacao/200.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/200.png" alt="Sol e Ondas">
                                 </button>
-                                <button type="button" class="icon-btn" data-icon="olho-paz" data-src="../imagens/icones/olho-paz.png">
-                                    <img src="../imagens/icones/olho-paz.png" alt="Olho Paz">
+                                <button type="button" class="icon-btn" data-icon="hamsa" data-src="../imagens/icones/iconesPersonalizacao/201.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/201.png" alt="Mão Hamsá">
                                 </button>
-                                <button type="button" class="icon-btn" data-icon="sol-ondas" data-src="../imagens/icones/sol-ondas.png">
-                                    <img src="../imagens/icones/sol-ondas.png" alt="Sol Ondas">
+                                <button type="button" class="icon-btn" data-icon="sapo" data-src="../imagens/icones/iconesPersonalizacao/202.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/202.png" alt="Sapo Meditando">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="mandala" data-src="../imagens/icones/iconesPersonalizacao/203.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/203.png" alt="Mandala de Raios">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="cachorro-skate" data-src="../imagens/icones/iconesPersonalizacao/204.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/204.png" alt="Cachorro de Skate">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="palmeira" data-src="../imagens/icones/iconesPersonalizacao/205.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/205.png" alt="Palmeira">
+                                </button>
+                                <button type="button" class="icon-btn" data-icon="take-it-easy" data-src="../imagens/icones/iconesPersonalizacao/206.png">
+                                    <img src="../imagens/icones/iconesPersonalizacao/206.png" alt="Take it Easy">
                                 </button>
                             </div>
                         </div>

@@ -110,8 +110,8 @@ export const PRODUCT_QUERY = `
  * Usado em páginas de listagem e busca
  */
 export const PRODUCTS_QUERY = `
-    query getProducts($first: Int!, $query: String, $after: String) {
-        products(first: $first, query: $query, after: $after) {
+    query getProducts($first: Int!, $query: String, $after: String, $sortKey: ProductSortKeys, $reverse: Boolean) {
+        products(first: $first, query: $query, after: $after, sortKey: $sortKey, reverse: $reverse) {
             edges {
                 node {
                     id
@@ -205,19 +205,49 @@ export const COLLECTION_QUERY = `
                         title
                         vendor
                         productType
-                        
+                        availableForSale
+
                         priceRange {
                             minVariantPrice {
                                 amount
                                 currencyCode
                             }
                         }
-                        
-                        images(first: 1) {
+
+                        images(first: 5) {
                             edges {
                                 node {
                                     url
                                     altText
+                                }
+                            }
+                        }
+
+                        options {
+                            name
+                            values
+                        }
+
+                        variants(first: 20) {
+                            edges {
+                                node {
+                                    selectedOptions {
+                                        name
+                                        value
+                                    }
+                                    image {
+                                        url
+                                        altText
+                                    }
+                                }
+                            }
+                        }
+
+                        collections(first: 3) {
+                            edges {
+                                node {
+                                    handle
+                                    title
                                 }
                             }
                         }
@@ -616,6 +646,53 @@ export const CUSTOMER_QUERY = `
             firstName
             lastName
             email
+        }
+    }
+`;
+
+// ========================================
+// CHECKOUT (SHIPPING RATES)
+// ========================================
+
+/**
+ * Cria checkout temporário com endereço — usado apenas para consultar tarifas de frete.
+ * O checkout real do cliente usa o checkoutUrl do cart.
+ */
+export const CHECKOUT_CREATE_FOR_RATES_MUTATION = `
+    mutation checkoutCreate($input: CheckoutCreateInput!) {
+        checkoutCreate(input: $input) {
+            checkout {
+                id
+                availableShippingRates {
+                    ready
+                    shippingRates {
+                        handle
+                        title
+                        price { amount currencyCode }
+                    }
+                }
+            }
+            checkoutUserErrors { field message }
+        }
+    }
+`;
+
+/**
+ * Polling: consulta tarifas de frete de um checkout existente
+ */
+export const CHECKOUT_SHIPPING_RATES_QUERY = `
+    query checkoutShippingRates($id: ID!) {
+        node(id: $id) {
+            ... on Checkout {
+                availableShippingRates {
+                    ready
+                    shippingRates {
+                        handle
+                        title
+                        price { amount currencyCode }
+                    }
+                }
+            }
         }
     }
 `;

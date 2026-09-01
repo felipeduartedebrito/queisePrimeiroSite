@@ -520,14 +520,15 @@ export class PersonalizationManager {
         
         switch (orientation) {
             case 'texto-vertical':
-                this.elements.previewText.style.writingMode = 'vertical-rl';
-                this.elements.previewText.style.textOrientation = 'upright';
+                this.elements.previewText.style.writingMode = 'vertical-lr';
+                this.elements.previewText.style.transform = 'rotate(180deg)';
                 this.elements.previewText.innerHTML = `<span class="preview-text vertical">${text}</span>`;
                 break;
             case 'texto-horizontal':
                 this.elements.previewText.innerHTML = `<span class="preview-text">${text}</span>`;
                 break;
             case 'icone-texto-vertical':
+                this.elements.previewText.style.flexDirection = 'column-reverse';
                 this.elements.previewText.innerHTML = `<span class="preview-text">${text}</span><img src="${iconPath}" alt="Icon" class="preview-icon-large">`;
                 break;
             case 'icone-texto-horizontal':
@@ -555,10 +556,14 @@ export class PersonalizationManager {
      */
     getIconPath(iconId) {
         const iconMap = {
-            'icon-1': '../imagens/icones/sol-ondas.png',
-            'icon-2': '../imagens/icones/olho-paz.png',
-            'icon-3': '../imagens/icones/girassol.png',
-            'icon-4': '../imagens/icones/arvore.png'
+            'icon-1': '../imagens/icones/iconesPersonalizacao/199.png',
+            'icon-2': '../imagens/icones/iconesPersonalizacao/200.png',
+            'icon-3': '../imagens/icones/iconesPersonalizacao/201.png',
+            'icon-4': '../imagens/icones/iconesPersonalizacao/202.png',
+            'icon-5': '../imagens/icones/iconesPersonalizacao/203.png',
+            'icon-6': '../imagens/icones/iconesPersonalizacao/204.png',
+            'icon-7': '../imagens/icones/iconesPersonalizacao/205.png',
+            'icon-8': '../imagens/icones/iconesPersonalizacao/206.png'
         };
         return iconMap[iconId] || iconMap['icon-1'];
     }
@@ -609,15 +614,15 @@ export class PersonalizationManager {
             // Aplicar orientação mantendo centralizado
             switch (orientation) {
                 case 'texto-vertical':
-                    finalPreviewText.style.writingMode = 'vertical-rl';
-                    finalPreviewText.style.textOrientation = 'upright';
+                    finalPreviewText.style.writingMode = 'vertical-lr';
+                    finalPreviewText.style.transform = 'translate(-50%, -50%) rotate(180deg)';
                     finalPreviewText.textContent = text;
                     break;
                 case 'texto-horizontal':
                     finalPreviewText.textContent = text;
                     break;
                 case 'icone-texto-vertical':
-                    finalPreviewText.style.flexDirection = 'column';
+                    finalPreviewText.style.flexDirection = 'column-reverse';
                     finalPreviewText.innerHTML = `<span class="preview-text">${text}</span><img src="${iconPath}" alt="Icon" class="preview-icon-large">`;
                     break;
                 case 'icone-texto-horizontal':

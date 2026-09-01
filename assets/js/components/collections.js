@@ -9,6 +9,7 @@
  */
 
 import { debounce } from '../core/utils.js';
+import { api } from '../core/api.js';
 
 /**
  * Classe para gerenciar página de coleções
@@ -26,8 +27,36 @@ export class CollectionsManager {
         this.setupSubcollectionsDropdown();
         this.setupScrollAnimations();
         this.setupResponsiveHandling();
-        
+        this._updateCardLinksFromAPI();
+
         console.log('✅ Collections page initialized with', this.collectionCards.length, 'collections');
+    }
+
+    async _updateCardLinksFromAPI() {
+        try {
+            const result = await api.getCollections();
+            const collections = (result.collections || []).filter(c => c.handle !== 'frontpage');
+            const normalize = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+            this.collectionCards.forEach(card => {
+                const category = card.dataset.category || '';
+                const link = card.querySelector('.collection-link');
+                if (!link) return;
+
+                const match = collections.find(col => {
+                    const h = normalize(col.handle);
+                    const t = normalize(col.title || '');
+                    const c = normalize(category);
+                    return h === c || h.startsWith(c) || t.startsWith(c) || c.startsWith(h);
+                });
+
+                if (match) {
+                    link.href = `produtos.html?colecao=${encodeURIComponent(match.handle)}`;
+                }
+            });
+        } catch (err) {
+            console.warn('Não foi possível carregar coleções via API:', err);
+        }
     }
 
     // ========================================

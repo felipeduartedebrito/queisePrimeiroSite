@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -8,7 +8,7 @@
     <title>Para Empresas - QUEISE | Soluções Corporativas Premium</title>
     <meta name="description" content="Soluções corporativas personalizadas para sua empresa. Brindes premium, kits corporativos e presentes executivos com qualidade QUEISE.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/para-empresas.css">
 
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
@@ -33,7 +33,12 @@
             </a>
             <ul class="nav-links">
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html" class="active">Para Empresas</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>

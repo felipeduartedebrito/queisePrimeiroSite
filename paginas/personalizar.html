@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
@@ -8,7 +8,7 @@
     <title>Personalize seu Produto - QUEISE | Use Exclusividade</title>
     <meta name="description" content="Crie seu produto único com o sistema de personalização QUEISE. Escolha produtos, adicione textos e veja o resultado em tempo real.">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../assets/css/styles.css">
+    <link rel="stylesheet" href="../assets/css/styles.css?v=7">
     <link rel="stylesheet" href="../assets/css/pages/personalizar.css">
 
     <link rel="icon" type="image/png" href="/imagens/logo_sem_fundo.png">
@@ -33,7 +33,12 @@
             </a>
             <ul class="nav-links">
                 <li><a href="produtos.html">Produtos</a></li>
-                <li><a href="colecoes.html">Coleções</a></li>
+                <li class="nav-dropdown">
+                    <a href="colecoes.html" class="nav-dropdown-trigger">Coleções</a>
+                    <div class="nav-dropdown-menu" id="collectionsDropdown">
+                        <div class="nav-dropdown-loading">Carregando...</div>
+                    </div>
+                </li>
                 <li><a href="para-empresas.html">Para Empresas</a></li>
                 <li><a href="sobre.html">Sobre</a></li>
                 <li><a href="contato.html">Contato</a></li>
@@ -285,21 +290,37 @@
                         <div class="control-group">
                             <label for="iconSelect" id="iconLabel" style="display: none;">Ícone</label>
                             <div class="icon-options" id="iconSelect" style="display: none;">
-                                <div class="icon-option active" data-icon="icon-1" title="Sol & Ondas">
-                                    <img src="../imagens/icones/sol-ondas.png" alt="Sol e Ondas" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
-                                    <span style="display: none;">Sol &amp; Ondas</span>
-                                </div>
-                                <div class="icon-option" data-icon="icon-2" title="Olho da Paz">
-                                    <img src="../imagens/icones/olho-paz.png" alt="Olho da Paz" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
-                                    <span style="display: none;">Olho da Paz</span>
-                                </div>
-                                <div class="icon-option" data-icon="icon-3" title="Girassol">
-                                    <img src="../imagens/icones/girassol.png" alt="Girassol" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                <div class="icon-option active" data-icon="icon-1" title="Girassol">
+                                    <img src="../imagens/icones/iconesPersonalizacao/199.png" alt="Girassol" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
                                     <span style="display: none;">Girassol</span>
                                 </div>
-                                <div class="icon-option" data-icon="icon-4" title="Árvore">
-                                    <img src="../imagens/icones/arvore.png" alt="Árvore" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
-                                    <span style="display: none;">Árvore</span>
+                                <div class="icon-option" data-icon="icon-2" title="Sol & Ondas">
+                                    <img src="../imagens/icones/iconesPersonalizacao/200.png" alt="Sol e Ondas" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Sol &amp; Ondas</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-3" title="Mão Hamsá">
+                                    <img src="../imagens/icones/iconesPersonalizacao/201.png" alt="Mão Hamsá" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Mão Hamsá</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-4" title="Sapo Meditando">
+                                    <img src="../imagens/icones/iconesPersonalizacao/202.png" alt="Sapo Meditando" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Sapo Meditando</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-5" title="Mandala de Raios">
+                                    <img src="../imagens/icones/iconesPersonalizacao/203.png" alt="Mandala de Raios" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Mandala de Raios</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-6" title="Cachorro de Skate">
+                                    <img src="../imagens/icones/iconesPersonalizacao/204.png" alt="Cachorro de Skate" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Cachorro de Skate</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-7" title="Palmeira">
+                                    <img src="../imagens/icones/iconesPersonalizacao/205.png" alt="Palmeira" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Palmeira</span>
+                                </div>
+                                <div class="icon-option" data-icon="icon-8" title="Take it Easy">
+                                    <img src="../imagens/icones/iconesPersonalizacao/206.png" alt="Take it Easy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width: 40px; height: 40px;">
+                                    <span style="display: none;">Take it Easy</span>
                                 </div>
                             </div>
                         </div>

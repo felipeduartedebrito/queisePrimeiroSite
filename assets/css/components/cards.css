@@ -201,16 +201,122 @@
     .product-card {
         padding: 1.5rem;
     }
-    
+
     .product-image {
         height: 220px;
     }
-    
+
     .collection-image {
         height: 200px;
     }
-    
+
     .collection-content {
         padding: 1.5rem;
     }
+}
+
+/* === PRODUCT ITEM CARD (home + página de produtos) === */
+.product-item {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    transition: none;
+}
+
+.product-item:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.product-image-container {
+    position: relative;
+    background: #f5f5f5;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+}
+
+.product-main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.product-item:hover .product-main-img {
+    transform: scale(1.04);
+}
+
+.product-card-swatches {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.75rem 0 0.55rem;
+    flex-wrap: wrap;
+}
+
+.product-card-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50% !important;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    transition: transform 0.15s ease;
+}
+
+.product-card-swatch::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: linear-gradient(
+        to right,
+        rgba(0,0,0,0.14) 0%,
+        rgba(0,0,0,0.04) 28%,
+        rgba(255,255,255,0.12) 46%,
+        rgba(255,255,255,0.15) 52%,
+        rgba(255,255,255,0.04) 66%,
+        rgba(0,0,0,0.08) 84%,
+        rgba(0,0,0,0.16) 100%
+    );
+}
+
+.product-card-swatch:hover {
+    transform: scale(1.15);
+}
+
+.product-card-swatches-more {
+    font-size: 0.78rem;
+    color: var(--text-subtle);
+    font-weight: 500;
+    line-height: 1;
+}
+
+.product-item .product-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    font-family: 'Playfair Display', serif;
+    text-align: left;
+    cursor: pointer;
+}
+
+.price-main {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.2;
+    cursor: pointer;
+    margin-top: 0.55rem;
 }

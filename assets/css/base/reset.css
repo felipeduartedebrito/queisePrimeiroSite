@@ -70,7 +70,8 @@
 .search-overlay-bar,
 .filter-count,
 .breadcrumb,
-.cart-badge-pill {
+.cart-badge-pill,
+.nav-dropdown-item {
     border-radius: 999px !important;
 }
 

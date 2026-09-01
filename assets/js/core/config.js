@@ -128,7 +128,7 @@ export const PERSONALIZATION_CONFIG = {
     // 'global'   → todos os produtos podem personalizar (ignora Shopify)
     // 'allowed'  → apenas produtos com metafield enabled=true no Shopify
     // 'none'     → nenhum produto pode personalizar (ignora Shopify)
-    mode: 'global',
+    mode: 'none', // ativar e desativar personalização globalmente (global, allowed, none)
 
     // Mantido por compatibilidade (derivado de mode)
     get enabled() { return this.mode !== 'none'; },

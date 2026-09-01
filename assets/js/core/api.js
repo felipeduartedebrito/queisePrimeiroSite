@@ -26,7 +26,9 @@ import {
     CART_LINES_REMOVE_MUTATION,
     CUSTOMER_ACCESS_TOKEN_CREATE,
     CUSTOMER_ACCESS_TOKEN_DELETE,
-    CUSTOMER_QUERY
+    CUSTOMER_QUERY,
+    CHECKOUT_CREATE_FOR_RATES_MUTATION,
+    CHECKOUT_SHIPPING_RATES_QUERY
 } from '../config/shopify.config.js';
 import { cache, SimpleCache } from './cache.js';
 import { CartStorage } from './storage.js';
@@ -376,6 +378,19 @@ class MockAPI {
     }
 
     /**
+     * Retorna opções de frete mockadas (desenvolvimento)
+     * @param {string} cep
+     * @returns {Promise<Array>}
+     */
+    async getShippingRates(cep) {
+        await this._simulateNetworkDelay(1200);
+        return [
+            { handle: 'pac',    title: 'PAC',    price: { amount: '15.00' } },
+            { handle: 'sedex',  title: 'SEDEX',  price: { amount: '25.00' } },
+        ];
+    }
+
+    /**
      * Cria checkout (simulado)
      * @param {Array} lineItems - Itens do carrinho
      * @returns {Promise<Object>}
@@ -447,8 +462,8 @@ class ShopifyAPI {
      * @returns {Promise<Object>}
      */
     async getProducts(filters = {}) {
-        const { collection, tag, query, first = 10, after } = filters;
-        
+        const { collection, tag, query, first = 10, after, sortKey, reverse } = filters;
+
         // Verificar cache
         const cacheKey = SimpleCache.productsKey(filters);
         const cached = this.cache.get(cacheKey);
@@ -460,6 +475,8 @@ class ShopifyAPI {
         debugLog('Products cache MISS, fetching from Shopify:', filters);
 
         const variables = { first };
+        if (sortKey) variables.sortKey = sortKey;
+        if (reverse !== undefined) variables.reverse = reverse;
         
         // Construir query string usando helper
         if (query) {
@@ -714,6 +731,65 @@ class ShopifyAPI {
         }
 
         return this._saveAndReturnCart(this._transformCart(data.cartLinesRemove.cart));
+    }
+
+    /**
+     * Consulta tarifas de frete reais via Shopify Checkout API + Frenet.
+     * Cria um checkout temporário apenas para obter as taxas — não interfere no cart do cliente.
+     * @param {string} cep - CEP sem formatação ou com máscara
+     * @param {Array} cartItems - Itens do cart (precisam ter variantId)
+     * @returns {Promise<Array>} Array de { handle, title, price: { amount, currencyCode } }
+     */
+    async getShippingRates(cep, cartItems = []) {
+        const cleanCep = cep.replace(/\D/g, '');
+
+        // 1. Buscar endereço pelo CEP (ViaCEP — API pública brasileira, sem autenticação)
+        const viaCepRes = await fetch(`https://viacep.com.br/ws/${cleanCep}/json/`);
+        if (!viaCepRes.ok) throw new Error('CEP inválido');
+        const addr = await viaCepRes.json();
+        if (addr.erro) throw new Error('CEP não encontrado');
+
+        // 2. Montar line items com variantIds do cart
+        const lineItems = cartItems
+            .filter(item => item.variantId)
+            .map(item => ({ variantId: item.variantId, quantity: item.quantity || 1 }));
+
+        if (lineItems.length === 0) throw new Error('Nenhum item com variante no carrinho');
+
+        // 3. Criar checkout temporário com endereço parcial
+        const createData = await shopifyFetch(CHECKOUT_CREATE_FOR_RATES_MUTATION, {
+            input: {
+                lineItems,
+                shippingAddress: {
+                    address1: addr.logradouro || 'Rua',
+                    city: addr.localidade,
+                    province: addr.uf,
+                    country: 'Brazil',
+                    zip: cleanCep
+                },
+                allowPartialAddresses: true
+            }
+        });
+
+        const errors = createData.checkoutCreate?.checkoutUserErrors;
+        if (errors?.length) throw new Error(errors[0].message);
+
+        const checkout = createData.checkoutCreate.checkout;
+
+        // 4. Se as tarifas já estiverem prontas, retornar imediatamente
+        if (checkout.availableShippingRates?.ready) {
+            return checkout.availableShippingRates.shippingRates;
+        }
+
+        // 5. Polling até estar pronto (máx ~6s)
+        for (let i = 0; i < 8; i++) {
+            await new Promise(r => setTimeout(r, 800));
+            const pollData = await shopifyFetch(CHECKOUT_SHIPPING_RATES_QUERY, { id: checkout.id });
+            const rates = pollData.node?.availableShippingRates;
+            if (rates?.ready) return rates.shippingRates;
+        }
+
+        throw new Error('Tempo esgotado ao calcular frete');
     }
 
     /**
